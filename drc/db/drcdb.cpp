@@ -650,9 +650,157 @@ void DRCDB::QueryResWaReport(MediatorArg arg)
     Mediator::Call(MKEY_DB_REQUEST_RESWA_REPORT_DONE,  report);
 }
 
+
+
+
+
+
+
+
+//This will be a test of a new query method to test additional filds in DB
+
+void DRCDB::testQueryMonthlyReport(MediatorArg arg){
+
+    ReportRequest* params = nullptr;
+
+    QDateTime start;
+    QDateTime end;
+    CountyIds county;
+
+    int month, year;
+
+    if(arg.IsSuccessful() && (params = arg.getArg<ReportRequest*>()))
+    {
+        month = params->GetMonth();
+        year = params->GetYear();
+        county = params->GetCounty();
+
+        if(month != 12)
+        {
+            start = QDateTime::fromString(QString("%1-%2-01").arg(year).arg(month),"yyyy-MM-dd");
+            end = QDateTime::fromString(QString("%1-%2-01").arg(year).arg(month+1),"yyyy-MM-dd");
+        }
+        else
+        {
+            start = QDateTime::fromString(QString("%1-%2-01").arg(year).arg(month),"yyyy-MM-dd");
+            year++;
+            end = QDateTime::fromString(QString("%1-%2-01").arg(year).arg(1),"yyyy-M-dd");
+        }
+    }
+    else
+    {
+        qDebug()<< "Error with parameter";
+         return;
+    }
+
+    monthlyreport* report = new monthlyreport();
+
+    QString mediationIdMatches = "";
+
+    int test_open_month = getOpenIntakeCountPerMonth( start,  end,  county);
+
+    MediationProcessVector* mpVec = getClosedIntakePerMonth( start, end, county);
+
+    report->setCounty(county);
+    report->setMonth(month);
+    report->setYear(year);
+    report->BuildReport(mpVec);
+    report->setOpenCases(test_open_month);
+
+    arg.SetArg(report);
+
+    Mediator::Call(MKEY_DB_REQUEST_MONTHLY_REPORT_DONE, arg);
+
+}
+
+
+MediationProcessVector* DRCDB::getClosedIntakePerMonth(QDateTime start, QDateTime end, CountyIds county) {
+    //gets mediation ids that correspond to intake forms closed between start and end date
+
+    QSqlQuery query(database);
+    //Need clarification from Rosemarry if disputeCounty needs to be removed for total counts
+    //Assuming that updatedDate is modified finally when the case is closed. This needs to be changed to a definate closedDate
+    //County is not queried because it isn't present in the Session_table
+    QString command = QString("Select * from Mediation_table where UpdatedDate < '%1' and UpdatedDate >= '%2' and DisputeState in ('%3','%4') and DisputeCounty = '%5'")
+                        .arg(end.toString("yyyy-MM-dd"))
+                        .arg(start.toString("yyyy-MM-dd"))
+                        .arg(PROCESS_STATE_CLOSED_NO_SESSION)
+                        .arg(PROCESS_STATE_CLOSED_WITH_SESSION)
+                        .arg(county);
+
+    if(!this->ExecuteCommand(command, query))
+    {
+        qDebug()<<"Error in getClosedIntakePerMonth after SQL string";
+    }
+
+    QString mediationIdMatches = "";
+    bool first = true;
+
+    while(query.next())
+    {
+        if(!first)
+        {
+            mediationIdMatches += ", ";
+        }
+        //Value 1 in session_table is the process_id
+        mediationIdMatches += query.value(0).toString();
+        first = false;
+    }
+
+    /*MediationProcessVector* mpVec = LoadMediations(mediationIdMatches);
+
+    mediationIdMatches = "";
+    first = true;
+    for(size_t i = 0; i < mpVec->size(); i++)
+    {
+        MediationProcess* process = mpVec->at(i);
+        if(process->GetCountyId() == county)
+        {
+            if(!first)
+            {
+                mediationIdMatches += ", ";
+            }
+            mediationIdMatches += QString::number(process->GetId());
+            first = false;
+        }
+    }
+*/
+    return LoadMediations(mediationIdMatches);
+}
+
+
+int DRCDB::getOpenIntakeCountPerMonth(QDateTime start, QDateTime end, CountyIds county){
+
+    QSqlQuery openQuery(database);
+
+    QString openCommand = QString("Select * from Mediation_table where CreationDateTime < '%1' and CreationDateTime >= '%2' and DisputeCounty = '%3'")
+                            .arg(end.toString("yyyy-MM-dd"))
+                            .arg(start.toString("yyyy-MM-dd"))
+                            .arg(county);
+
+    if(!this->ExecuteCommand(openCommand, openQuery))
+    {
+        qDebug()<<"Error in OpenIntake after SQL string";
+        qDebug()<<this->GetLastErrors();
+    }
+    int openCount = 0;
+
+    while(openQuery.next())
+    {
+        openCount++;
+    }
+    return openCount;
+}
+
 // Arg is a ReportRequest*  !!
 void DRCDB::QueryMonthlyReport(MediatorArg arg)
 {
+
+    //testing our new method
+    testQueryMonthlyReport( arg);
+
+    /*
+
     ReportRequest* params = nullptr;
     if(arg.IsSuccessful() && (params = arg.getArg<ReportRequest*>()))
     {
@@ -690,7 +838,10 @@ void DRCDB::QueryMonthlyReport(MediatorArg arg)
                                 .arg(PROCESS_STATE_CLOSED_WITH_SESSION)
                                 .arg(county);
 
-        if(!this->ExecuteCommand(openCommand, openQuery));
+
+//        if(!this->ExecuteCommand(openCommand, openQuery));
+// removed semicolon
+        if(!this->ExecuteCommand(openCommand, openQuery))
         {
             qDebug()<<this->GetLastErrors();
         }
@@ -711,7 +862,9 @@ void DRCDB::QueryMonthlyReport(MediatorArg arg)
 //        }
 
         QSqlQuery query(database);
-        QString command = QString("Select * from Session_table where ScheduledTime <= '%1' and ScheduledTime > '%2'")
+//        QString command = QString("Select * from Session_table where ScheduledTime <= '%1' and ScheduledTime > '%2'")
+        //removed = sign
+        QString command = QString("Select * from Session_table where ScheduledTime < '%1' and ScheduledTime > '%2'")
                             .arg(end.toString("yyyy-MM-dd"))
                             .arg(start.toString("yyyy-MM-dd"));
         this->ExecuteCommand(command, query);
@@ -772,6 +925,8 @@ void DRCDB::QueryMonthlyReport(MediatorArg arg)
     }
 
     Mediator::Call(MKEY_DB_REQUEST_MONTHLY_REPORT_DONE, arg);
+
+    */
 }
 //========================================================================
 
@@ -928,6 +1083,7 @@ MediationProcessVector* DRCDB::LoadMediations(QString processIds)
                 primary->setEmail(peopleQuery.value(14).toString());
                 party->SetPrimary(primary);
             }
+
 
             party->GetPrimary()->setNumberChildrenInHousehold(clientQuery.value(3).toUInt());
             party->GetPrimary()->setNumberInHousehold(clientQuery.value(4).toUInt());
