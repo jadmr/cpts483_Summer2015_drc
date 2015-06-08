@@ -361,6 +361,14 @@ public:
      */
     void InsertEvaluation(MediatorArg arg);
 
+    //these are some new test methods to break up monthly report query
+
+    int getOpenIntakeCountPerMonth(QDateTime , QDateTime , CountyIds );
+
+    void testQueryMonthlyReport(MediatorArg arg);
+
+    MediationProcessVector* getClosedIntakePerMonth(QDateTime , QDateTime , CountyIds);
+
 };
 
 #endif // DRCDB_H
