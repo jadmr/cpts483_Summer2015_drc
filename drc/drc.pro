@@ -18,6 +18,7 @@ RC_ICONS = images/DRClogoFromJpg.ico
 INCLUDEPATH += bl/ \
     db/ \
     drc_shared/ \
+    drc_shared/data/csv \
     drc_shared/mediator/ \
     drc_shared/models/ \
     gui/
@@ -73,7 +74,8 @@ SOURCES += main.cpp\
     gui/slideshowform.cpp \
     drc_shared/models/monthlyreport.cpp \
     gui/tabbedbrowsers.cpp \
-    gui/slotsgame.cpp
+    gui/slotsgame.cpp \
+    db/generator/rec_generator.cpp
 
 HEADERS  += \
     bl/drcbl.h \
@@ -135,7 +137,11 @@ HEADERS  += \
     gui/slideshowform.h \
     drc_shared/models/monthlyreport.h \
     gui/tabbedbrowsers.h \
-    gui/slotsgame.h
+    gui/slotsgame.h \
+    db/generator/db_generator.h \
+    db/schema/db_schema.h \
+    db/generator/rec_generator.h \
+    drc_shared/data/csv/csv_writer.h
 
 FORMS    += \
     DRCClient.ui \
