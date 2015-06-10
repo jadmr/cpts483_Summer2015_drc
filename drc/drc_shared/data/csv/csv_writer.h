@@ -1,6 +1,9 @@
 #ifndef CSV_WRITER
 #define CSV_WRITER
 
+#include <QString>
+#include <QVector>
+
 /*
  * Class that writes database records to a file
  */
@@ -10,7 +13,7 @@ private:
 public:
     CSVWriter();
 
-    void writeRecord(QVector<Qstring> header, QVector< QVector<QString> > records);
+    void writeRecord(QVector<QString>, QVector< QVector<QString> >);
 };
 
 #endif // CSV_WRITER

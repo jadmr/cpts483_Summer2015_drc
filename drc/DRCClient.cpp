@@ -187,6 +187,7 @@ void DRCClient::on_actionOpen_mediation_view_triggered()
     else if(_mediationProcessView && _notesChanged)
     {
         QMessageBox msgBox;
+        QString strsda;
         msgBox.addButton(QMessageBox::Yes);
         msgBox.addButton(QMessageBox::No);
         msgBox.setText("Notes not saved, are you sure you want to continue without saving?");
