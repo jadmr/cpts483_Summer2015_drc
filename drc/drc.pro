@@ -17,6 +17,8 @@ RC_ICONS = images/DRClogoFromJpg.ico
 
 INCLUDEPATH += bl/ \
     db/ \
+    db/generator/ \
+    db/schema/ \
     drc_shared/ \
     drc_shared/data/csv \
     drc_shared/mediator/ \
@@ -75,7 +77,9 @@ SOURCES += main.cpp\
     drc_shared/models/monthlyreport.cpp \
     gui/tabbedbrowsers.cpp \
     gui/slotsgame.cpp \
-    db/generator/rec_generator.cpp
+    db/generator/rec_generator.cpp \
+    db/schema/db_schema.cpp \
+    drc_shared/data/csv/csv_writer.cpp
 
 HEADERS  += \
     bl/drcbl.h \

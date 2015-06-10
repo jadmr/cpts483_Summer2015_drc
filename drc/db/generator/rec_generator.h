@@ -1,6 +1,10 @@
 #ifndef REC_GENERATOR
 #define REC_GENERATOR
 
+#include <QString>
+#include <QVector>
+
+#include "db_schema.h"
 #include "csv_writer.h"
 
 /*
@@ -15,24 +19,19 @@ private:
 
     CSVWriter writer;
 
-    //TODO: This enum probably belongs in the schema
-    enum class RECORD_TYPE { ID,
-                             FIRST_NAME,
-                             LAST_NAME,
-                             PHONE_NUMBER,
-                             EMAIL,
-                             ADDRESS,
-                             CITY,
-                             STATE,
-                             ZIP,
-                             DATE,
-                             DATE_TIME,
-                             STRING,
-                             DOUBLE,
-                             INT};
-
     // Helper methods
-    QString generateRecordValue(int, RECORD_TYPE);
+    QString generateID(int);
+    QString generateName(int);
+    QString generatePhone(int);
+    QString generateAddress(int);
+    QString generateState(int);
+    QString generateNumber(int);
+    QString generateNumber(int, int);
+    QString generateDate();
+    QString generateTime();
+    QString generateBool();
+    QString generateIntBool();
+
     int getRandomNumber(int, int);
 
     // Method to generate records
@@ -45,7 +44,7 @@ private:
     QVector< QVector<QString> > generateSessionRecords(int);
     QVector< QVector<QString> > generateUserRecords(int);
 
-    void writeToFile(string, QVector< QVector<QString> >);
+    void writeToFile(QString, QVector< QVector<QString> >);
 
 public:
 

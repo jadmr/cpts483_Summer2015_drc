@@ -13,6 +13,7 @@ class Filter
         string m_columnName;
         string m_filterData;
         FilterEnum m_filterType;
+        QString something;
 
     public:
     Filter(name, data, filterType)

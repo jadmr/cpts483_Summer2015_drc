@@ -1,5 +1,6 @@
 #include "rec_generator.h"
 
+
 /*
  * This class generated the indicated number of blah
  */
@@ -10,8 +11,7 @@ RecordGenerator::RecordGenerator()
 
 }
 
-
-void RecordGenerator::GenerateRecords(int numMediations)
+void RecordGenerator::generateRecords(int numMediations)
 {
 
     // Generate Client Records
@@ -39,23 +39,90 @@ void RecordGenerator::GenerateRecords(int numMediations)
     QVector< QVector<QString> > userRecord = generateClientRecords(numMediations);
 }
 
-void RecordGenerator::writeToFile(string path, QVector< QVector<QString> > record)
+void RecordGenerator::writeToFile(QString path, QVector< QVector<QString> > record)
 {
 
 }
 
 QVector< QVector<QString> > RecordGenerator::generateClientRecords(int numRecords)
 {
-    int primaryID = 0;
+    DatabaseSchema schema;
     QString value;
+
+    int rows = numRecords + 1;
+    int cols = schema.getClientHeaders().count();
 
     QVector< QVector<QString> > clientRecord(numRecords);
 
-    // Initialize matrix to null
-    for (int count = 0; count < numRecords; count++)
-       clientRecord[count].fill("", value);
+    // Populate matrix
+    for (int currentRow = 0; currentRow < rows; currentRow++)
+    {
+        for (int currentColumn = 0; currentColumn < cols; currentColumn++)
+        {
+            //schema.getClientColumnType().at(currentColumn);
 
-    //TODO: query existing databse for metadata, OR use the schema
+     //       if (schema.getClientColumnType().at(currentColumn) == schema::ID)
+     //           clientRecord[currentRow][currentColumn] = generateID(currentRow + 1);
 
-    return null;
+        }
+    }
+
+    return clientRecord;
+}
+
+QString RecordGenerator::generateID(int seed)
+{
+    QString id = QString::number(seed);
+
+    return id;
+}
+
+QString RecordGenerator::generateName(int seed)
+{
+
+}
+
+QString RecordGenerator::generatePhone(int seed)
+{
+
+}
+
+QString RecordGenerator::generateAddress(int seed)
+{
+
+}
+
+QString RecordGenerator::generateState(int seed)
+{
+
+}
+
+QString RecordGenerator::generateNumber(int seed)
+{
+
+}
+
+QString RecordGenerator::generateNumber(int lowerBound, int upperBound)
+{
+
+}
+
+QString generateDate()
+{
+
+}
+
+QString generateTime()
+{
+
+}
+
+QString RecordGenerator::generateBool()
+{
+
+}
+
+QString RecordGenerator::generateIntBool()
+{
+
 }
