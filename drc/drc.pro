@@ -145,7 +145,8 @@ HEADERS  += \
     db/generator/db_generator.h \
     db/schema/db_schema.h \
     db/generator/rec_generator.h \
-    drc_shared/data/csv/csv_writer.h
+    drc_shared/data/csv/csv_writer.h \
+    db/schema/rec_type.h
 
 FORMS    += \
     DRCClient.ui \

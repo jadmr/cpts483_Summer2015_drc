@@ -6,6 +6,7 @@
 
 #include "db_schema.h"
 #include "csv_writer.h"
+#include "rec_type.h"
 
 /*
  * Class that generates records from tables in the databse
@@ -20,17 +21,17 @@ private:
     CSVWriter writer;
 
     // Helper methods
-    QString generateID(int);
-    QString generateName(int);
-    QString generatePhone(int);
-    QString generateAddress(int);
-    QString generateState(int);
-    QString generateNumber(int);
-    QString generateNumber(int, int);
-    QString generateDate();
-    QString generateTime();
-    QString generateBool();
+    QString generateRecord(RECORD_TYPE);
+
+    QString generateInt();
+    QString generateInt(int);
+    QString generateInt(int, int);
+    QString genereateNumOfInts(int);  // specify how many numbers you want
+    QString generateDouble();
+    QString generateString();
+    QString generateString(QString, int);
     QString generateIntBool();
+    QString genereateBool();
 
     int getRandomNumber(int, int);
 

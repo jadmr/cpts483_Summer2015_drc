@@ -4,6 +4,8 @@
 #include <QVector>
 #include <QString>
 
+#include "rec_type.h"
+
 /*
  * Class that contains metadata about the database
  * TODO: replace this with sql calls
@@ -16,28 +18,7 @@ public:
 
     DatabaseSchema();
 
-    // Enum for variable types found in columns
-    enum RECORD_TYPE { ID,
-                       FIRST_NAME,
-                       LAST_NAME,
-                       PHONE_NUMBER,
-                       EMAIL,
-                       ADDRESS,
-                       CITY,
-                       STATE,
-                       DATE,
-                       DATE_TIME,
-                       STRING,
-                       INT_BOOL,
-                       BOOL,
-                       DOUBLE,
-                       INT
-                     };
-
-    RECORD_TYPE recordType;
-
     // Getters
-
     QVector<QString> getClientHeaders() const;
     QVector<QString> getClientSessionHeaders() const;
     QVector<QString> getEvaluationHeaders() const;

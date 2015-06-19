@@ -125,11 +125,8 @@ void monthlyreport::BuildReport(MediationProcessVector* mpVec)
             for(size_t num = 0; num < process->GetParties()->size(); num++)
             {
                 this->m_countyCounts[process->GetPartyAtIndex(num)->GetPrimary()->getCounty()]++;
-                if(process->GetState() == PROCESS_STATE_CLOSED_WITH_SESSION && process->GetPartyAtIndex(num)->GetPrimary()->getNumberChildrenInHousehold() > 0)
-                    this->setChildrenIndirect(this->getChildrenIndirect() + process->GetPartyAtIndex(num)->GetPrimary()->getNumberChildrenInHousehold());
-                if (process->GetState() == PROCESS_STATE_CLOSED_WITH_SESSION && (process->GetPartyAtIndex(num)->GetPrimary()->getNumberInHousehold() > 0 ||
-                        process->GetPartyAtIndex(num)->GetPrimary()->getNumberChildrenInHousehold() > 0))
-                    this->setPeopleIndirect(this->getPeopleIndirect() + process->GetPartyAtIndex(num)->GetPrimary()->getNumberInHousehold() + process->GetPartyAtIndex(num)->GetPrimary()->getNumberChildrenInHousehold());
+                this->setChildrenIndirect(this->getChildrenIndirect() + process->GetPartyAtIndex(num)->GetPrimary()->getNumberChildrenInHousehold());
+                this->setPeopleIndirect(this->getPeopleIndirect() + process->GetPartyAtIndex(num)->GetPrimary()->getNumberInHousehold() + process->GetPartyAtIndex(num)->GetPrimary()->getNumberChildrenInHousehold());
             }
 
         }// If no sessions, add 1 to total.
