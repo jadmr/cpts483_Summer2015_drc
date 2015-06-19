@@ -198,7 +198,7 @@ void DatabaseSchema::setUserHeaders()
 
 }
 
-QVector<DatabaseSchema::RECORD_TYPE> DatabaseSchema::getClientColumnType() const
+QVector<RECORD_TYPE> DatabaseSchema::getClientColumnType() const
 {
     return clientColumnType;
 }
@@ -218,7 +218,7 @@ void DatabaseSchema::setClientColumnType()
     clientColumnType.append(EMAIL);
 }
 
-QVector<DatabaseSchema::RECORD_TYPE> DatabaseSchema::getClientSessionColumnType() const
+QVector<RECORD_TYPE> DatabaseSchema::getClientSessionColumnType() const
 {
     return clientSessionColumnType;
 }
@@ -238,7 +238,7 @@ void DatabaseSchema::setClientSessionColumnType()
     clientSessionColumnType.append(INT);
 }
 
-QVector<DatabaseSchema::RECORD_TYPE> DatabaseSchema::getEvaluationColumnType() const
+QVector<RECORD_TYPE> DatabaseSchema::getEvaluationColumnType() const
 {
     return evaluationColumnType;
 }
@@ -268,7 +268,7 @@ void DatabaseSchema::setEvaluationColumnType()
     evaluationColumnType.append(INT);
 }
 
-QVector<DatabaseSchema::RECORD_TYPE> DatabaseSchema::getMediationColumnType() const
+QVector<RECORD_TYPE> DatabaseSchema::getMediationColumnType() const
 {
     return mediationColumnType;
 }
@@ -296,7 +296,7 @@ void DatabaseSchema::setMediationColumnType()
     mediationColumnType.append(INT_BOOL);
 }
 
-QVector<DatabaseSchema::RECORD_TYPE> DatabaseSchema::getNotesColumnType() const
+QVector<RECORD_TYPE> DatabaseSchema::getNotesColumnType() const
 {
     return notesColumnType;
 }
@@ -310,7 +310,7 @@ void DatabaseSchema::setNotesColumnType()
     notesColumnType.append(DATE_TIME);
 }
 
-QVector<DatabaseSchema::RECORD_TYPE> DatabaseSchema::getPersonColumnType() const
+QVector<RECORD_TYPE> DatabaseSchema::getPersonColumnType() const
 {
     return personColumnType;
 }
@@ -334,7 +334,7 @@ void DatabaseSchema::setPersonColumnType()
     personColumnType.append(EMAIL);
 }
 
-QVector<DatabaseSchema::RECORD_TYPE> DatabaseSchema::getSessionColumnType() const
+QVector<RECORD_TYPE> DatabaseSchema::getSessionColumnType() const
 {
     return sessionColumnType;
 }
@@ -355,7 +355,7 @@ void DatabaseSchema::setSessionColumnType()
     sessionColumnType.append(INT_BOOL);
 }
 
-QVector<DatabaseSchema::RECORD_TYPE> DatabaseSchema::getUserColumnType() const
+QVector<RECORD_TYPE> DatabaseSchema::getUserColumnType() const
 {
     return userColumnType;
 }

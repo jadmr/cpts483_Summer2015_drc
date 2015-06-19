@@ -1,6 +1,5 @@
 #include "rec_generator.h"
 
-
 /*
  * This class generated the indicated number of blah
  */
@@ -13,6 +12,7 @@ RecordGenerator::RecordGenerator()
 
 void RecordGenerator::generateRecords(int numMediations)
 {
+    //TODO: dont want numMediations of everything
 
     // Generate Client Records
     QVector< QVector<QString> > clientRecord = generateClientRecords(numMediations);
@@ -59,70 +59,102 @@ QVector< QVector<QString> > RecordGenerator::generateClientRecords(int numRecord
     {
         for (int currentColumn = 0; currentColumn < cols; currentColumn++)
         {
-            //schema.getClientColumnType().at(currentColumn);
-
-     //       if (schema.getClientColumnType().at(currentColumn) == schema::ID)
-     //           clientRecord[currentRow][currentColumn] = generateID(currentRow + 1);
-
+            value = generateRecord(schema.getClientColumnType().at(currentColumn));
+            clientRecord[currentRow][currentColumn] = value;
         }
     }
 
     return clientRecord;
 }
 
-QString RecordGenerator::generateID(int seed)
+QString RecordGenerator::generateRecord(RECORD_TYPE recordType)
 {
-    QString id = QString::number(seed);
+    QString value;
 
-    return id;
+    switch (recordType)
+    {
+        case ID:
+        break;
+
+        case FIRST_NAME:
+        break;
+
+        case MIDDLE_NAME:
+        break;
+
+        case LAST_NAME:
+        break;
+
+        case PHONE_NUMBER:
+        break;
+
+        case PHONE_EXT:
+        break;
+
+        case EMAIL:
+        break;
+
+        case ADDRESS:
+        break;
+
+        case CITY:
+        break;
+
+        case STATE:
+        break;
+
+        case UPPER_DATE:
+        break;
+
+        case LOWER_DATE:
+        break;
+
+        case UPPER_DATETIME:
+        break;
+
+        case LOWER_DATETIME:
+        break;
+
+        case INT_BOOL:
+        break;
+
+        case BOOL:
+        break;
+
+        case INT_WITH_RANGE:
+        break;
+
+        default:
+        break;
+    }
+
+    return value;
 }
 
-QString RecordGenerator::generateName(int seed)
+// Returns a random value (no range)
+QString RecordGenerator::generateInt()
 {
 
 }
 
-QString RecordGenerator::generatePhone(int seed)
+// Returns the parameter + 1
+QString RecordGenerator::generateInt(int seed)
 {
 
 }
 
-QString RecordGenerator::generateAddress(int seed)
+// returns a number within the given range
+QString RecordGenerator::generateInt(int, int)
 {
 
 }
 
-QString RecordGenerator::generateState(int seed)
+// return the specified number of ints (ie, for phone ext)
+QString RecordGenerator::genereateNumOfInts(int)
 {
 
 }
 
-QString RecordGenerator::generateNumber(int seed)
-{
 
-}
 
-QString RecordGenerator::generateNumber(int lowerBound, int upperBound)
-{
 
-}
-
-QString generateDate()
-{
-
-}
-
-QString generateTime()
-{
-
-}
-
-QString RecordGenerator::generateBool()
-{
-
-}
-
-QString RecordGenerator::generateIntBool()
-{
-
-}

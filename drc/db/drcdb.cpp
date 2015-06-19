@@ -773,9 +773,10 @@ int DRCDB::getOpenIntakeCountPerMonth(QDateTime start, QDateTime end, CountyIds 
 
     QSqlQuery openQuery(database);
 
-    QString openCommand = QString("Select * from Mediation_table where CreationDateTime < '%1' and CreationDateTime >= '%2' and DisputeCounty = '%3'")
-                            .arg(end.toString("yyyy-MM-dd"))
-                            .arg(start.toString("yyyy-MM-dd"))
+    // This logic needs to get all intakes that are in an "open" state (not closed)
+    QString openCommand = QString("Select * from Mediation_table where DisputeState not in ('%1', '%2') and DisputeCounty = '%3'")
+                            .arg(PROCESS_STATE_CLOSED_NO_SESSION)
+                            .arg(PROCESS_STATE_CLOSED_WITH_SESSION)
                             .arg(county);
 
     if(!this->ExecuteCommand(openCommand, openQuery))
