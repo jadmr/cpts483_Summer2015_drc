@@ -690,12 +690,10 @@ void DRCDB::testQueryMonthlyReport(MediatorArg arg){
     else
     {
         qDebug()<< "Error with parameter";
-         return;
+        return;
     }
 
     monthlyreport* report = new monthlyreport();
-
-    QString mediationIdMatches = "";
 
     int test_open_month = getOpenIntakeCountPerMonth( start,  end,  county);
 
