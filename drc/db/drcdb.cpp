@@ -658,8 +658,7 @@ void DRCDB::QueryResWaReport(MediatorArg arg)
 
 
 //This will be a test of a new query method to test additional filds in DB
-
-void DRCDB::testQueryMonthlyReport(MediatorArg arg){
+void DRCDB::QueryMonthlyReport(MediatorArg arg){
 
     ReportRequest* params = nullptr;
 
@@ -717,14 +716,17 @@ MediationProcessVector* DRCDB::getClosedIntakePerMonth(QDateTime start, QDateTim
 
     QSqlQuery query(database);
     //Need clarification from Rosemarry if disputeCounty needs to be removed for total counts
-    //Assuming that updatedDate is modified finally when the case is closed. This needs to be changed to a definate closedDate
     //County is not queried because it isn't present in the Session_table
-    QString command = QString("Select * from Mediation_table where UpdatedDate < '%1' and UpdatedDate >= '%2' and DisputeState in ('%3','%4') and DisputeCounty = '%5'")
+    /*QString command = QString("Select * from Mediation_table where UpdatedDate < '%1' and UpdatedDate >= '%2' and DisputeState in ('%3','%4') and DisputeCounty = '%5'")
                         .arg(end.toString("yyyy-MM-dd"))
                         .arg(start.toString("yyyy-MM-dd"))
                         .arg(PROCESS_STATE_CLOSED_NO_SESSION)
                         .arg(PROCESS_STATE_CLOSED_WITH_SESSION)
-                        .arg(county);
+                        .arg(county);*/
+
+    QString command = QString("Select * from Session_table where ScheduledTime < '%1' and ScheduledTime >= '%2'")
+                        .arg(end.toString("yyyy-MM-dd"))
+                        .arg(start.toString("yyyy-MM-dd"));
 
     if(!this->ExecuteCommand(command, query))
     {
@@ -734,6 +736,7 @@ MediationProcessVector* DRCDB::getClosedIntakePerMonth(QDateTime start, QDateTim
     QString mediationIdMatches = "";
     bool first = true;
 
+    //Make a list of all the processids that
     while(query.next())
     {
         if(!first)
@@ -741,12 +744,14 @@ MediationProcessVector* DRCDB::getClosedIntakePerMonth(QDateTime start, QDateTim
             mediationIdMatches += ", ";
         }
         //Value 1 in session_table is the process_id
-        mediationIdMatches += query.value(0).toString();
+        mediationIdMatches += query.value(1).toString();
         first = false;
     }
 
-    /*MediationProcessVector* mpVec = LoadMediations(mediationIdMatches);
+    //Make a vector containing all the cases closed in June
+    MediationProcessVector* mpVec = LoadMediations(mediationIdMatches);
 
+    //Parse out all cases by county
     mediationIdMatches = "";
     first = true;
     for(size_t i = 0; i < mpVec->size(); i++)
@@ -762,7 +767,7 @@ MediationProcessVector* DRCDB::getClosedIntakePerMonth(QDateTime start, QDateTim
             first = false;
         }
     }
-*/
+
     return LoadMediations(mediationIdMatches);
 }
 
@@ -791,14 +796,16 @@ int DRCDB::getOpenIntakeCountPerMonth(QDateTime start, QDateTime end, CountyIds 
     return openCount;
 }
 
+//Obsolete
 // Arg is a ReportRequest*  !!
+/*
 void DRCDB::QueryMonthlyReport(MediatorArg arg)
 {
 
     //testing our new method
     testQueryMonthlyReport( arg);
 
-    /*
+
 
     ReportRequest* params = nullptr;
     if(arg.IsSuccessful() && (params = arg.getArg<ReportRequest*>()))
@@ -925,8 +932,8 @@ void DRCDB::QueryMonthlyReport(MediatorArg arg)
 
     Mediator::Call(MKEY_DB_REQUEST_MONTHLY_REPORT_DONE, arg);
 
-    */
-}
+
+} */
 //========================================================================
 
 MediationProcessVector* DRCDB::LoadMediations(QString processIds)
