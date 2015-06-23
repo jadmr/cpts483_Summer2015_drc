@@ -341,11 +341,15 @@ void DRCDB::LoadDatabase(QString filename)
     CreateNotesTable(notes_table_name);
     CreateClientSessionTable(client_session_table_name);
     CreateEvaluationTable(evaluationTableName);
-    CreateUserTable(user_table_name);
 
     if(!this->DoesTableExist(user_table_name))
     {
         // To make sure there is always Admin/admin for access to application
+
+        //JAS added this back to fixe lack of Admin login
+        CreateUserTable(user_table_name);
+        //end JAS changes
+
         MediatorArg arg;
         User* adminUser = new User("Admin", "admin", USER_T_ADMIN);
         arg.SetArg(adminUser);
@@ -375,6 +379,14 @@ bool DRCDB::CreateMediationTable(const QString& mediation_table_name)
     mediation_table_columns.push_back(QString("TranslatorRequired Bool"));
     mediation_table_columns.push_back(QString("SessionType integer"));
     mediation_table_columns.push_back(QString("MediationClause Bool"));
+
+    //JAS added additional colums to track directly and indirectly served children and adults
+    mediation_table_columns.push_back(QString("IndirectChildren Int"));
+    mediation_table_columns.push_back(QString("DirectChildren Int"));
+    mediation_table_columns.push_back(QString("IndirectAdult Int"));
+    mediation_table_columns.push_back(QString("DirectAdult Int"));
+
+
 
     return CreateTable(mediation_table_name, mediation_table_columns);
 }

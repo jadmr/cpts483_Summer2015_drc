@@ -122,6 +122,13 @@ void DatabaseSchema::setMediationHeaders()
     mediationHeaders.append("TranslatorRequired");
     mediationHeaders.append("SessionType");
     mediationHeaders.append("MediationClause");
+
+    //JAS addition of Indirect and Directly Served Children to the DB Schema
+    mediationHeaders.append("IndirectChildren");
+    mediationHeaders.append("DirectChildren");
+    mediationHeaders.append("IndirectAdult");
+    mediationHeaders.append("DirectAdult");
+
 }
 
 QVector<QString> DatabaseSchema::getNotesHeaders() const
@@ -294,6 +301,13 @@ void DatabaseSchema::setMediationColumnType()
     mediationColumnType.append(INT_BOOL);
     mediationColumnType.append(INT_BOOL);
     mediationColumnType.append(INT_BOOL);
+
+    //JAS addition of Indirect and Directly Served Children to the DB Schema
+    mediationColumnType.append(INT);
+    mediationColumnType.append(INT);
+    mediationColumnType.append(INT);
+    mediationColumnType.append(INT);
+
 }
 
 QVector<RECORD_TYPE> DatabaseSchema::getNotesColumnType() const
