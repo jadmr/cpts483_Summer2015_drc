@@ -365,7 +365,9 @@ public:
 
     int getOpenIntakeCountPerMonth(QDateTime , QDateTime , CountyIds );
 
-    void testQueryMonthlyReport(MediatorArg arg);
+    //Used to replace QueryMonthlyReport
+    //void testQueryMonthlyReport(MediatorArg arg);
+    void testQueryResWaReport(MediatorArg arg);
 
     MediationProcessVector* getClosedIntakePerMonth(QDateTime , QDateTime , CountyIds);
 
