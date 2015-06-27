@@ -115,6 +115,7 @@ void MediationProcess::TextToCell(QTextTable* table, int row, int col, QString t
     cellCursor.insertText(txt, *textFormat);
 }
 
+
 void MediationProcess::BuildHeaderSection(QTextCursor& cursor)
 {
     cursor.movePosition(QTextCursor::End);
