@@ -167,6 +167,33 @@ public:
      * \brief SetIsShuttle
      * \param isShuttle
      */
+
+
+
+
+
+
+
+    //JAS getter and setter for Direct and Indirect Child/ Adult
+    int GetIndirectChildren(){return _indirectChildren;}
+
+    int SetIndirectChildren(int type){_indirectChildren = type;}
+
+    int GetDirectChildren(){return _directChildren;}
+
+    int SetDirectChildren(int type){_directChildren = type;}
+
+    int GetIndirectAdult(){return _indirectAdult;}
+
+    int SetIndirectAdult(int type){_indirectAdult = type;}
+
+    int GetDirectAdult(){return _directAdult;}
+
+    int SetDirectAdult(int type){_directAdult = type;}
+
+
+
+
     void SetIsShuttle(bool isShuttle) { _isShuttle = isShuttle; }
     /*!
      * \brief SetIsCourtCase
@@ -329,6 +356,12 @@ private:
     enum CourtCaseTypes _courtCaseType;
     QString _courtOrder;
     QString _stateMessage;  // Message set by BL explaining how to advance to next state.
+
+    //JAS adding Inderect and Directly served variables
+    int _indirectChildren;
+    int _directChildren;
+    int _indirectAdult;
+    int _directAdult;
 
     ///////////////// Report Builder ///////////////////
     /*!

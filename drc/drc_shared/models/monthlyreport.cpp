@@ -8,7 +8,8 @@ const QString DEF_PDF_PATH = "MONTHLY_REPORT.pdf";
 monthlyreport::monthlyreport()
 {
     this->m_atTable = 0;
-    this->m_childrenIndirect = 0;
+    this->m_childrenIndirect = 0; 
+    this->m_childrenDirect = 0;
     this->m_peopleIndirect = 0;
     this->m_translator = 0;
     this->m_county = COUNTY_NONE;
@@ -42,8 +43,6 @@ void monthlyreport::BuildReport(MediationProcessVector* mpVec)
         if(process->getMediationSessionVector()->size() != 0 && performedSessions)
         {
             int translatorCount = this->getTranslator();
-
-
 
             if(process->getMediationClause())
             {
@@ -89,14 +88,15 @@ void monthlyreport::BuildReport(MediationProcessVector* mpVec)
 
                             }
 
-
+                    //JAS need to look at this for the cancelled mediations
                     if((session->GetState() == SESSION_STATE_CANCELLED) ||
                             (session->GetState() == SESSION_STATE_RESCHEDULED))
                     {
                         cancelCount++;
                     }
 
-                    this->setAtTable(this->getAtTable() + atTable);
+                    //JAS now that we are capturing as Adults Directly served not needed here
+                    //this->setAtTable(this->getAtTable() + atTable);
                 }
             }
 
@@ -122,12 +122,27 @@ void monthlyreport::BuildReport(MediationProcessVector* mpVec)
 //                 openCount++;
 //            }
 
+
+
+
+
+            //JAS for logic related to new DB entries add methods to get/set I/D Child Adult.
             for(size_t num = 0; num < process->GetParties()->size(); num++)
             {
                 this->m_countyCounts[process->GetPartyAtIndex(num)->GetPrimary()->getCounty()]++;
-                this->setChildrenIndirect(this->getChildrenIndirect() + process->GetPartyAtIndex(num)->GetPrimary()->getNumberChildrenInHousehold());
-                this->setPeopleIndirect(this->getPeopleIndirect() + process->GetPartyAtIndex(num)->GetPrimary()->getNumberInHousehold() + process->GetPartyAtIndex(num)->GetPrimary()->getNumberChildrenInHousehold());
+
+                //JAS removing setChildren/people, now that we have seperate field we don't need to iterate through mediations
+                //this->setChildrenIndirect(this->getChildrenIndirect() + process->GetPartyAtIndex(num)->GetPrimary()->getNumberChildrenInHousehold());
+                //this->setPeopleIndirect(this->getPeopleIndirect() + process->GetPartyAtIndex(num)->GetPrimary()->getNumberInHousehold() + process->GetPartyAtIndex(num)->GetPrimary()->getNumberChildrenInHousehold());
             }
+
+            //JAS test of new mediation data I/D Adult Child in process vector
+            this->setChildrenIndirect(this->getChildrenIndirect() + process->GetIndirectChildren());
+            this->setChildrenDirect(this->getChildrenDirect() + process->GetDirectChildren());
+            this->setPeopleIndirect(this->getPeopleIndirect() + process->GetIndirectAdult());
+            this->setAtTable(this->getAtTable()+ process->GetDirectAdult());
+
+
 
         }// If no sessions, add 1 to total.
         else if(process->getMediationSessionVector()->size() == 0 && process->GetCreatedDate().toString("M").toInt() == this->getMonth())
@@ -199,7 +214,7 @@ void monthlyreport::pdfReport()
     pdfString += "\n\n================ INTAKE/CASE OUTCOME ===================";
     for(int i = 0; i < 10; i++)
     {
-        if((SessionOutcomes)i != SESSION_OUTCOME_NONE)
+        if(((SessionOutcomes)i != SESSION_OUTCOME_NONE) && ((SessionOutcomes)i != SESSION_OUTCOME_CANCELED))
         {
             pdfString += "\n";
             pdfString += QString("%1%2")
@@ -213,16 +228,27 @@ void monthlyreport::pdfReport()
             .arg(QString::number(m_infoOnly), 5);
     pdfString += "\n";
     pdfString += QString("%1:%2")
-            .arg("Open Cases", 35)
+            .arg("Total Open Cases", 35)
             .arg(QString::number(m_openCases), 5);
+    pdfString += "\n";
+
+    //JAS should calculte mediations open in month selected
+    pdfString += QString("%1:%2")
+            .arg("Cases Opened this month", 35)
+            .arg(QString::number(m_openCasesMonth), 5);
+
+
     pdfString += "\n";
     pdfString += QString("%1:%2")
             .arg("Total Intake", 35)
             .arg(QString::number(m_totalIntake), 5);
     pdfString += "\n";
+
+    //JAS changed per Rosemary to display count when mediation is cancelled
     pdfString += QString("%1:%2")
             .arg("Sessions Set & Cancelled", 35)
-            .arg(QString::number(m_sessionsCancelled), 5);
+            .arg(QString::number(m_outcomes[(SessionOutcomes)9]), 5);
+            //.arg(QString::number(m_sessionsCancelled), 5);
     pdfString += "\n";
     pdfString += QString("%1:%2")
             .arg("Total Cases Mediated",35)

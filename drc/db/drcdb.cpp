@@ -346,7 +346,7 @@ void DRCDB::LoadDatabase(QString filename)
     {
         // To make sure there is always Admin/admin for access to application
 
-        //JAS added this back to fixe lack of Admin login
+        //JAS added this back to fix lack of Admin login
         CreateUserTable(user_table_name);
         //end JAS changes
 
@@ -381,12 +381,10 @@ bool DRCDB::CreateMediationTable(const QString& mediation_table_name)
     mediation_table_columns.push_back(QString("MediationClause Bool"));
 
     //JAS added additional colums to track directly and indirectly served children and adults
-    mediation_table_columns.push_back(QString("IndirectChildren Int"));
-    mediation_table_columns.push_back(QString("DirectChildren Int"));
-    mediation_table_columns.push_back(QString("IndirectAdult Int"));
-    mediation_table_columns.push_back(QString("DirectAdult Int"));
-
-
+    mediation_table_columns.push_back(QString("IndirectChildren integer"));
+    mediation_table_columns.push_back(QString("DirectChildren integer"));
+    mediation_table_columns.push_back(QString("IndirectAdult integer"));
+    mediation_table_columns.push_back(QString("DirectAdult integer"));
 
     return CreateTable(mediation_table_name, mediation_table_columns);
 }
@@ -745,6 +743,8 @@ void DRCDB::testQueryResWaReport(MediatorArg arg)
             mediationIdMatches += query.value(0).toString();
             first = false;
         }
+
+        //JAS need to get information from RoseMary about what is a call for count
         MediationProcessVector* temp = LoadMediations(mediationIdMatches);
         int callCount = 0;
         for(size_t i = 0; i < temp->size(); i++)
@@ -804,7 +804,7 @@ void DRCDB::testQueryResWaReport(MediatorArg arg)
 
 
 
-//This will be a test of a new query method to test additional filds in DB
+//JAS This will be a test of a new query method to test additional filds in DB
 void DRCDB::QueryMonthlyReport(MediatorArg arg){
 
     ReportRequest* params = nullptr;
@@ -841,15 +841,21 @@ void DRCDB::QueryMonthlyReport(MediatorArg arg){
 
     monthlyreport* report = new monthlyreport();
 
-    int test_open_month = getOpenIntakeCountPerMonth( start,  end,  county);
+    //method to count all current open mediations
+    int total_open = getTotalOpenIntakeCount(county);
 
+    //method to count those methods opened in the selected month
+    int opened_per_month = getOpenIntakeCountMonth(start , end , county );
+
+    //method will collect all values required for closed mediations for the selected month
     MediationProcessVector* mpVec = getClosedIntakePerMonth( start, end, county);
 
     report->setCounty(county);
     report->setMonth(month);
     report->setYear(year);
     report->BuildReport(mpVec);
-    report->setOpenCases(test_open_month);
+    report->setOpenCases(total_open);
+    report->setOpenCasesMonth(opened_per_month);
 
     arg.SetArg(report);
 
@@ -857,20 +863,35 @@ void DRCDB::QueryMonthlyReport(MediatorArg arg){
 
 }
 
+//JAS returns the number of cases open in the month, for monthly report.
+int DRCDB::getOpenIntakeCountMonth(QDateTime start, QDateTime end, CountyIds county){
 
+    QSqlQuery openQuery(database);
+    QString command = QString("Select * from Mediation_table where CreationDate < '%1' and CreationDate >= '%2' and DisputeCounty = '%3'")
+                        .arg(end.toString("yyyy-MM-dd"))
+                        .arg(start.toString("yyyy-MM-dd"))
+                        .arg(county);
+
+    if(!this->ExecuteCommand(command, openQuery))
+    {
+        qDebug()<<"Error in OpenIntake after SQL string";
+        qDebug()<<this->GetLastErrors();
+    }
+    int openCount = 0;
+
+    while(openQuery.next())
+    {
+        openCount++;
+    }
+    return openCount;
+}
+
+
+//JAS this method will gather
 MediationProcessVector* DRCDB::getClosedIntakePerMonth(QDateTime start, QDateTime end, CountyIds county) {
     //gets mediation ids that correspond to intake forms closed between start and end date
 
     QSqlQuery query(database);
-    //Need clarification from Rosemarry if disputeCounty needs to be removed for total counts
-    //County is not queried because it isn't present in the Session_table
-    /*QString command = QString("Select * from Mediation_table where UpdatedDate < '%1' and UpdatedDate >= '%2' and DisputeState in ('%3','%4') and DisputeCounty = '%5'")
-                        .arg(end.toString("yyyy-MM-dd"))
-                        .arg(start.toString("yyyy-MM-dd"))
-                        .arg(PROCESS_STATE_CLOSED_NO_SESSION)
-                        .arg(PROCESS_STATE_CLOSED_WITH_SESSION)
-                        .arg(county);*/
-
     QString command = QString("Select * from Session_table where ScheduledTime < '%1' and ScheduledTime >= '%2'")
                         .arg(end.toString("yyyy-MM-dd"))
                         .arg(start.toString("yyyy-MM-dd"));
@@ -883,7 +904,7 @@ MediationProcessVector* DRCDB::getClosedIntakePerMonth(QDateTime start, QDateTim
     QString mediationIdMatches = "";
     bool first = true;
 
-    //Make a list of all the processids that
+    //Make a list of all the processids from query
     while(query.next())
     {
         if(!first)
@@ -904,7 +925,8 @@ MediationProcessVector* DRCDB::getClosedIntakePerMonth(QDateTime start, QDateTim
     for(size_t i = 0; i < mpVec->size(); i++)
     {
         MediationProcess* process = mpVec->at(i);
-        if(process->GetCountyId() == county)
+        //JAS added conditional to verify that the mediation has been closed before adding.
+        if(process->GetCountyId() == county && (process->GetState() == PROCESS_STATE_CLOSED_NO_SESSION || process->GetState() == PROCESS_STATE_CLOSED_WITH_SESSION))
         {
             if(!first)
             {
@@ -918,12 +940,12 @@ MediationProcessVector* DRCDB::getClosedIntakePerMonth(QDateTime start, QDateTim
     return LoadMediations(mediationIdMatches);
 }
 
-
-int DRCDB::getOpenIntakeCountPerMonth(QDateTime start, QDateTime end, CountyIds county){
+//method returns number of open mediations per county
+int DRCDB::getTotalOpenIntakeCount(CountyIds county){
 
     QSqlQuery openQuery(database);
 
-    // This logic needs to get all intakes that are in an "open" state (not closed)
+    // This logic needs to get all intakes that are in an "open" state, not just for month i.e.(not closed)
     QString openCommand = QString("Select * from Mediation_table where DisputeState not in ('%1', '%2') and DisputeCounty = '%3'")
                             .arg(PROCESS_STATE_CLOSED_NO_SESSION)
                             .arg(PROCESS_STATE_CLOSED_WITH_SESSION)
@@ -1122,6 +1144,14 @@ MediationProcessVector* DRCDB::LoadMediations(QString processIds)
         process->SetRequiresSpanish(Mediation_query.value(16).toBool());
         process->SetSessionType((SessionTypes)Mediation_query.value(17).toInt());
         process->setMediationClause(Mediation_query.value(18).toBool());
+
+
+        //JAS adding Direct and Indirect here to see if can work through
+        process->SetIndirectChildren(Mediation_query.value(19).toInt());
+        process->SetDirectChildren(Mediation_query.value(20).toInt());
+        process->SetIndirectAdult(Mediation_query.value(21).toInt());
+        process->SetDirectAdult(Mediation_query.value(22).toInt());
+
 
         //Grab sessions based on the mediation id
         QSqlQuery sessionQuery(database);

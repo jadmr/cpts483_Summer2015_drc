@@ -18,6 +18,7 @@ private:
     int m_atTable;
     int m_peopleIndirect;
     int m_childrenIndirect;
+    int m_childrenDirect;
     std::map<ReferralTypes, int> m_referrals;
     int m_totalReferals;
     std::map<DisputeTypes, int> m_disputes;
@@ -26,13 +27,14 @@ private:
     int m_infoOnly;
     int m_sessionsCancelled;
     int m_openCases;
+    int m_openCasesMonth;
     int m_totalIntake;
     int m_clauseCount;
     int totalCasesMediated();
     std::map<CountyIds, int> m_countyCounts;
     QTextDocument *_report;
 
-    const int m_childrenDirect = 0;
+
 
     /*!
      * \brief setTranslator
@@ -56,6 +58,12 @@ private:
     void setChildrenIndirect(int value) {m_childrenIndirect = value;}
     /*!
      * \brief setReferrals
+     * \param value
+     */
+    //JAS added a setter for Directly Served children
+    void setChildrenDirect(int value){m_childrenDirect = value;}
+    /*!
+     * \brief setChildrenDirect
      * \param value
      */
     void setReferrals(std::map<ReferralTypes, int> value) {m_referrals = value;}
@@ -112,6 +120,21 @@ public:
      * \brief setMonth
      * \param value
      */
+
+
+    //JAS adding getter/setter to count open cases per month
+    void setOpenCasesMonth(int value) {m_openCasesMonth = value;}
+    /*!
+     * \brief setMonth
+     * \param value
+     */
+    int getOpenCasesMonth() {return m_openCasesMonth;}
+    /*!
+     * \brief getYear
+     * \return
+     */
+
+
     void setMonth(short int value) {m_month = value;}
     /*!
      * \brief setYear
@@ -163,6 +186,11 @@ public:
      * \return
      */
     int getChildrenIndirect() {return m_childrenIndirect;}
+    /*!
+     * \brief getReferrals
+     * \return
+     */
+    int getChildrenDirect() {return m_childrenDirect;}
     /*!
      * \brief getReferrals
      * \return

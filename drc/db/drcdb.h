@@ -361,9 +361,11 @@ public:
      */
     void InsertEvaluation(MediatorArg arg);
 
-    //these are some new test methods to break up monthly report query
+    //JAS these are some new test methods to break up monthly report query
 
-    int getOpenIntakeCountPerMonth(QDateTime , QDateTime , CountyIds );
+    int getTotalOpenIntakeCount( CountyIds );
+
+    int getOpenIntakeCountMonth(QDateTime , QDateTime , CountyIds );
 
     //Used to replace QueryMonthlyReport
     //void testQueryMonthlyReport(MediatorArg arg);

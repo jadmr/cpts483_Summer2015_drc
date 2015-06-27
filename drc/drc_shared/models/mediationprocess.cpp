@@ -43,6 +43,7 @@ MediationProcess::MediationProcess()
     , _sessionType(MEDIATION_SESSION)
     , _mediationClause(false)
     , _printCourtDate(true)
+
 {
     _courtDate = QDate::currentDate();
 }
