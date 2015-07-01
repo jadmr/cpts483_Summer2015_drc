@@ -19,6 +19,7 @@ INCLUDEPATH += bl/ \
     db/ \
     db/generator/ \
     db/schema/ \
+    db/schema/subclasses/ \
     drc_shared/ \
     drc_shared/data/csv \
     drc_shared/mediator/ \
@@ -79,7 +80,15 @@ SOURCES += main.cpp\
     gui/slotsgame.cpp \
     db/generator/rec_generator.cpp \
     db/schema/db_schema.cpp \
-    drc_shared/data/csv/csv_writer.cpp
+    drc_shared/data/csv/csv_writer.cpp \
+    db/schema/subclasses/client_schema.cpp \
+    db/schema/subclasses/client_session_schema.cpp \
+    db/schema/subclasses/evaluation_schema.cpp \
+    db/schema/subclasses/mediation_schema.cpp \
+    db/schema/subclasses/notes_schema.cpp \
+    db/schema/subclasses/person_schema.cpp \
+    db/schema/subclasses/session_schema.cpp \
+    db/schema/subclasses/user_schema.cpp
 
 HEADERS  += \
     bl/drcbl.h \
@@ -146,7 +155,15 @@ HEADERS  += \
     db/schema/db_schema.h \
     db/generator/rec_generator.h \
     drc_shared/data/csv/csv_writer.h \
-    db/schema/rec_type.h
+    db/schema/rec_type.h \
+    db/schema/subclasses/client_schema.h \
+    db/schema/subclasses/client_session_schema.h \
+    db/schema/subclasses/evaluation_schema.h \
+    db/schema/subclasses/mediation_schema.h \
+    db/schema/subclasses/notes_schema.h \
+    db/schema/subclasses/person_schema.h \
+    db/schema/subclasses/session_schema.h \
+    db/schema/subclasses/user_schema.h
 
 FORMS    += \
     DRCClient.ui \

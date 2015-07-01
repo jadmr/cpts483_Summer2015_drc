@@ -12,6 +12,7 @@ enum RECORD_TYPE
     EMAIL,
     ADDRESS,
     CITY,
+    COUNTY,
     STATE,
     DATE,
     DATE_TIME,
@@ -25,7 +26,8 @@ enum RECORD_TYPE
     DOUBLE,
     DOUBLE_WITH_RANGE,
     INT,
-    INT_WITH_RANGE
+    INT_WITH_RANGE,
+    EVALUATION_SCORE
 };
 
 

@@ -7,8 +7,8 @@
 #include "rec_type.h"
 
 /*
- * Class that contains metadata about the database
- * TODO: replace this with sql calls
+ * Abstract class that contains metadata about the database
+ * TODO: replace headers this with sql calls (maybe)
  */
 
 class DatabaseSchema
@@ -18,65 +18,26 @@ public:
 
     DatabaseSchema();
 
-    // Getters
-    QVector<QString> getClientHeaders() const;
-    QVector<QString> getClientSessionHeaders() const;
-    QVector<QString> getEvaluationHeaders() const;
-    QVector<QString> getMediationHeaders() const;
-    QVector<QString> getNotesHeaders() const;
-    QVector<QString> getPersonHeaders() const;
-    QVector<QString> getSessionHeaders() const;
-    QVector<QString> getUserHeaders() const;
+#define SETTER_GETTER_METHODS {
+    void setHeader(QVector<QString>);
+    void setColumnType(QVector<RECORD_TYPE>);
 
-    QVector<RECORD_TYPE> getClientColumnType() const;
-    QVector<RECORD_TYPE> getClientSessionColumnType() const;
-    QVector<RECORD_TYPE> getEvaluationColumnType() const;
-    QVector<RECORD_TYPE> getMediationColumnType() const;
-    QVector<RECORD_TYPE> getNotesColumnType() const;
-    QVector<RECORD_TYPE> getPersonColumnType() const;
-    QVector<RECORD_TYPE> getSessionColumnType() const;
-    QVector<RECORD_TYPE> getUserColumnType() const;
+    QVector<QString> getHeader() const;
+    QVector<RECORD_TYPE> getColumnType() const;
+#define SETTER_GETTER_METHODS }
 
-private:
+protected:
 
-    // Column Headers
-    QVector<QString> clientHeaders;
-    QVector<QString> clientSessionHeaders;
-    QVector<QString> evaluationHeaders;
-    QVector<QString> mediationHeaders;
-    QVector<QString> notesHeaders;
-    QVector<QString> personHeaders;
-    QVector<QString> sessionHeaders;
-    QVector<QString> userHeaders;
+#define PROTECTED_VARIABLES {
+    QVector<QString> headers;
+    QVector<RECORD_TYPE> columnType;
+#define PROTECTED_VARIABLES }
 
-    // Column variable types
-    QVector<RECORD_TYPE> clientColumnType;
-    QVector<RECORD_TYPE> clientSessionColumnType;
-    QVector<RECORD_TYPE> evaluationColumnType;
-    QVector<RECORD_TYPE> mediationColumnType;
-    QVector<RECORD_TYPE> notesColumnType;
-    QVector<RECORD_TYPE> personColumnType;
-    QVector<RECORD_TYPE> sessionColumnType;
-    QVector<RECORD_TYPE> userColumnType;
+#define INITIALIZATION_METHODS {
+    virtual void initializeHeaders() = 0;
+    virtual void initializeColumnTypes() = 0;
+#define INITIALIZATION_METHODS }
 
-    // Setters
-    void setClientHeaders();
-    void setClientSessionHeaders();
-    void setEvaluationHeaders();
-    void setMediationHeaders();
-    void setNotesHeaders();
-    void setPersonHeaders();
-    void setSessionHeaders();
-    void setUserHeaders();
-
-    void setClientColumnType();
-    void setClientSessionColumnType();
-    void setEvaluationColumnType();
-    void setMediationColumnType();
-    void setNotesColumnType();
-    void setPersonColumnType();
-    void setSessionColumnType();
-    void setUserColumnType();
 };
 
 #endif // DB_SCHEMA
