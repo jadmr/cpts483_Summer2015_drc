@@ -159,6 +159,21 @@ public:
      */
     void SetQ6Somewhat(int num) { _q6Somewhat = num; }
 
+    //JAS Setter and Getter methods for D/I values
+    void SetChildren(int num) { _numChildren = num; }
+
+    void SetIndirectAdults(int num) { _numIndirectAdult = num; }
+
+    void SetDirectAdults(int num) { _numDirectAdult = num; }
+
+    //Getters
+    int GetChildren() {return _numChildren; }
+
+    int GetIndirectAdults() {return _numIndirectAdult; }
+
+    int GetDirectAdults() { return _numDirectAdult; }
+
+
 private:
     // MP's spanning 6 month period.
     // All calculations are based on this collection.
@@ -202,6 +217,12 @@ private:
     int _numChildByTraining;
     int _numAdditionalServed;
     int _numChildAdditionalServed;
+
+    //JAS new methods for calculating Directly and Indirectly served.
+    //Children are always indirectly served
+    int _numChildren;
+    int _numIndirectAdult;
+    int _numDirectAdult;
 
     // 3) Total Calls
     int _totalCalls;

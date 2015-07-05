@@ -528,8 +528,160 @@ DRCDB::~DRCDB()
                     // REPORTS !!!!
 //========================================================================
 
-// Arg is a ReportRequest*  !!
+
+//JAS Testing new conditions for RES WA reports
+
 void DRCDB::QueryResWaReport(MediatorArg arg)
+{
+    ResWaReport* report = nullptr;
+    ReportRequest* params = nullptr;
+    if(arg.IsSuccessful() && (params = arg.getArg<ReportRequest*>()))
+    {
+        bool firstHalfOfYear = params->IsForFirstHalfOfYear();
+        int year = params->GetYear();
+
+        QDateTime start;
+        QDateTime end;
+        if(firstHalfOfYear)
+        {
+            start = QDateTime::fromString(QString("%1-01-01").arg(year),"yyyy-MM-dd");
+            end = QDateTime::fromString(QString("%1-06-30").arg(year),"yyyy-MM-dd");
+        }
+        else
+        {
+            start = QDateTime::fromString(QString("%1-07-01").arg(year),"yyyy-MM-dd");
+            end = QDateTime::fromString(QString("%1-12-31").arg(year),"yyyy-MM-dd");
+        }
+
+        QSqlQuery query(database);
+        QString command = QString("Select * from Session_table where ScheduledTime <= '%1' and ScheduledTime >= '%2'")
+                            .arg(end.toString("yyyy-MM-dd"))
+                            .arg(start.toString("yyyy-MM-dd"));
+        this->ExecuteCommand(command, query);
+
+        QString mediationIdMatches = "";
+        bool first = true;
+        while(query.next())
+        {
+            if(!first)
+            {
+                mediationIdMatches += ", ";
+            }
+            mediationIdMatches += query.value(1).toString();
+            first = false;
+        }
+        MediationProcessVector* init = LoadMediations(mediationIdMatches);
+
+        first = true;
+        mediationIdMatches = "";
+        for(size_t i = 0; i < init->size(); i++)
+        {
+            MediationProcess* process = init->at(i);
+            if(process->GetCountyId() == params->GetCounty())
+            {
+                if(!first)
+                {
+                    mediationIdMatches += ", ";
+                }
+                mediationIdMatches += QString::number(process->GetId());
+                first = false;
+            }
+        }
+
+        // Must Init the ResWaReport with MPVector (all mps in the 6 month span)
+        MediationProcessVector* mpVec = LoadMediations(mediationIdMatches);
+        report = new ResWaReport(mpVec);
+
+        // For section 2 data
+        QString commanda = QString("Select * from Mediation_Table where CreationDate <= '%1' and CreationDate >= '%2' and DisputeCounty = %3")
+                        .arg(end.toString("yyyy-MM-dd"))
+                        .arg(start.toString("yyyy-MM-dd"))
+                        .arg(QString::number(params->GetCounty()));
+        this->ExecuteCommand(commanda, query);
+
+        mediationIdMatches = "";
+        first = true;
+        while(query.next())
+        {
+            if(!first)
+            {
+                mediationIdMatches += ", ";
+            }
+            mediationIdMatches += query.value(0).toString();
+            first = false;
+        }
+        MediationProcessVector* temp = LoadMediations(mediationIdMatches);
+        int callCount = 0;
+
+        //JAS variable to set Direct and Indirect Adults, all childeren are considered indirectly servered by State Report
+         int child = 0;
+         int i_adult = 0;
+         int d_adult = 0;
+
+        for(size_t i = 0; i < temp->size(); i++)
+        {
+            MediationProcess* proc = temp->at(i);
+            if(proc->GetState() == PROCESS_STATE_CLOSED_WITH_SESSION || proc->GetState() == PROCESS_STATE_CLOSED_NO_SESSION)
+            {
+                callCount++;
+
+                //JAS New tallys for directly and indirectly served,
+                child = (child + proc->GetIndirectChildren());
+                i_adult = (i_adult + proc->GetIndirectAdult());
+                child = (child + proc->GetDirectChildren());
+                d_adult = (d_adult + proc->GetDirectAdult());
+
+            }
+        }
+        report->SetTotalCalls(callCount);
+
+        //JAS setting D/I values
+        report->SetChildren(child);
+        report->SetDirectAdults(d_adult);
+        report->SetIndirectAdults(i_adult);
+
+        // For section 8 data
+        QSqlQuery evalQuery(database);
+        QString evalCommand = QString("Select * from Evaluation_Table where startdate = '%1' and CountyId = %2")
+                                .arg(start.toString("yyyy-MM-dd"))
+                                .arg(QString::number(params->GetCounty()));
+
+        this->ExecuteCommand(evalCommand,evalQuery);
+
+        while(evalQuery.next())
+        {
+            // populate the evaluation totals
+            report->SetQ1Yes(evalQuery.value(4).toInt());
+            report->SetQ1No(evalQuery.value(5).toInt());
+            report->SetQ1Somewhat(evalQuery.value(6).toInt());
+
+            report->SetQ2Yes(evalQuery.value(7).toInt());
+            report->SetQ2No(evalQuery.value(8).toInt());
+            report->SetQ2Somewhat(evalQuery.value(9).toInt());
+
+            report->SetQ3Yes(evalQuery.value(10).toInt());
+            report->SetQ3No(evalQuery.value(11).toInt());
+            report->SetQ3Somewhat(evalQuery.value(12).toInt());
+
+            report->SetQ4Yes(evalQuery.value(13).toInt());
+            report->SetQ4No(evalQuery.value(14).toInt());
+            report->SetQ4Somewhat(evalQuery.value(15).toInt());
+
+            report->SetQ5Yes(evalQuery.value(16).toInt());
+            report->SetQ5No(evalQuery.value(17).toInt());
+            report->SetQ5Somewhat(evalQuery.value(18).toInt());
+
+            report->SetQ6Yes(evalQuery.value(19).toInt());
+            report->SetQ6No(evalQuery.value(20).toInt());
+            report->SetQ6Somewhat(evalQuery.value(21).toInt());
+        }
+    }
+    Mediator::Call(MKEY_DB_REQUEST_RESWA_REPORT_DONE,  report);
+}
+
+
+// Arg is a ReportRequest*  !!
+/*void DRCDB::QueryResWaReport(MediatorArg arg)
 {
     ResWaReport* report = nullptr;
     ReportRequest* params = nullptr;
@@ -658,7 +810,7 @@ void DRCDB::QueryResWaReport(MediatorArg arg)
         }
     }
     Mediator::Call(MKEY_DB_REQUEST_RESWA_REPORT_DONE,  report);
-}
+}*/
 
 // Arg is a ReportRequest*  !!
 void DRCDB::testQueryResWaReport(MediatorArg arg)
@@ -1158,7 +1310,6 @@ MediationProcessVector* DRCDB::LoadMediations(QString processIds)
         QString session_command_string = QString("Select * from Session_Table where process_id = %1")
                                                 .arg(processId);
         this->ExecuteCommand(session_command_string, sessionQuery);
-
         MediationSessionVector* sessions = new MediationSessionVector();
         std::vector<int> sessionIds;
         while(sessionQuery.next())

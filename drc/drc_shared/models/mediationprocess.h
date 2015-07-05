@@ -370,21 +370,13 @@ private:
     QString _courtOrder;
     QString _stateMessage;  // Message set by BL explaining how to advance to next state.
 
-<<<<<<< HEAD
-    //JAS adding Inderect and Directly served variables
-    int _indirectChildren;
-    int _directChildren;
+    //________________________________________________________________________________________________
+
     int _indirectAdult;
     int _directAdult;
-=======
+    int _indirectChildren;
+    int _directChildren;
     //________________________________________________________________________________________________
-    // Integers for running totals of indirect/directly served for a mediation
-    unsigned int _numChildrenDirectlyServed;
-    unsigned int _numChildrenIndirectlyServed;
-    unsigned int _numAdultsInHouse;
-    unsigned int _numChildrenInHouse;
-    //________________________________________________________________________________________________
->>>>>>> origin/master
 
     ///////////////// Report Builder ///////////////////
     /*!

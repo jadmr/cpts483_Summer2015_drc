@@ -316,8 +316,13 @@ void ResWaReport::BuildPeopleServedSection(QTextCursor& cursor)
     TextToCell(table, 0, 0, "All People Directly Served", &_tableTextFormat);
     TextToCell(table, 1, 0, "Children Directly Served", &_tableTextFormat);
     // VALUES
-    TextToCell(table, 0, 1, QString::number(_numByPhone), &_tableCellBlue);
+    //JAS Per Rosemary's need to match #2 on report
+
+    TextToCell(table, 0, 1, QString::number(_numDirectAdult), &_tableCellBlue);
     TextToCell(table, 1, 1, QString::number(_numChildByPhone), &_tableCellBlue);
+
+    //TextToCell(table, 0, 1, QString::number(_numByPhone), &_tableCellBlue);
+    //TextToCell(table, 1, 1, QString::number(_numChildByPhone), &_tableCellBlue);
 
 
     cursor.insertBlock();
@@ -638,6 +643,8 @@ void ResWaReport::CalculateCasesTable()
 {
     foreach(MediationProcess* mp,  *_processes)
     {
+        //JAS Adding contitional to ensure mediation has been closed.
+        if(mp->GetState()== PROCESS_STATE_CLOSED_WITH_SESSION || mp->GetState() == PROCESS_STATE_CLOSED_NO_SESSION)
         AddMPToCasesTable(mp->GetDisputeType(), mp->GetCourtType(), mp->IsSettled());
     }
 
@@ -694,19 +701,24 @@ void ResWaReport::CalculateTraining(int& numTrainings, int& numAttendingTraining
     {
         int curAttendees = 0;
         bool foundTrainee = false;
-        foreach(MediationSession* session, *mp->getMediationSessionVector())
+
+        //JAS contitional for mediations closed
+        if(mp->GetState()== PROCESS_STATE_CLOSED_WITH_SESSION || mp->GetState() == PROCESS_STATE_CLOSED_NO_SESSION)
         {
-            if(session->getObserver1().length())
+            foreach(MediationSession* session, *mp->getMediationSessionVector())
             {
-                foundTrainee = true;
-                ++numTrainings;
+                if(session->getObserver1().length())
+                {
+                    foundTrainee = true;
+                    ++numTrainings;
+                }
+                if(session->getObserver2().length())
+                {
+                    foundTrainee = true;
+                    ++numTrainings;
+                }
+                curAttendees += GetNumberAttending(session);
             }
-            if(session->getObserver2().length())
-            {
-                foundTrainee = true;
-                ++numTrainings;
-            }
-            curAttendees += GetNumberAttending(session);
         }
 
         if(foundTrainee)
@@ -765,48 +777,62 @@ void ResWaReport::CalculatePeople()
             // The sum of _numByPhoneConciliation, _numBySessionFacilitation, and _numBySessions
             // represents all of the people involved in the total number of cases from the
             // CASES section.
-            switch(mp->GetSessionType())
+
+            //JAS Added conditional to confirm mediation has been closed prior to counting
+            if(mp->GetState()== PROCESS_STATE_CLOSED_WITH_SESSION || mp->GetState() == PROCESS_STATE_CLOSED_NO_SESSION)
             {
-            case PHONE_SESSION:
-                _numByPhoneConcilliation++;
-                if(isChild) {
-                    _numChildByPhoneConcilliation++;
-                }
-                break;
-            case FACILITATION_SESSION:
-                _numBySessionFacilliation++;
-                if(isChild) {
-                    _numChildBySessionFacilliation++;
-                }
-                break;
-            case MEDIATION_SESSION:
-                _numBySessions++;
-                if(isChild) {
-                    _numChildBySessions++;
-                }
-                break;
-            case COACHING_SESSION:
-                _numByCoaching++;
-                if(isChild) {
-                    _numChildByCoaching++;
-                }
-                break;
-            default:
-                if(mp->GetInfoOnly() || (mp->GetState() == PROCESS_STATE_CLOSED_NO_SESSION))
+                switch(mp->GetSessionType())
                 {
-                    _numByPhone++;
+                case PHONE_SESSION:
+                    _numByPhoneConcilliation = _numByPhoneConcilliation + mp->GetDirectAdult();
+                    //_numByPhoneConcilliation++;
                     if(isChild) {
-                        _numChildByPhone++;  // this is likely always 0.
+                        _numChildByPhoneConcilliation++;
                     }
-                }
-                break;
-            };
+                    break;
+                case FACILITATION_SESSION:
+                    _numBySessionFacilliation = _numBySessionFacilliation + mp->GetDirectAdult();
+                    //_numBySessionFacilliation++;
+                    if(isChild) {
+                        _numChildBySessionFacilliation++;
+                    }
+                    break;
+                case MEDIATION_SESSION:
+                    _numBySessions = _numBySessions + mp->GetDirectAdult();
+                    //_numBySessions++;
+                    if(isChild) {
+                        _numChildBySessions++;
+                    }
+                    break;
+                case COACHING_SESSION:
+                    _numByCoaching = _numByCoaching + mp->GetDirectAdult();
+                    //_numByCoaching++;
+                    if(isChild) {
+                        _numChildByCoaching++;
+                    }
+                    break;
+                default:
+                    if(mp->GetInfoOnly() || (mp->GetState() == PROCESS_STATE_CLOSED_NO_SESSION))
+                    {
+                        _numByPhone = _numByPhone + mp->GetDirectAdult();
+                        //_numByPhone++;
+                        if(isChild) {
+                            _numChildByPhone++;  // this is likely always 0.
+                        }
+                    }
+                    break;
+                };
+            }
 
             // PART F
             // total number indirectly includes both adults AND children.
-            _numIndirectly = _numIndirectly + party->GetPrimary()->getNumberInHousehold();
-            _numIndirectly = _numIndirectly + (int)party->GetChildren().size();
-            _numChildIndirectly = _numChildIndirectly + (int)party->GetChildren().size();
+
+            _numIndirectly = _numIndirectAdult + _numChildren;
+            _numChildIndirectly = _numChildren;
+
+            //_numIndirectly = _numIndirectly + party->GetPrimary()->getNumberInHousehold();
+            //_numIndirectly = _numIndirectly + (int)party->GetChildren().size();
+            //_numChildIndirectly = _numChildIndirectly + (int)party->GetChildren().size();
 
             // PART G
             // The training number gets copied over when the training section is calculated.
