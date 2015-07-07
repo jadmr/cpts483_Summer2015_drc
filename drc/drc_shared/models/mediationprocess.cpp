@@ -247,7 +247,7 @@ QString MediationProcess::ColumnNames()
             .arg(QString("DisputeInternalState"))
             .arg(QString("DisputeCounty"));
 
-    column_names += QString("%1, %2, %3, %4, %5, %6, %7, %8, %9, %10")
+    column_names += QString("%1, %2, %3, %4, %5, %6, %7, %8, %9, %10, ")
             .arg(QString("ReferalSource"))
             .arg(QString("InquiryType"))
             .arg(QString("InfoOnly"))
@@ -258,6 +258,13 @@ QString MediationProcess::ColumnNames()
             .arg(QString("TranslatorRequired"))
             .arg(QString("SessionType"))
             .arg(QString("MediationClause"));
+
+    //JAS Changing Schema to reflect additional fields
+    column_names += QString("%1, '%2', '%3', '%4'")
+            .arg(QString("IndirectChildren"))
+            .arg(QString("DirectChildren"))
+            .arg(QString("IndirectAdult"))
+            .arg(QString("DirectAdult"));
 
     QString toReturn = QString("(%1)")
             .arg(column_names);
@@ -281,7 +288,7 @@ QString MediationProcess::Parse()
             .arg(QString::number(this->GetInternalState()))
             .arg(QString::number(this->GetCountyId()));
 
-    column_values += QString("%1, '%2', '%3', '%4', '%5', %6, '%7', '%8', '%9', %10")
+    column_values += QString("%1, '%2', '%3', '%4', '%5', %6, '%7', '%8', '%9', %10, ")
             .arg(QString::number(this->GetReferralType()))
             .arg(QString::number(this->GetInquiryType()))
             .arg(this->GetInfoOnly())
@@ -292,6 +299,14 @@ QString MediationProcess::Parse()
             .arg(QString::number(this->GetRequiresSpanish()))
             .arg(QString::number(this->GetSessionType()))
             .arg(this->getMediationClause());
+
+    //JAS adding the new columns for Direct and Indirect Children and Adults
+
+   column_values += QString("%1, '%2', '%3', '%4'")
+            .arg(this->GetIndirectChildren())
+            .arg(this->GetDirectChildren())
+            .arg(this->GetIndirectAdult())
+            .arg(this->GetDirectAdult());
 
 //    QString toReturn = QString("(%1) VALUES(%2)")
 //        .arg(column_names)
@@ -319,13 +334,19 @@ QString MediationProcess::UpdateParse()
             .arg(this->GetInfoOnly())
             .arg(this->GetIsCourtCase());
 
-    toUpdate += QString("CourtDate = '%1', CourtCaseType = %2, CourtOrderType = '%3', TranslatorRequired = '%4', SessionType = %5, MediationClause = '%6'")
+    toUpdate += QString("CourtDate = '%1', CourtCaseType = %2, CourtOrderType = '%3', TranslatorRequired = '%4', SessionType = %5, MediationClause = '%6', ")
             .arg(this->GetCourtDate().toString("yyyy-MM-dd"))
             .arg(QString::number(this->GetCourtType()))
             .arg(this->GetCourtOrder().replace("'", "''"))
             .arg(this->GetRequiresSpanish())
             .arg(QString::number(this->GetSessionType()))
             .arg(this->getMediationClause());
+
+    toUpdate += QString("IndirectChildren = '%1', DirectChildren = '%2', IndirectAdult = '%3', DirectAdult = '%4'")
+            .arg(this->GetIndirectChildren())
+            .arg(this->GetDirectChildren())
+            .arg(this->GetIndirectAdult())
+            .arg(this->GetDirectAdult());
 
     return toUpdate;
 }
