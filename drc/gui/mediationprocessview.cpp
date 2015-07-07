@@ -63,6 +63,12 @@ MediationProcessView::MediationProcessView(QWidget *parent, MediationProcess *me
 //    _unregisterPopulateId = Mediator::Register(MKEY_GUI_MP_POPULATE, [this](MediatorArg arg){Q_UNUSED(arg);PopulateView();});
     _unregisterPersistMPId = Mediator::Register(MKEY_DB_PERSIST_MEDIATION_PROCESS_FORM_DONE, [this](MediatorArg arg){SaveCompleted(arg);});
     _unregisterNotesChanged = Mediator::Register(MKEY_GUI_NOTE_CHANGED, [this](MediatorArg arg){notes_changed(arg);});
+
+
+    //Make the addSession button invisible
+    ui->groupBox_2->setVisible(false);
+    //Make a session
+    addSession();
 }
 
 MediationProcessView::~MediationProcessView()
@@ -86,21 +92,16 @@ void MediationProcessView::notes_changed(MediatorArg arg)
 
 void MediationProcessView::setAdultChildrenCounts(MediationProcess* process)
 {
-    // Pull counts;
-    int directChildrenCount = process->GetDirectChildren();
-    int indirectChildrenCount = process->GetIndirectChildren();
-
-    int directAdultCount = process->GetDirectAdult();
-    int indirectAdultCount = process->GetIndirectAdult();
-
     // Update the GUI
-    ui->numDirectChildrenSpinBox->text() = directChildrenCount;
-    ui->numIndirectChildrenSpinBox->text() = indirectChildrenCount;
 
-    ui->numDirectAdultsSpinBox->text() = directAdultCount;
-    ui->numIndirectAdultsSpinBox->text() = indirectAdultCount;
+    ui->numDirectChildrenSpinBox->setValue(process->GetDirectChildren());
+
+    ui->numIndirectChildrenSpinBox->setValue(process->GetIndirectChildren());
+
+    ui->numDirectAdultsSpinBox->setValue(process->GetDirectAdult());
+
+    ui->numIndirectAdultsSpinBox->setValue(process->GetIndirectAdult());
 }
-
 void MediationProcessView::PopulateView()
 {
     if(!_mediationProcess)
@@ -476,3 +477,29 @@ void MediationProcessView::on_notesPushButton_clicked()
 {
     ShowNotesBrowserPressed();
 }
+
+//JAS new methods to update and set Direct and Indirect Values
+void MediationProcessView::on_numIndirectChildrenSpinBox_editingFinished()
+{
+    _mediationProcess->SetIndirectChildren(ui->numIndirectChildrenSpinBox->value());
+    Mediator::Call(MKEY_GUI_MP_SAVE_PENDING);
+}
+
+void MediationProcessView::on_numDirectChildrenSpinBox_editingFinished()
+{
+    _mediationProcess->SetDirectChildren(ui->numDirectChildrenSpinBox->value());
+    Mediator::Call(MKEY_GUI_MP_SAVE_PENDING);
+}
+
+void MediationProcessView::on_numIndirectAdultsSpinBox_editingFinished()
+{
+    _mediationProcess->SetIndirectAdult(ui->numIndirectAdultsSpinBox->value());
+    Mediator::Call(MKEY_GUI_MP_SAVE_PENDING);
+}
+
+void MediationProcessView::on_numDirectAdultsSpinBox_editingFinished()
+{
+    _mediationProcess->SetDirectAdult(ui->numDirectAdultsSpinBox->value());
+    Mediator::Call(MKEY_GUI_MP_SAVE_PENDING);
+}
+

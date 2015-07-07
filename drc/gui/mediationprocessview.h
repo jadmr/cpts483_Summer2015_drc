@@ -123,6 +123,14 @@ private slots:
 
     void on_notesPushButton_clicked();
 
+
+    //JAS going to see if we can update some records
+    void on_numIndirectChildrenSpinBox_editingFinished();
+    void on_numDirectChildrenSpinBox_editingFinished();
+    void on_numDirectAdultsSpinBox_editingFinished();
+    void on_numIndirectAdultsSpinBox_editingFinished();
+
+
 private:
     Ui::MediationProcessView *ui;
 

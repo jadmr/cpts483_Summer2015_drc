@@ -1,0 +1,33 @@
+#ifndef REC_TYPE_H
+#define REC_TYPE_H
+
+enum RECORD_TYPE
+{
+    ID,
+    FIRST_NAME,
+    MIDDLE_NAME,
+    LAST_NAME,
+    PHONE_NUMBER,
+    PHONE_EXT,
+    EMAIL,
+    ADDRESS,
+    CITY,
+    STATE,
+    DATE,
+    DATE_TIME,
+    UPPER_DATE,
+    LOWER_DATE,
+    UPPER_DATETIME,
+    LOWER_DATETIME,
+    STRING,
+    INT_BOOL,
+    BOOL,
+    DOUBLE,
+    DOUBLE_WITH_RANGE,
+    INT,
+    INT_WITH_RANGE
+};
+
+
+#endif // REC_TYPE_H
+

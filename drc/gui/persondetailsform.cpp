@@ -188,6 +188,7 @@ void PersonDetailsForm::on_saveButton_clicked()
     _person->setNumberInHousehold(ui->adultsInHomeSpinBox->value());
     _person->setAttorney(ui->attorneyLineEdit->text());
 
+
     //emit PersonSaved(_person);
     //emit SaveSignaled();
     Mediator::Call(MKEY_GUI_MP_SAVE_PENDING);

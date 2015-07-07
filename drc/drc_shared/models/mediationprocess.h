@@ -357,11 +357,13 @@ private:
     QString _courtOrder;
     QString _stateMessage;  // Message set by BL explaining how to advance to next state.
 
+
     // Jason's changes
     int _indirectChildren;
     int _directChildren;
     int _indirectAdult;
     int _directAdult;
+// origin/master
 
     ///////////////// Report Builder ///////////////////
     /*!
