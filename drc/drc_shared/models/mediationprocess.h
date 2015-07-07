@@ -315,19 +315,6 @@ public:
      */
     void PrintMediation();
 
-    // Getters and Setters for running totals of indirect/directly served for a mediation
-    unsigned int getNumChildrenDirectlyServed() const { return _numChildrenDirectlyServed; }
-    void setNumChildrenDirectlyServed(unsigned int numCh1ildrenDirectlyServed) { _numChildrenDirectlyServed = numCh1ildrenDirectlyServed; }
-
-    unsigned int getNumChildrenIndirectlyServed() const {return _numChildrenIndirectlyServed; }
-    void setNumChildrenIndirectlyServed(unsigned int numChildrenIndirectlyServed) { _numChildrenIndirectlyServed = numChildrenIndirectlyServed;}
-
-    unsigned int getNumAdultsInHouse() const {return _numAdultsInHouse; }
-    void setNumAdultsInHouse(unsigned int numAdultsInHouse) {_numAdultsInHouse = numAdultsInHouse;}
-
-    unsigned int getNumChildrenInHouse() const {return _numChildrenInHouse;}
-    void setNumChildrenInHouse(unsigned int numChildrenInHouse) {_numChildrenInHouse = numChildrenInHouse;}
-
 private:
     // The final report object after it's been built.
     QTextDocument* _report;
@@ -370,13 +357,13 @@ private:
     QString _courtOrder;
     QString _stateMessage;  // Message set by BL explaining how to advance to next state.
 
-    //________________________________________________________________________________________________
 
-    int _indirectAdult;
-    int _directAdult;
+    // Jason's changes
     int _indirectChildren;
     int _directChildren;
-    //________________________________________________________________________________________________
+    int _indirectAdult;
+    int _directAdult;
+// origin/master
 
     ///////////////// Report Builder ///////////////////
     /*!

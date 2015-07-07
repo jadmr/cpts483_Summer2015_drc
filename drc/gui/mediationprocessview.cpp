@@ -84,6 +84,23 @@ void MediationProcessView::notes_changed(MediatorArg arg)
         _notes_Changed = false;
 }
 
+void MediationProcessView::setAdultChildrenCounts(MediationProcess* process)
+{
+    // Pull counts;
+    int directChildrenCount = process->GetDirectChildren();
+    int indirectChildrenCount = process->GetIndirectChildren();
+
+    int directAdultCount = process->GetDirectAdult();
+    int indirectAdultCount = process->GetIndirectAdult();
+
+    // Update the GUI
+    ui->numDirectChildrenSpinBox->text() = directChildrenCount;
+    ui->numIndirectChildrenSpinBox->text() = indirectChildrenCount;
+
+    ui->numDirectAdultsSpinBox->text() = directAdultCount;
+    ui->numIndirectAdultsSpinBox->text() = indirectAdultCount;
+}
+
 void MediationProcessView::PopulateView()
 {
     if(!_mediationProcess)
@@ -111,6 +128,9 @@ void MediationProcessView::PopulateView()
     diplaySessions();
     // SUMMARY
     _mediationProcessStatusForm->setMediationProcess(_mediationProcess);
+
+    // Update the indirect/direct child/adult counts
+    setAdultChildrenCounts(_mediationProcess);
 }
 
 void MediationProcessView::sessionAddButtonEnable()
@@ -288,6 +308,8 @@ void MediationProcessView::SetMediationProcess(MediationProcess* process)
         _mediationProcess->AddParty(new Party());
     PopulateView();
 }
+
+
 
 void MediationProcessView::AddPartyTabs(PartyVector* parties)
 {

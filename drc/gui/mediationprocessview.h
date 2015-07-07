@@ -137,6 +137,8 @@ private:
      bool _notes_Changed;
      void notes_changed(MediatorArg arg);
 
+     // Set the direct, indirect counts for children/adults
+     void setAdultChildrenCounts(MediationProcess* process);
     // Setup GUI Helpers
      /*!
      * \brief ConfigureToolbar
