@@ -1,0 +1,26 @@
+<RCC>
+    <qresource prefix="/">
+        <file>images/save.png</file>
+        <file>images/session_search.jpg</file>
+        <file>images/notes.jpg</file>
+        <file>images/mp_search.jpg</file>
+        <file>images/evaluation.jpg</file>
+        <file>images/report.jpg</file>
+        <file>images/reswalogo.gif</file>
+        <file>images/drclogo.png</file>
+        <file>images/drclogo_med.png</file>
+        <file>images/close.jpg</file>
+        <file>images/printer-icon.png</file>
+        <file>images/DRClogoNoBackground.ico</file>
+        <file>images/7.jpg</file>
+        <file>images/cherries.png</file>
+        <file>images/coin.jpg</file>
+        <file>images/dollarSign.jpg</file>
+        <file>images/slot_machine.wav</file>
+        <file>images/slot_machine_run.wav</file>
+        <file>images/slot_machine_run.mp3</file>
+        <file>images/slot_machine_winner.mp3</file>
+        <file>images/slot_machine_winner.wav</file>
+        <file>images/DRClogoFromJpg.ico</file>
+    </qresource>
+</RCC>

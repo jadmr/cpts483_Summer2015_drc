@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>DRCClient</class>
+ <widget class="QMainWindow" name="DRCClient">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>668</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>800</width>
+     <height>600</height>
+    </size>
+   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <item>
+     <widget class="QWidget" name="widget" native="true">
+      <property name="minimumSize">
+       <size>
+        <width>800</width>
+        <height>600</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuReports">
+    <property name="title">
+     <string>Reports</string>
+    </property>
+    <addaction name="actionMonthly_Report"/>
+    <addaction name="actionRes_Wa_Report"/>
+   </widget>
+   <widget class="QMenu" name="menu_mediationProcess">
+    <property name="title">
+     <string>Mediation</string>
+    </property>
+    <addaction name="actionOpen_mediation_view"/>
+    <addaction name="actionFindMediation"/>
+   </widget>
+   <widget class="QMenu" name="menuAdmin">
+    <property name="title">
+     <string>Admin</string>
+    </property>
+    <addaction name="actionManage_Users"/>
+    <addaction name="actionConnect_to_Remote_DB"/>
+    <addaction name="actionSlots_Game"/>
+   </widget>
+   <widget class="QMenu" name="menuUser">
+    <property name="title">
+     <string>Logout</string>
+    </property>
+    <addaction name="actionLogout_User"/>
+   </widget>
+   <addaction name="menu_mediationProcess"/>
+   <addaction name="menuReports"/>
+   <addaction name="menuAdmin"/>
+   <addaction name="menuUser"/>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+  <widget class="QToolBar" name="toolBar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="separator"/>
+  </widget>
+  <action name="actionCase_Summary">
+   <property name="text">
+    <string>Res Washington</string>
+   </property>
+  </action>
+  <action name="actionOpen_mediation_view">
+   <property name="text">
+    <string>New</string>
+   </property>
+   <property name="toolTip">
+    <string>Open mediation editor.</string>
+   </property>
+  </action>
+  <action name="actionLogout_User">
+   <property name="text">
+    <string>Logout User</string>
+   </property>
+  </action>
+  <action name="actionFindMediation">
+   <property name="text">
+    <string>Find/Search</string>
+   </property>
+   <property name="toolTip">
+    <string>Find an existing Mediation Record</string>
+   </property>
+  </action>
+  <action name="actionNew_2">
+   <property name="text">
+    <string>New</string>
+   </property>
+  </action>
+  <action name="actionAdd_5_MP_samples">
+   <property name="text">
+    <string>Add 5 MP samples to browser</string>
+   </property>
+  </action>
+  <action name="actionLoad_from_file">
+   <property name="text">
+    <string>Load from file</string>
+   </property>
+  </action>
+  <action name="actionSave_to_file">
+   <property name="text">
+    <string>save to file</string>
+   </property>
+  </action>
+  <action name="actionAdd_1_MP_sample">
+   <property name="text">
+    <string>add 1 MP sample</string>
+   </property>
+  </action>
+  <action name="actionAdd_to_vector">
+   <property name="text">
+    <string>Add current to browser</string>
+   </property>
+  </action>
+  <action name="actionManage_Users">
+   <property name="text">
+    <string>Manage Users</string>
+   </property>
+  </action>
+  <action name="actionConnect_to_Remote_DB">
+   <property name="text">
+    <string>Connect to Remote DB</string>
+   </property>
+  </action>
+  <action name="actionMonthly_Report">
+   <property name="text">
+    <string>Monthly Report</string>
+   </property>
+  </action>
+  <action name="actionRes_Wa_Report">
+   <property name="text">
+    <string>Res Wa Report</string>
+   </property>
+  </action>
+  <action name="actionSlots_Game">
+   <property name="text">
+    <string>Slots Game</string>
+   </property>
+  </action>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections/>
+</ui>
