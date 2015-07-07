@@ -2,6 +2,8 @@
 
 EvaluationSchema::EvaluationSchema() : DatabaseSchema()
 {
+    setTableName("Evaluation_Table");
+
     initializeHeaders();
     initializeColumnTypes();
 }
@@ -42,27 +44,27 @@ void EvaluationSchema::initializeColumnTypes()
 {
     QVector<RECORD_TYPE> evaluationColumnType;
 
-    evaluationColumnType.append(ID);
-    evaluationColumnType.append(DATE);
-    evaluationColumnType.append(DATE);
-    evaluationColumnType.append(INT);
-    evaluationColumnType.append(INT);
-    evaluationColumnType.append(INT);
-    evaluationColumnType.append(INT);
-    evaluationColumnType.append(INT);
-    evaluationColumnType.append(INT);
-    evaluationColumnType.append(INT);
-    evaluationColumnType.append(INT);
-    evaluationColumnType.append(INT);
-    evaluationColumnType.append(INT);
-    evaluationColumnType.append(INT);
-    evaluationColumnType.append(INT);
-    evaluationColumnType.append(INT);
-    evaluationColumnType.append(INT);
-    evaluationColumnType.append(INT);
-    evaluationColumnType.append(INT);
-    evaluationColumnType.append(INT);
-    evaluationColumnType.append(INT);
+    evaluationColumnType.append(PRIMARY_ID);
+    evaluationColumnType.append(LOWER_DATE);
+    evaluationColumnType.append(UPPER_DATE);
+    evaluationColumnType.append(COUNTY);
+    evaluationColumnType.append(EVALUATION_SCORE);
+    evaluationColumnType.append(EVALUATION_SCORE);
+    evaluationColumnType.append(EVALUATION_SCORE);
+    evaluationColumnType.append(EVALUATION_SCORE);
+    evaluationColumnType.append(EVALUATION_SCORE);
+    evaluationColumnType.append(EVALUATION_SCORE);
+    evaluationColumnType.append(EVALUATION_SCORE);
+    evaluationColumnType.append(EVALUATION_SCORE);
+    evaluationColumnType.append(EVALUATION_SCORE);
+    evaluationColumnType.append(EVALUATION_SCORE);
+    evaluationColumnType.append(EVALUATION_SCORE);
+    evaluationColumnType.append(EVALUATION_SCORE);
+    evaluationColumnType.append(EVALUATION_SCORE);
+    evaluationColumnType.append(EVALUATION_SCORE);
+    evaluationColumnType.append(EVALUATION_SCORE);
+    evaluationColumnType.append(EVALUATION_SCORE);
+    evaluationColumnType.append(EVALUATION_SCORE);
 
     setColumnType(evaluationColumnType);
 }

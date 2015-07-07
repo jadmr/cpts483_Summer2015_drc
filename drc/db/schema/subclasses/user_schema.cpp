@@ -3,6 +3,8 @@
 
 UserSchema::UserSchema() : DatabaseSchema()
 {
+    setTableName("User_Table");
+
     initializeHeaders();
     initializeColumnTypes();
 }
@@ -26,10 +28,10 @@ void UserSchema::initializeColumnTypes()
 {
     QVector<RECORD_TYPE> userColumnType;
 
-    userColumnType.append(ID);
-    userColumnType.append(STRING);
-    userColumnType.append(STRING);
-    userColumnType.append(BOOL);
+    userColumnType.append(PRIMARY_ID);
+    userColumnType.append(USER_NAME);
+    userColumnType.append(PASSWORD);
+    userColumnType.append(ADMIN_BOOL);
 
     setColumnType(userColumnType);
 }

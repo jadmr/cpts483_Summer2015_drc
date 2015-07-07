@@ -2,6 +2,8 @@
 
 ClientSessionSchema::ClientSessionSchema() : DatabaseSchema()
 {
+    setTableName("Client_Session_Table");
+
     initializeHeaders();
     initializeColumnTypes();
 }
@@ -29,17 +31,17 @@ void ClientSessionSchema::initializeColumnTypes()
 {
     QVector<RECORD_TYPE> clientSessionColumnType;
 
-    clientSessionColumnType.append(ID);
-    clientSessionColumnType.append(ID);
-    clientSessionColumnType.append(ID);
+    clientSessionColumnType.append(PRIMARY_ID);
+    clientSessionColumnType.append(SECONDARY_ID);
+    clientSessionColumnType.append(SECONDARY_ID);
+    clientSessionColumnType.append(DOUBLE);
     clientSessionColumnType.append(INT);
-    clientSessionColumnType.append(INT);
-    clientSessionColumnType.append(INT);
-    clientSessionColumnType.append(INT);
-    clientSessionColumnType.append(INT);
-    clientSessionColumnType.append(INT);
-    clientSessionColumnType.append(INT);
-    clientSessionColumnType.append(INT);
+    clientSessionColumnType.append(INT_BOOL);
+    clientSessionColumnType.append(INT_BOOL);
+    clientSessionColumnType.append(INT_BOOL);
+    clientSessionColumnType.append(SUPPORT);
+    clientSessionColumnType.append(INT_BOOL);
+    clientSessionColumnType.append(INT_BOOL);
 
     setColumnType(clientSessionColumnType);
 }

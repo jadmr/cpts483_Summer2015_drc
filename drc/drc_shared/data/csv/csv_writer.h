@@ -3,17 +3,26 @@
 
 #include <QString>
 #include <QVector>
+#include <QFile>
+#include <QTextStream>
 
 /*
  * Class that writes database records to a file
  */
 
-class CSVWriter{
+class CSVWriter
+{
 private:
+
+    QString delimiter;
+
+    void writeHeaders(QVector<QString>, QTextStream&);
+    void writeRecords(QVector< QVector<QString> >, QTextStream&);
+
 public:
     CSVWriter();
 
-    void writeRecord(QVector<QString>, QVector< QVector<QString> >);
+    void writeRecordsToFile(QString, QVector<QString>, QVector< QVector<QString> >);
 };
 
 #endif // CSV_WRITER

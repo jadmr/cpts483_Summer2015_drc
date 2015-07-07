@@ -2,6 +2,8 @@
 
 ClientSchema::ClientSchema() : DatabaseSchema()
 {
+    setTableName("Client_Table");
+
     initializeHeaders();
     initializeColumnTypes();
 }
@@ -31,9 +33,9 @@ void ClientSchema::initializeColumnTypes()
 {
     QVector<RECORD_TYPE> clientColumnType;
 
-    clientColumnType.append(ID);
-    clientColumnType.append(INT);
-    clientColumnType.append(INT);
+    clientColumnType.append(PRIMARY_ID);
+    clientColumnType.append(SECONDARY_ID);
+    clientColumnType.append(SECONDARY_ID);
     clientColumnType.append(INT);
     clientColumnType.append(INT);
     clientColumnType.append(FIRST_NAME);

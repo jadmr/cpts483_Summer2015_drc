@@ -3,6 +3,8 @@
 
 MediationSchema::MediationSchema() : DatabaseSchema()
 {
+    setTableName("Mediation_Table");
+
     initializeHeaders();
     initializeColumnTypes();
 }
@@ -44,20 +46,20 @@ void MediationSchema::initializeColumnTypes()
 {
     QVector<RECORD_TYPE> mediationColumnType;
 
-    mediationColumnType.append(ID);
-    mediationColumnType.append(ID);
-    mediationColumnType.append(DATE);
-    mediationColumnType.append(DATE);
-    mediationColumnType.append(DATE_TIME);
-    mediationColumnType.append(DATE_TIME);
-    mediationColumnType.append(INT);
-    mediationColumnType.append(INT);
-    mediationColumnType.append(INT);
-    mediationColumnType.append(INT);
-    mediationColumnType.append(INT);
+    mediationColumnType.append(PRIMARY_ID);
+    mediationColumnType.append(DISPUTE_TYPE);
+    mediationColumnType.append(LOWER_DATE);
+    mediationColumnType.append(MIDDLE_DATE);
+    mediationColumnType.append(LOWER_DATETIME);
+    mediationColumnType.append(MIDDLE_DATETIME);
+    mediationColumnType.append(DISPUTE_STATE);
+    mediationColumnType.append(DISPUTE_INTERNAL_STATE);
+    mediationColumnType.append(COUNTY);
+    mediationColumnType.append(REFERRAL_SOURCE);
+    mediationColumnType.append(INQUIRY_TYPE);
     mediationColumnType.append(INT_BOOL);
     mediationColumnType.append(INT_BOOL);
-    mediationColumnType.append(DATE);
+    mediationColumnType.append(UPPER_DATE);
     mediationColumnType.append(INT_BOOL);
     mediationColumnType.append(STRING);
     mediationColumnType.append(INT_BOOL);

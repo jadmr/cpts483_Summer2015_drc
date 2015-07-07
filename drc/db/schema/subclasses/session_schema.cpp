@@ -3,6 +3,8 @@
 
 SessionSchema::SessionSchema() : DatabaseSchema()
 {
+    setTableName("Session_Table");
+
     initializeHeaders();
     initializeColumnTypes();
 }
@@ -33,13 +35,13 @@ void SessionSchema::initializeColumnTypes()
 {
     QVector<RECORD_TYPE> sessionColumnType;
 
-    sessionColumnType.append(ID);
-    sessionColumnType.append(ID);
-    sessionColumnType.append(INT);
-    sessionColumnType.append(INT);
-    sessionColumnType.append(DATE_TIME);
-    sessionColumnType.append(DATE);
-    sessionColumnType.append(DATE_TIME);
+    sessionColumnType.append(PRIMARY_ID);
+    sessionColumnType.append(SECONDARY_ID);
+    sessionColumnType.append(SESSION_STATUS);
+    sessionColumnType.append(SESSION_OUTCOME);
+    sessionColumnType.append(NEW_MIDDLE_DATETIME);
+    sessionColumnType.append(NEW_MIDDLE_DATETIME);
+    sessionColumnType.append(NEW_UPPER_DATETIME);
     sessionColumnType.append(FIRST_NAME);
     sessionColumnType.append(FIRST_NAME);
     sessionColumnType.append(FIRST_NAME);

@@ -3,6 +3,8 @@
 
 NotesSchema::NotesSchema() : DatabaseSchema()
 {
+    setTableName("Notes_Table");
+
     initializeHeaders();
     initializeColumnTypes();
 }
@@ -26,11 +28,11 @@ void NotesSchema::initializeColumnTypes()
 {
     QVector<RECORD_TYPE> notesColumnType;
 
-    notesColumnType.append(ID);
-    notesColumnType.append(ID);
-    notesColumnType.append(ID);
+    notesColumnType.append(PRIMARY_ID);
+    notesColumnType.append(SECONDARY_ID);
+    notesColumnType.append(SECONDARY_ID);
     notesColumnType.append(STRING);
-    notesColumnType.append(DATE_TIME);
+    notesColumnType.append(MIDDLE_DATETIME);
 
     setColumnType(notesColumnType);
 }

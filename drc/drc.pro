@@ -88,7 +88,8 @@ SOURCES += main.cpp\
     db/schema/subclasses/notes_schema.cpp \
     db/schema/subclasses/person_schema.cpp \
     db/schema/subclasses/session_schema.cpp \
-    db/schema/subclasses/user_schema.cpp
+    db/schema/subclasses/user_schema.cpp \
+    drc_shared/data/csv/csv_reader.cpp
 
 HEADERS  += \
     bl/drcbl.h \
@@ -163,7 +164,8 @@ HEADERS  += \
     db/schema/subclasses/notes_schema.h \
     db/schema/subclasses/person_schema.h \
     db/schema/subclasses/session_schema.h \
-    db/schema/subclasses/user_schema.h
+    db/schema/subclasses/user_schema.h \
+    drc_shared/data/csv/csv_reader.h
 
 FORMS    += \
     DRCClient.ui \

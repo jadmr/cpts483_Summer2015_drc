@@ -1,19 +1,12 @@
 #include "rec_generator.h"
 
 /*
- * This class generated the indicated number of blah
+ * This class generates the indicated number of blah
  */
 
 // Constructor
 RecordGenerator::RecordGenerator()
 {
-
-}
-
-void RecordGenerator::generateRecords(int numMediations)
-{
-    //TODO: dont want numMediations of everything
-
     // Table Schemas
     ClientSchema* clientSchema = new ClientSchema();
     ClientSessionSchema* clientSessionSchema = new ClientSessionSchema();
@@ -24,49 +17,62 @@ void RecordGenerator::generateRecords(int numMediations)
     SessionSchema* sessionSchema = new SessionSchema();
     UserSchema* userSchema = new UserSchema();
 
-    // Generate Client Records
-    QVector< QVector<QString> > clientTable = generateTable(numMediations, clientSchema);
+    schemas.append(mediationSchema);
+    schemas.append(sessionSchema);
+    schemas.append(personSchema);
+    schemas.append(clientSchema);
+    schemas.append(clientSessionSchema);
+    schemas.append(evaluationSchema);
+    schemas.append(notesSchema);
+    schemas.append(userSchema);
 
-    // Generate Client Session Records
-    QVector< QVector<QString> > clientSessionTable = generateTable(numMediations, clientSessionSchema);
+    // Initialize id table
+    for (int count = 0; count < schemas.size(); count++)
+    {
+        // Problem is the hedaers, it returns a vector instead of a string
+        // Primary id is always first column. What about 2nd keys? Dont
+        // worry about cols other than 1st (primary key), theyll appear later
+        // if needed as the first columns
 
-    // Generate Evaluation Records
-    QVector< QVector<QString> > evaluationTable = generateTable(numMediations, evaluationSchema);
+        QStringList list;
+        auto primaryID = schemas[count]->getPrimaryID();
 
-    // Generate Mediation Records
-    QVector< QVector<QString> > mediationTable = generateTable(numMediations, mediationSchema);
-
-    // Generate Notes Records
-    QVector< QVector<QString> > notesTable = generateTable(numMediations, notesSchema);
-
-    // Generate Person Records
-    QVector< QVector<QString> > personTable = generateTable(numMediations, personSchema);
-
-    // Generate Session Records
-    QVector< QVector<QString> > sessionTable = generateTable(numMediations, sessionSchema);
-
-    // Generate User Records
-    QVector< QVector<QString> > userTable = generateTable(numMediations, userSchema);
-
-    //TODO: Write results to a file
-
-    // Clean up
-    delete clientSchema;
-    delete clientSessionSchema;
-    delete evaluationSchema;
-    delete mediationSchema;
-    delete notesSchema;
-    delete personSchema;
-    delete sessionSchema;
-    delete userSchema;
+        idTable.insert(primaryID, list); //TODO: check pointers of parameters
+    }
 }
 
-#define FILE_IO_METHODS {
-void RecordGenerator::writeToFile(QString path, QVector< QVector<QString> > record)
+// Destructor
+RecordGenerator::~RecordGenerator()
 {
+    //TODO: Convert to while loop
+    int size = schemas.size();
 
+    for (int count = 0; count < size; count++)
+    {
+        delete schemas[count];
+    }
+
+    // TODO: Free the lists in the id table as well
 }
-#define FILE_IO_METHODS }
+
+
+void RecordGenerator::generateRecords(int numMediations)
+{
+    //TODO: dont want numMediations of everything
+
+    // Generate tables
+    int size = schemas.size();
+
+    for (int count = 0; count <  size; count++)
+    {
+        QVector< QVector<QString> > record = generateTable(numMediations, schemas.at(count));
+
+        // Write results to a table file
+        writer.writeRecordsToFile(schemas[count]->getTableName(),
+                                  schemas[count]->getHeader(),
+                                  record);
+    }
+}
 
 #define TABLE_GENERATION_METHODS {
 
@@ -87,7 +93,7 @@ QVector<QVector<QString> > RecordGenerator::generateTable(int numRecords, Databa
         {
             ++seed;
 
-            value = generateRecord(schema->getColumnType().at(currentColumn), seed);
+            value = generateRecord(schema->getColumnType().at(currentColumn), schema->getHeader().at(currentColumn), seed);
             records[currentRow][currentColumn] = value;
         }
     }
@@ -107,15 +113,18 @@ int RecordGenerator::getRandomNumber(int lowerLimit, int upperLimit)
 #define RANDOM_NUMBER_GENERATOR_METHODS }
 
 #define VARIABLE_GENERATION_METHODS {
-QString RecordGenerator::generateRecord(RECORD_TYPE recordType, int seed)
+QString RecordGenerator::generateRecord(RECORD_TYPE recordType, QString columnHeader, int seed)
 {
     QString value;
-    QString lastDate; // hack
 
     switch (recordType)
     {
-        case ID:
-        value = generateInt(seed);
+        case PRIMARY_ID:
+        value = generateID(columnHeader, recordType, seed);
+        break;
+
+        case SECONDARY_ID:
+        value = generateID(columnHeader, recordType, seed);
         break;
 
         case FIRST_NAME:
@@ -163,6 +172,11 @@ QString RecordGenerator::generateRecord(RECORD_TYPE recordType, int seed)
         lastDate = value;
         break;
 
+        case MIDDLE_DATE:
+        value = generateDate("middle");
+        lastDate = value;
+        break;
+
         case LOWER_DATE:
         value = generateDate("lower");
         lastDate = value;
@@ -172,8 +186,28 @@ QString RecordGenerator::generateRecord(RECORD_TYPE recordType, int seed)
         value = lastDate + " " + generateTime();
         break;
 
+        case MIDDLE_DATETIME:
+        value = lastDate + " " + generateTime();
+        break;
+
         case LOWER_DATETIME:
         value = lastDate + " " + generateTime();
+        break;
+
+        case NEW_UPPER_DATETIME:
+        value = generateDate("upper") + " " + generateTime();
+        break;
+
+        case NEW_MIDDLE_DATETIME:
+        value = generateDate("middle") + " " + generateTime();
+        break;
+
+        case NEW_LOWER_DATETIME:
+        value = generateDate("lower") + " " + generateTime();
+        break;
+
+        case STRING:
+        value = generateString("Random_String_", seed);
         break;
 
         case INT_BOOL:
@@ -184,12 +218,64 @@ QString RecordGenerator::generateRecord(RECORD_TYPE recordType, int seed)
         value = generateBool();
         break;
 
-        case INT_WITH_RANGE:
-        value = generateInt(1, 9);
+        case DOUBLE:
+        value = generateDouble();
+        break;
+
+        case INT:
+        value =  generateInt(0, 25);
         break;
 
         case EVALUATION_SCORE:
         value = generateInt(0, 10);
+        break;
+
+        case SUPPORT:
+        value = generateInt(0, 2);
+        break;
+
+        case DISPUTE_TYPE:
+        value = generateInt(1, 14);
+        break;
+
+        case DISPUTE_STATE:
+        value = generateInt(1, 4);
+        break;
+
+        case DISPUTE_INTERNAL_STATE:
+        value = generateInt(1, 10);
+        break;
+
+        case REFERRAL_SOURCE:
+        value = generateInt(1, 16);
+        break;
+
+        case INQUIRY_TYPE:
+        value = generateInt(1, 4);
+        break;
+
+        case COUNTY_NAME:
+        value = generateInt(1, 6);
+        break;
+
+        case SESSION_STATUS:
+        value = generateInt(1, 4);
+        break;
+
+        case SESSION_OUTCOME:
+        value = generateInt(0, 9);
+        break;
+
+        case USER_NAME:
+        value = generateString("Admin");
+        break;
+
+        case PASSWORD:
+        value = generateString("8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918");
+        break;
+
+        case ADMIN_BOOL:
+        value = generateString("true");
         break;
 
         default:
@@ -269,6 +355,35 @@ QString RecordGenerator::generateBool()
         return "True";
 }
 
+// Return a *valid* id
+QString RecordGenerator::generateID(QString columnHeader, RECORD_TYPE recordType, int seed)
+{
+    QString value;
+
+    // Get the relevant list
+    auto list = idTable.value(columnHeader);
+
+    // Check the map of IDs
+    if (recordType == PRIMARY_ID)
+    {
+        // Use the seed as the new ID
+        list.append(QString::number(seed));
+
+        idTable.insert(columnHeader, list);
+        value = QString::number(seed);
+    }
+    else if (recordType == SECONDARY_ID)
+    {
+        // Pick an existing ID
+        int size = list.size();
+        int index = getRandomNumber(0, size);
+
+        value = list[index];
+    }
+
+    return value;
+}
+
 // Return a valid phone number
 QString RecordGenerator::generatePhoneNumber()
 {
@@ -320,7 +435,7 @@ QString RecordGenerator::generateDate(QString type)
         // Reserve Jan - April for start dates
         month = QString::number(getRandomNumber(1, 5));
     }
-    else if (QString::compare(type, "mid", Qt::CaseInsensitive) == 0)
+    else if (QString::compare(type, "middle", Qt::CaseInsensitive) == 0)
     {
         // Reserve May - August for mid dates
         month = QString::number(getRandomNumber(5, 8));
@@ -339,8 +454,6 @@ QString RecordGenerator::generateTime()
 {
     return "12:00:00"; // More trouble than its worth
 }
-
-
 
 
 #define VARIABLE_GENERATION_METHODS }

@@ -19,16 +19,21 @@ public:
     DatabaseSchema();
 
 #define SETTER_GETTER_METHODS {
+
+    void setTableName(QString);
     void setHeader(QVector<QString>);
     void setColumnType(QVector<RECORD_TYPE>);
 
+    QString getTableName() const;
     QVector<QString> getHeader() const;
     QVector<RECORD_TYPE> getColumnType() const;
+    QString getPrimaryID() const;
 #define SETTER_GETTER_METHODS }
 
 protected:
 
 #define PROTECTED_VARIABLES {
+    QString tableName;
     QVector<QString> headers;
     QVector<RECORD_TYPE> columnType;
 #define PROTECTED_VARIABLES }
