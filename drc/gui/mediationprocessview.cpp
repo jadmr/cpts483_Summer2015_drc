@@ -64,11 +64,6 @@ MediationProcessView::MediationProcessView(QWidget *parent, MediationProcess *me
     _unregisterPersistMPId = Mediator::Register(MKEY_DB_PERSIST_MEDIATION_PROCESS_FORM_DONE, [this](MediatorArg arg){SaveCompleted(arg);});
     _unregisterNotesChanged = Mediator::Register(MKEY_GUI_NOTE_CHANGED, [this](MediatorArg arg){notes_changed(arg);});
 
-
-    //Make the addSession button invisible
-    ui->groupBox_2->setVisible(false);
-    //Make a session
-    addSession();
 }
 
 MediationProcessView::~MediationProcessView()
