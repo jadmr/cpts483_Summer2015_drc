@@ -41,7 +41,7 @@
     <rect>
      <x>9</x>
      <y>9</y>
-     <width>1113</width>
+     <width>1399</width>
      <height>171</height>
     </rect>
    </property>
@@ -619,6 +619,12 @@
     </item>
     <item>
      <widget class="QGroupBox" name="groupBox_2">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <property name="title">
        <string/>
       </property>
@@ -657,7 +663,7 @@
             </font>
            </property>
            <property name="text">
-            <string>Saved?</string>
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:7pt;&quot;&gt;Saved?&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
           </widget>
          </item>
@@ -669,7 +675,7 @@
             </font>
            </property>
            <property name="text">
-            <string>Not saved</string>
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:7pt;&quot;&gt;Not saved&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -684,7 +690,7 @@
           <enum>QFrame::Plain</enum>
          </property>
          <property name="lineWidth">
-          <number>3</number>
+          <number>1</number>
          </property>
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
@@ -718,8 +724,14 @@
            <bold>true</bold>
           </font>
          </property>
+         <property name="lineWidth">
+          <number>1</number>
+         </property>
          <property name="text">
           <string/>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::AutoText</enum>
          </property>
          <property name="wordWrap">
           <bool>true</bool>
@@ -927,6 +939,19 @@
      </layout>
     </item>
     <item>
+     <spacer name="horizontalSpacer">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>100</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item>
      <spacer name="horizontalSpacer_3">
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
@@ -938,6 +963,25 @@
        </size>
       </property>
      </spacer>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="verticalLayoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>850</x>
+     <y>170</y>
+     <width>311</width>
+     <height>38</height>
+    </rect>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout_7">
+    <item>
+     <widget class="QPushButton" name="deleteMediationButton">
+      <property name="text">
+       <string>Delete This Case</string>
+      </property>
+     </widget>
     </item>
    </layout>
   </widget>
