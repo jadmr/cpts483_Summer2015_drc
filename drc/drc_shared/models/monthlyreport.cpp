@@ -147,7 +147,6 @@ void monthlyreport::BuildReport(MediationProcessVector* mpVec)
         }// If no sessions, add 1 to total.
         else if(process->getMediationSessionVector()->size() == 0 && process->GetCreatedDate().toString("M").toInt() == this->getMonth())
         {
-            intakeCount++;
             if(process->GetInfoOnly())
             {
                 infoOnlyCount++;
@@ -193,13 +192,8 @@ void monthlyreport::pdfReport()
     pdfString += "County of Mediation - ";
     pdfString += StringForCountyIds(m_county);
     pdfString += "\n\n";
-    pdfString += QString("%1:%2")
-            .arg(QString("%1").arg("# of Children Indirectly Served", 35))
-            .arg(QString::number(m_childrenIndirect), 5);
-    pdfString += "\n";
-    pdfString += QString("%1:%2")
-            .arg(QString("%1").arg("# of Children Directly Served", 35))
-            .arg(QString::number(m_childrenDirect), 5);
+
+    pdfString += "\n\n================ People Served ======================";
     for(int i = 0; i < 7; i++)
     {
         if((CountyIds)i != COUNTY_NONE)
@@ -210,6 +204,24 @@ void monthlyreport::pdfReport()
                     .arg(QString::number(m_countyCounts[(CountyIds)i]), 5);
         }
     }
+
+    pdfString += "\n";
+    pdfString += QString("%1:%2")
+            .arg(QString("%1").arg("# of Children Indirectly Served", 35))
+            .arg(QString::number(m_childrenIndirect), 5);
+    pdfString += "\n";
+    pdfString += QString("%1:%2")
+            .arg(QString("%1").arg("# of Children Directly Served", 35))
+            .arg(QString::number(m_childrenDirect), 5);
+    pdfString += "\n";
+    pdfString += QString("%1:%2")
+            .arg("# of People at the Table", 35)
+            .arg(m_atTable, 5);
+    pdfString += "\n";
+    pdfString += QString("%1:%2")
+            .arg("# of People Indirectly Served", 35)
+            .arg(m_peopleIndirect, 5);
+    pdfString += "\n";
 
     pdfString += "\n\n================ INTAKE/CASE OUTCOME ===================";
     for(int i = 0; i < 10; i++)
@@ -237,10 +249,10 @@ void monthlyreport::pdfReport()
             .arg("Cases Opened this month", 35)
             .arg(QString::number(m_openCasesMonth), 5);
 
-
+    //JAS calculates all Closed_With_Session and Without Session
     pdfString += "\n";
     pdfString += QString("%1:%2")
-            .arg("Total Intake", 35)
+            .arg("Cases Closed this month", 35)
             .arg(QString::number(m_totalIntake), 5);
     pdfString += "\n";
 
@@ -293,15 +305,7 @@ void monthlyreport::pdfReport()
     pdfString += QString("%1:%2")
             .arg("Intake/Mediators Spanish", 35)
             .arg(m_translator, 5);
-    pdfString += "\n";
-    pdfString += QString("%1:%2")
-            .arg("# of People at the Table", 35)
-            .arg(m_atTable, 5);
-    pdfString += "\n";
-    pdfString += QString("%1:%2")
-            .arg("# of People Indirectly Served", 35)
-            .arg(m_peopleIndirect, 5);
-    pdfString += "\n";
+
 
     cursor.insertText(pdfString);
 

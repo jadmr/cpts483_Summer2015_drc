@@ -89,6 +89,11 @@ public:
      */
     void QueryMonthlyReport(MediatorArg arg) const;
 
+    //JAS Attempt at DELETE option
+
+    void DeleteDatabaseRecord(MediatorArg arg) const;
+
+
     MediationProcess *GetActiveMP() { return _activeMP; }
     void SetActiveMP(MediationProcess *mp) { _activeMP = mp; }
 private:
@@ -104,6 +109,9 @@ private:
     MediatorId _midMonthlyRpt;
     MediatorId _midSavePendingMP;
     MediatorId _midPointer;
+
+    //JAS for delete method
+    MediatorId _midDelete;
 
     MediationProcess* _activeMP;
 };

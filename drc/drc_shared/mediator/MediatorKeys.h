@@ -190,6 +190,11 @@ const QString MKEY_GUI_SHOW_NOTES_BROWSER = "MKEY_GUI_SHOW_NOTES_BROWSER";      
 // Set Notes for Notes Browser
 const QString MKEY_DOCK_SET_NOTES = "MKEY_DOCK_SET_NOTES";                                // MediationSessionsVector*
 
+//JAS Internal MP events to signal DELETE events
+const QString MKEY_GUI_REQUEST_DELETE_INTAKE = "MKEY_GUI_REQUEST_MONTHLY_REPORT";
+const QString MKEY_BL_REQUEST_DELETE_INTAKE = "MKEY_BL_REQUEST_MONTHLY_REPORT";
+const QString MKEY_DB_REQUEST_DELETE_INTAKE_DONE = "MKEY_DB_REQUEST_DELETE_INTAKE_DONE";
+
 
 //////////////////////////////////////////////////////////////////
 //				MEDIATION PROCESS - (GUI INTERNAL)

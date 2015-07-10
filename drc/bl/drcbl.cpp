@@ -29,6 +29,10 @@ DRCBL::DRCBL()
     _midSavePendingMP  = Mediator::Register(MKEY_GUI_MP_SAVE_PENDING, [this](MediatorArg arg) {CalculateInternalStateOnSavePending(arg);});
     _midPointer        = Mediator::Register(MKEY_GUI_SEND_MP_POINTER, [this](MediatorArg arg) {ReceiveMPPointer(arg);});
 
+    //JAS Delete method attempt
+    _midDelete         =Mediator::Register(MKEY_GUI_REQUEST_DELETE_INTAKE, [this](MediatorArg arg){DeleteDatabaseRecord(arg);});
+
+
     _activeMP = nullptr;
 }
 
@@ -45,6 +49,9 @@ DRCBL::~DRCBL()
     Mediator::Unregister(MKEY_GUI_REQUEST_MONTHLY_REPORT, _midMonthlyRpt);
     Mediator::Unregister(MKEY_GUI_MP_SAVE_PENDING, _midSavePendingMP);
     Mediator::Unregister(MKEY_GUI_SEND_MP_POINTER, _midPointer);
+
+    //JAS related to Delete method
+    Mediator::Unregister(MKEY_GUI_REQUEST_DELETE_INTAKE, _midDelete);
 }
 
 void DRCBL::ValidateMediationProcess(MediatorArg arg) const
@@ -146,4 +153,9 @@ void DRCBL::QueryMonthlyReport(MediatorArg arg) const
     Mediator::Call(MKEY_BL_REQUEST_MONTHLY_REPORT, arg);
 }
 
+//JAS attempting to find DELETE method
 
+void DRCBL::DeleteDatabaseRecord(MediatorArg arg) const
+{
+    Mediator::Call(MKEY_BL_REQUEST_DELETE_INTAKE, arg);
+}

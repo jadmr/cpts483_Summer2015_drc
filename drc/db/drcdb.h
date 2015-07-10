@@ -47,6 +47,10 @@ private:
     MediatorId _unregRequestMonthlyCall;
     MediatorId _unregSaveEvaluationCall;
     MediatorId _unregRequestResWaCall;
+
+    //JAS attempt to DELETE record
+    MediatorId _unregDeleteIntakeCall;
+
     bool CheckTables(QString tableName,QString columns);
 
 public:
@@ -370,6 +374,11 @@ public:
     //Used to replace QueryMonthlyReport
     //void testQueryMonthlyReport(MediatorArg arg);
     void testQueryResWaReport(MediatorArg arg);
+
+    //JAS testing a delete method
+    void DeleteDatabaseRecord(MediatorArg arg);
+
+
 
     MediationProcessVector* getClosedIntakePerMonth(QDateTime , QDateTime , CountyIds);
 

@@ -784,29 +784,29 @@ void ResWaReport::CalculatePeople()
                 switch(mp->GetSessionType())
                 {
                 case PHONE_SESSION:
-                    _numByPhoneConcilliation = _numByPhoneConcilliation + mp->GetDirectAdult();
-                    //_numByPhoneConcilliation++;
+                    //_numByPhoneConcilliation = _numByPhoneConcilliation + mp->GetDirectAdult();
+                    _numByPhoneConcilliation++;
                     if(isChild) {
                         _numChildByPhoneConcilliation++;
                     }
                     break;
                 case FACILITATION_SESSION:
-                    _numBySessionFacilliation = _numBySessionFacilliation + mp->GetDirectAdult();
-                    //_numBySessionFacilliation++;
+                    //_numBySessionFacilliation = _numBySessionFacilliation + mp->GetDirectAdult();
+                    _numBySessionFacilliation++;
                     if(isChild) {
                         _numChildBySessionFacilliation++;
                     }
                     break;
                 case MEDIATION_SESSION:
-                    _numBySessions = _numBySessions + mp->GetDirectAdult();
-                    //_numBySessions++;
+                    //_numBySessions = _numBySessions + mp->GetDirectAdult();
+                    _numBySessions++;
                     if(isChild) {
                         _numChildBySessions++;
                     }
                     break;
                 case COACHING_SESSION:
-                    _numByCoaching = _numByCoaching + mp->GetDirectAdult();
-                    //_numByCoaching++;
+                    //_numByCoaching = _numByCoaching + mp->GetDirectAdult();
+                    _numByCoaching++;
                     if(isChild) {
                         _numChildByCoaching++;
                     }
@@ -814,8 +814,8 @@ void ResWaReport::CalculatePeople()
                 default:
                     if(mp->GetInfoOnly() || (mp->GetState() == PROCESS_STATE_CLOSED_NO_SESSION))
                     {
-                        _numByPhone = _numByPhone + mp->GetDirectAdult();
-                        //_numByPhone++;
+                        //_numByPhone = _numByPhone + mp->GetDirectAdult();
+                        _numByPhone++;
                         if(isChild) {
                             _numChildByPhone++;  // this is likely always 0.
                         }

@@ -2,8 +2,11 @@
 #include "ui_mediationprocessstatusform.h"
 #include "toolbarmanager.h"
 #include <QLayout>
+#include <QMessageBox>
+#include <QtSql>
 #include "DRCModels.h"
 #include "Mediator.h"
+#include "drcdb.h"
 
 const QString SAVED_MSG = "Saved!";
 const QString NOT_SAVED_MSG = "Unsaved Changes!";
@@ -412,4 +415,41 @@ void MediationProcessStatusForm::on_printCourtDateCheckBox_toggled(bool checked)
     if(_loading) return;
     _mediationProcess->setPrintCourtDate(checked);
     Mediator::Call(MKEY_GUI_MP_SAVE_PENDING);
+}
+
+void MediationProcessStatusForm::on_deleteMediationButton_clicked()
+{
+    QMessageBox msgBox;
+    msgBox.addButton(QMessageBox::Yes);
+    msgBox.addButton(QMessageBox::No);
+    msgBox.setText("Are you sure you want to Delete Intake?");
+
+    int selection = msgBox.exec();
+
+    if(selection == QMessageBox::Yes)
+    {
+        MediatorArg arg = _mediationProcess;
+
+        Mediator::Call(MKEY_GUI_REQUEST_DELETE_INTAKE, arg);
+
+        Mediator::Call(MKEY_GUI_ENABLE_MENUS);
+
+
+
+
+
+
+       /* DRCDB *temp = new DRCDB();
+        int temp1 = _mediationProcess->GetId();
+        temp->DeleteDatabaseRecord(_mediationProcess->GetId());*/
+
+
+
+        //_mediationProcess->removeParty(_mediationProcess->GetId());
+       // _mediationProcess->SetCreatedDate(QDateTime::fromString(QString("2070-01-01"),"yyyy-MM-dd"));
+        //Mediator::Call(MKEY_GUI_SUBMIT_MEDIATION_PROCESS_FORM, _mediationProcess);
+
+
+
+    }
 }
