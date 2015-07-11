@@ -185,7 +185,7 @@ void monthlyreport::pdfReport()
     cursor.movePosition(QTextCursor::End);
 
     QString pdfString = "DRCTC Summary Statistics ";
-    QDate date(m_year,m_month,1);
+    QDate date(m_year,m_month,1);    
     pdfString += "for ";
     pdfString += date.toString("MMMM yyyy");
     pdfString += ".\n";
@@ -245,25 +245,32 @@ void monthlyreport::pdfReport()
     pdfString += "\n";
 
     //JAS should calculte mediations open in month selected
+    QString monthToString = "Cases Opened in ";
+    monthToString += date.toString("MMMM");
     pdfString += QString("%1:%2")
-            .arg("Cases Opened this month", 35)
+            .arg(monthToString, 35)
             .arg(QString::number(m_openCasesMonth), 5);
 
     //JAS calculates all Closed_With_Session and Without Session
+    monthToString = "Cases Closed in ";
+    monthToString += date.toString("MMMM");
     pdfString += "\n";
     pdfString += QString("%1:%2")
-            .arg("Cases Closed this month", 35)
+            .arg(monthToString, 35)
             .arg(QString::number(m_totalIntake), 5);
     pdfString += "\n";
 
     //JAS changed per Rosemary to display count when mediation is cancelled
+    monthToString = "Sessions Set & Cancelled in ";
+    monthToString += date.toString("MMMM");
     pdfString += QString("%1:%2")
-            .arg("Sessions Set & Cancelled", 35)
-            .arg(QString::number(m_outcomes[(SessionOutcomes)9]), 5);
-            //.arg(QString::number(m_sessionsCancelled), 5);
+            .arg(monthToString, 35)
+            .arg(QString::number(m_outcomes[(SessionOutcomes)9]), 5);            
     pdfString += "\n";
+    monthToString = "Total Cases Mediated in ";
+    monthToString += date.toString("MMMM");
     pdfString += QString("%1:%2")
-            .arg("Total Cases Mediated",35)
+            .arg(monthToString,35)
             .arg(QString::number(totalCasesMediated()), 5);
 
     pdfString += "\n\n================ REFERRALS per SOURCE =================";

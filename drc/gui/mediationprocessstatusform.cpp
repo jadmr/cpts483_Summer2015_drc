@@ -430,26 +430,9 @@ void MediationProcessStatusForm::on_deleteMediationButton_clicked()
     {
         MediatorArg arg = _mediationProcess;
 
-        Mediator::Call(MKEY_GUI_REQUEST_DELETE_INTAKE, arg);
-
-        Mediator::Call(MKEY_GUI_ENABLE_MENUS);
-
-
-
-
-
-
-       /* DRCDB *temp = new DRCDB();
-        int temp1 = _mediationProcess->GetId();
-        temp->DeleteDatabaseRecord(_mediationProcess->GetId());*/
-
-
-
-        //_mediationProcess->removeParty(_mediationProcess->GetId());
-       // _mediationProcess->SetCreatedDate(QDateTime::fromString(QString("2070-01-01"),"yyyy-MM-dd"));
-        //Mediator::Call(MKEY_GUI_SUBMIT_MEDIATION_PROCESS_FORM, _mediationProcess);
-
-
+        Mediator::Call(MKEY_GUI_REQUEST_DELETE_INTAKE, arg); //sends delete request to DB through BL
+        Mediator::Call(MKEY_GUI_ENABLE_MENUS); //Takes user to Main Menu
+        Mediator::Call(MKEY_DOCK_REQUEST_PENDING_MEDIATIONS); //Refresh the Browser Toolbox to clear deleted record
 
     }
 }

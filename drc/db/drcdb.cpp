@@ -1725,6 +1725,64 @@ void DRCDB::UpdateMediation(MediatorArg arg)
 }
 
 
+
+///////////////////////////////////////////////////////////////////////////////////
+//JAS Delete a selected mediation from Database
+///////////////////////////////////////////////////////////////////////////////////
+void DRCDB::DeleteDatabaseRecord(MediatorArg arg)
+{
+    MediationProcess* process = nullptr;
+
+    process = arg.getArg<MediationProcess*>();
+    int process_id = process->GetId();
+
+    //Delete record from the Mediation_Table based on process_id user selected
+    QSqlQuery DeleteQuery(database);
+    QString deleteCommandString = QString("Delete from Mediation_Table where Process_id = (%1)")
+            .arg(QString::number(process_id));
+    this->ExecuteCommand(deleteCommandString, DeleteQuery);
+
+    //Delete record from the Notes_Table
+    deleteCommandString = "";
+    deleteCommandString = QString("Delete from Notes_Table where Process_id = (%1)")
+            .arg(QString::number(process_id));
+    this->ExecuteCommand(deleteCommandString, DeleteQuery);
+
+    //Delete record from the Session_Table
+    deleteCommandString = "";
+    deleteCommandString = QString("Delete from Session_Table where Process_id = (%1)")
+            .arg(QString::number(process_id))   ;
+    this->ExecuteCommand(deleteCommandString, DeleteQuery);
+
+    //To delete client_session_table we need the Client_id.  which will
+    //delete the corrisponding Client_id record from Client_session_table
+    deleteCommandString = "";
+    deleteCommandString = QString("Select Client_Id from Client_Table where Process_id = (%1)")
+            .arg(QString::number(process_id));
+    this->ExecuteCommand(deleteCommandString, DeleteQuery);
+
+    //Delete items from Client_Session_Table
+    QSqlQuery DeleteClientIDs(database);
+    while(DeleteQuery.next())
+    {
+        QString client_id = DeleteQuery.value(0).toString();
+
+        deleteCommandString = "";
+        deleteCommandString = QString("Delete from Client_Session_Table where Client_id = (%1)")
+                .arg(client_id);
+        this->ExecuteCommand(deleteCommandString, DeleteClientIDs);
+    }
+
+    //Delete record from the Client_Table
+    deleteCommandString = "";
+    deleteCommandString = QString("Delete from Client_Table where Process_id = (%1)")
+            .arg(QString::number(process_id));
+    this->ExecuteCommand(deleteCommandString, DeleteQuery);
+
+     Mediator::Call(MKEY_DB_REQUEST_DELETE_INTAKE_DONE, arg);
+}
+
+
 void DRCDB::AddNewUser(MediatorArg arg)
 {
     User* user = nullptr;
@@ -2013,61 +2071,6 @@ bool DRCDB::UpdateObject(DBBaseObject* db_object)
     return insertSuccess;
 }
 
-
-///////////////////////////////////////////////////////////////////////////////////
-//JAS Delete a selected mediation from Database
-///////////////////////////////////////////////////////////////////////////////////
-void DRCDB::DeleteDatabaseRecord(MediatorArg arg)
-{
-    MediationProcess* process = nullptr;
-
-    process = arg.getArg<MediationProcess*>();
-    int process_id = process->GetId();
-
-    QSqlQuery UserQuery(database);
-    QString UserCommandString = QString("Delete from Mediation_Table where Process_id = '"+QString::number(process_id)+"'");
-
-    this->ExecuteCommand(UserCommandString, UserQuery);
-
-    //Delete record from the Notes_Table
-    UserCommandString = "";
-    UserCommandString = QString("Delete from Notes_Table where Process_id = '"+QString::number(process_id)+"'");
-
-    this->ExecuteCommand(UserCommandString, UserQuery);
-
-    //Delete record from the Session_Table
-    UserCommandString = "";
-    UserCommandString = QString("Delete from Session_Table where Process_id = '"+QString::number(process_id)+"'");
-
-    this->ExecuteCommand(UserCommandString, UserQuery);
-
-    //To delete client_session_table we need the Client_id
-    UserCommandString = "";
-    UserCommandString = QString("Select * from Client_Table where Process_id = '"+QString::number(process_id)+"'");
-
-    this->ExecuteCommand(UserCommandString, UserQuery);
-
-
-        //Delete records from the Client_Session_Table
-        while(UserQuery.next())
-        {
-            QString client_id = UserQuery.value(0).toString();
-
-            UserCommandString = "";
-            UserCommandString = QString("Delete from Client_Session_Table where Client_id = '"+client_id+"'");
-
-            this->ExecuteCommand(UserCommandString, UserQuery);
-
-        }
-
-    //Delete record from the Client_Table
-    UserCommandString = "";
-    UserCommandString = QString("Delete from Client_Table where Process_id = '"+QString::number(process_id)+"'");
-
-    this->ExecuteCommand(UserCommandString, UserQuery);
-
-     Mediator::Call(MKEY_DB_REQUEST_DELETE_INTAKE_DONE, arg);
-}
 
 
 //========================================================================
@@ -2400,7 +2403,6 @@ QString DRCDB::WhatOptionsEnabled()
 }
 //========================================================================
 //********************************Test Methods********************************
-
 
 
 
