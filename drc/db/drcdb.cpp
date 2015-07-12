@@ -1182,6 +1182,10 @@ MediationProcessVector* DRCDB::LoadMediations(QString processIds)
             session->SetState((SessionStates)sessionQuery.value(2).toInt());
             session->setOutcome((SessionOutcomes)sessionQuery.value(3).toInt());
 
+            //LORENZO Added created and updated time to vector. They were being left out for some reason
+            session->SetCreatedDate(QDateTime::fromString(sessionQuery.value(4).toString(), "yyyy-MM-dd hh:mm:ss"));
+            session->SetUpdatedDate(QDateTime::fromString(sessionQuery.value(5).toString(), "yyyy-MM-dd hh:mm:ss"));
+
             session->setMediationTime(QDateTime::fromString(sessionQuery.value(6).toString(), "yyyy-MM-dd hh:mm:ss"));
 
             session->setMediator1(sessionQuery.value(7).toString());
@@ -1197,7 +1201,10 @@ MediationProcessVector* DRCDB::LoadMediations(QString processIds)
             bool dataResult = false;
             dataResult = this->ExecuteCommand(data_command_string, DataQuery);
 
-            qDebug() << dataResult;
+            if (!dataResult)
+            {
+                qDebug() << dataResult;
+            }
 
             while(DataQuery.next())
             {
@@ -1288,9 +1295,10 @@ MediationProcessVector* DRCDB::LoadMediations(QString processIds)
             party->GetPrimary()->setAssistantName(clientQuery.value(8).toString());
             party->GetPrimary()->setAssistantPhone(clientQuery.value(9).toString());
             party->GetPrimary()->setAssistantEmail(clientQuery.value(10).toString());
-            qDebug()<< "Assistant: " + clientQuery.value(8).toString() +
+            //This was commented out because there was no known purpose
+            /*qDebug()<< "Assistant: " + clientQuery.value(8).toString() +
                        clientQuery.value(9).toString() +
-                       clientQuery.value(10).toString();
+                       clientQuery.value(10).toString();*/
             process->AddParty(party);
         }
 
@@ -1318,6 +1326,7 @@ void DRCDB::QueryMediations(MediatorArg arg)
     {
         Find_Query_Command_string = QString("Select * from Person_Table").arg(queryPerson->SearchQuery());
     }
+
     qDebug() << Find_Query_Command_string;
 
     this->ExecuteCommand(Find_Query_Command_string, Find_Query);
@@ -1361,6 +1370,19 @@ void DRCDB::QueryMediations(MediatorArg arg)
 }
 //========================================================================
 
+int DRCDB::getNumberOfMediations()
+{
+    QSqlQuery Mediation_query(database);
+    QString Mediation_command_string = "Select * from Mediation_Table";
+    this->ExecuteCommand(Mediation_command_string, Mediation_query);
+
+    int count = 0;
+    while(Mediation_query.next())
+    {
+        count++;
+    }
+    return count;
+}
 
 
 void DRCDB::LoadRecentMediations(MediatorArg arg)

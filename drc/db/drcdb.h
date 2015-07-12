@@ -59,7 +59,7 @@ public:
      * \param filename
      */
     void LoadDatabase(QString filename = "db.db3");
-
+    int getNumberOfMediations();
     //==========================================================================
     //These methods are used only by methods inside this database class.
     //They should be made private when in main project.

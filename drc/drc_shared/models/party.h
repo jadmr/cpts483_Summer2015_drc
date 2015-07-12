@@ -89,6 +89,10 @@ public:
      * \brief SetAttorney
      * \param attorney
      */
+
+    //LORENZO Added, then removed. This may be neccessary in the future, but _type seems to have no function now
+    //PartyTypes GetType() { return _type; }
+
     void SetAttorney(Person attorney) { _attorney = attorney; }
     /*!
      * \brief GetAttorney
