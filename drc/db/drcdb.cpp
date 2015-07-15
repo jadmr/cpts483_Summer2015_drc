@@ -2296,7 +2296,11 @@ QVector<QString> DRCDB::SelectOneFields(QString table_name, QString id_name, int
         {
             QSqlRecord temp = query_object.record();
             for (int index = 0 ; index < temp.count() ; ++index)
+            {
+                //-1163005939
+                QVariant ltest = query_object.value(index);
                 return_vec.push_back(query_object.value(index).toString());
+            }
         }
     }
 

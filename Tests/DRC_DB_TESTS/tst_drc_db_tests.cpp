@@ -83,7 +83,11 @@ enum ProcessColumns
     COURTORDERTYPE = 15,
     TRANSLATORREQUIRED = 16,
     SESSIONTYPE = 17,
-    MEDIATIONCLAUSE = 18
+    MEDIATIONCLAUSE = 18,
+    INDIRECTCHILDREN = 19,
+    DIRECTCHILDREN = 20,
+    INDIRECTADULT = 21,
+    DIRECTADULT = 22
 };
 
 enum SessionColumns
@@ -518,7 +522,10 @@ MediationProcess* DRC_DB_TESTS::InitializeProcessObject(QVector<QString> Process
     object->SetRequiresSpanish(          (bool)                              ProcessStringValues[TRANSLATORREQUIRED].toInt());
     object->SetSessionType(              (SessionTypes)                      ProcessStringValues[SESSIONTYPE].toInt());
     object->setMediationClause(          (bool)                              ProcessStringValues[MEDIATIONCLAUSE].toInt());
-
+    object->SetIndirectChildren(         (int)                               ProcessStringValues[INDIRECTCHILDREN].toInt() );
+    object->SetDirectChildren(           (int)                               ProcessStringValues[DIRECTCHILDREN].toInt() );
+    object->SetIndirectAdult(            (int)                               ProcessStringValues[INDIRECTADULT].toInt() );
+    object->SetDirectAdult(              (int)                               ProcessStringValues[DIRECTADULT].toInt() );
     return object;
 }
 
@@ -1052,6 +1059,10 @@ void DRC_DB_TESTS::AllocateProcessColumns()
     mediation_table_columns.push_back("TranslatorRequired");
     mediation_table_columns.push_back("SessionType");
     mediation_table_columns.push_back("MediationClause");
+    mediation_table_columns.push_back("IndirectChildren");
+    mediation_table_columns.push_back("DirectChildren");
+    mediation_table_columns.push_back("IndirectAdult");
+    mediation_table_columns.push_back("DirectAdult");
 }
 
 void DRC_DB_TESTS::AllocateSessionColumns()
@@ -1185,6 +1196,13 @@ void DRC_DB_TESTS::AllocateEmptyProcessVector()
     empty_process_values.push_back(QString("0"));                           //TRANSLATORREQUIRED
     empty_process_values.push_back(QString("0"));                           //SESSIONTYPE
     empty_process_values.push_back(QString("0"));                           //MEDIATIONCLAUSE
+
+    QVariant temp;
+    temp = qlonglong(-1163005939);
+    empty_process_values.push_back(QString(temp.toString()));                           //IndirectChildren
+    empty_process_values.push_back(QString(temp.toString()));                           //DirectChildren
+    empty_process_values.push_back(QString(temp.toString()));                           //IndirectAdult
+    empty_process_values.push_back(QString(temp.toString()));                           //DirectAdult
 }
 
 void DRC_DB_TESTS::AllocateFullProcessVector()
@@ -1208,6 +1226,10 @@ void DRC_DB_TESTS::AllocateFullProcessVector()
     full_process_values.push_back("1");                     //Is Spanish Required - TRUE
     full_process_values.push_back("1");                     //SessionTypes - MEDIATION_SESSION
     full_process_values.push_back("1");                     //MediationClause - TRUE
+    full_process_values.push_back("1");                     //IndirectChildren
+    full_process_values.push_back("2");                     //DirectChildren
+    full_process_values.push_back("3");                     //IndirectAdult
+    full_process_values.push_back("4");                     //DirectAdult
 }
 
 void DRC_DB_TESTS::AllocateEmptySessionVector()

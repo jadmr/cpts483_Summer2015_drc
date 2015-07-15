@@ -20,7 +20,6 @@ private Q_SLOTS:
     // Each function however builds on the previous.
     // For example, if providing a name was tested in the first function,
     // it is assumed that for all the remaining tests a name is provided.
-
     void testOnlyNameProvided(); // tests the progress out of NONE
     void testNoNameProvided();
     void testNameProvided();
