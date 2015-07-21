@@ -44,6 +44,13 @@ MediationProcess::MediationProcess()
     , _mediationClause(false)
     , _printCourtDate(true)
 
+    //JAS set defalut values
+    , _indirectAdult(0)
+    , _indirectChildren(0)
+    , _directAdult(0)
+    , _directChildren(0)
+
+
 {
     _courtDate = QDate::currentDate();
 }

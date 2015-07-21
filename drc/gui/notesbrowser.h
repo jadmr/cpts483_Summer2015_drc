@@ -19,6 +19,7 @@ class NotesBrowser : public QWidget
 
 public:
     explicit NotesBrowser(QWidget *parent = 0, MediationNotesVector* notesVec = nullptr);
+
     ~NotesBrowser();
     /*!
      * \brief SetNotes
@@ -30,6 +31,7 @@ public:
      * \param arg
      */
     void SetNotesEvent(MediatorArg arg);
+
 
 private slots:
     /*!
@@ -55,6 +57,8 @@ private slots:
     void on_newNoteBtn_clicked();
 
     void on_noteInput_textChanged();
+
+   //void on_noteInput_editingFinished();
 
 private:
     Ui::NotesBrowser *ui;

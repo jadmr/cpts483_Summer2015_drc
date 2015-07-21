@@ -89,7 +89,7 @@ public:
      */
     void QueryMonthlyReport(MediatorArg arg) const;
 
-    //JAS Attempt at DELETE option
+    //JAS Delete selected record from the Database
 
     void DeleteDatabaseRecord(MediatorArg arg) const;
 

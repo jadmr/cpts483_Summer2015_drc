@@ -101,25 +101,25 @@ void NotesBrowser::SetNotesEvent(MediatorArg arg)
 
 void NotesBrowser::on_saveNoteBtn_clicked()
 {
-    QString message = ui->noteInput->toPlainText();
-    if(message.length())
+        QString message = ui->noteInput->toPlainText();
+     if(message.length())
     {
         // update the current note
-        int curRow = ui->tableWidget->currentRow();
-        if((int)_notes->size() > curRow && curRow >= 0 && !_editingNewNote)
-            _notes->at(ui->tableWidget->currentRow())->SetMessage(message);
-        // Add a new note
-        else _notes->push_back(new Note(message));
+         int curRow = ui->tableWidget->currentRow();
+         if((int)_notes->size() > curRow && curRow >= 0 && !_editingNewNote)
+             _notes->at(ui->tableWidget->currentRow())->SetMessage(message);
+         // Add a new note
+         else _notes->push_back(new Note(message));
 
-        ui->noteInput->clear();
-        PopulateTable();
-        Mediator::Call(MKEY_GUI_MP_SAVE_PENDING);
-        ui->tableWidget->setCurrentCell(-1,-1);
-        bool* change = new bool(false);
-        Mediator::Call(MKEY_GUI_NOTE_CHANGED,change);
-    }
 
-}
+         ui->noteInput->clear();
+         PopulateTable();
+         Mediator::Call(MKEY_GUI_MP_SAVE_PENDING);
+         ui->tableWidget->setCurrentCell(-1,-1);
+         bool* change = new bool(false);
+         Mediator::Call(MKEY_GUI_NOTE_CHANGED,change);
+     }
+ }
 
 void NotesBrowser::on_delNoteBtn_clicked()
 {
@@ -157,3 +157,5 @@ void NotesBrowser::on_noteInput_textChanged()
     bool *change = new bool(true);
     Mediator::Call(MKEY_GUI_NOTE_CHANGED,change);
 }
+
+

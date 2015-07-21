@@ -197,9 +197,9 @@ void ResWaReport::BuildCasesSection(QTextCursor& cursor)
     QTextTable *table = cursor.insertTable(CasesTableRows, CasesTableCols, tableFormat);
     // HEADERS
     TextToCell(table, CT_TOTAL_CASES_SETTLED, 0, "Cases Settled");
-    TextToCell(table, CT_TOTAL_CASES_PERC, 0, "Percentage of total cases settled");
+    TextToCell(table, CT_TOTAL_CASES_PERC, 0, "Percentage of Total Cases Settled");
     TextToCell(table, 0, CT_H_PARENTING, "Parenting Plans");
-    TextToCell(table, 0, CT_H_DISOLUTION, "Disolution");
+    TextToCell(table, 0, CT_H_DISOLUTION, "Dissolution");
     TextToCell(table, 0, CT_H_FORECLOSURE, "Foreclosure");
     TextToCell(table, 0, CT_H_TENANT, "Tenant Landlord");
     TextToCell(table, 0, CT_H_BUSINESS, "Business");
@@ -212,22 +212,22 @@ void ResWaReport::BuildCasesSection(QTextCursor& cursor)
     TextToCell(table, 0, CT_H_OTHER, "Other");
     TextToCell(table, 0, CT_H_TOTAL, "Total");
     // ROW INDICES
-    TextToCell(table, CT_SMALL_CLAIMS , 0, "Small claims court cases", nullptr, &_tableIndexDark);
-    TextToCell(table, CT_SMALL_CLAIMS_SETTLED, 0, "Small Claims Court cases settled", nullptr, &_tableIndexDark);
-    TextToCell(table, CT_SMALL_CLAIMS_PERC, 0, "Percentage of Small Claims cases settled", nullptr, &_tableIndexDark);
-    TextToCell(table, CT_OTHER_DIST_COURT, 0, "Other District Cout cases");
-    TextToCell(table, CT_OTHER_DIST_COURT_SETTLED, 0, "Other District Cout cases settled");
-    TextToCell(table, CT_OTHER_DIST_COURT_PERC, 0, "Percentage of district court cases settled");
-    TextToCell(table, CT_JUVENIILE_COURT, 0, "Juvenile Court cases", nullptr, &_tableIndexDark);
-    TextToCell(table, CT_JUVENIILE_COURT_SETTLED, 0, "Juvenile cases settled", nullptr, &_tableIndexDark);
-    TextToCell(table, CT_JUVENIILE_COURT_PERC, 0, "Percentage of Juvenile cases settled", nullptr, &_tableIndexDark);
-    TextToCell(table, CT_SUPERIOR_COURT, 0, "Superior Court cases");
-    TextToCell(table, CT_SUPERIOR_COURT_SETTLED, 0, "Superior Court cases settled");
-    TextToCell(table, CT_SUPERIOR_COURT_PERC, 0, "Percentage of Superior cases settled");
-    TextToCell(table, CT_OTHER_CASES, 0, "Other cases", nullptr, &_tableIndexDark);
-    TextToCell(table, CT_OTHER_CASES_SETTLED, 0, "Other cases settled", nullptr, &_tableIndexDark);
-    TextToCell(table, CT_OTHER_CASES_PERC, 0, "Percentage of Other cases settled", nullptr, &_tableIndexDark);
-    TextToCell(table, CT_TOTAL_CASES, 0, "Total cases");
+    TextToCell(table, CT_SMALL_CLAIMS , 0, "Small Claims Court Cases", nullptr, &_tableIndexDark);
+    TextToCell(table, CT_SMALL_CLAIMS_SETTLED, 0, "Small Claims Court Cases Settled", nullptr, &_tableIndexDark);
+    TextToCell(table, CT_SMALL_CLAIMS_PERC, 0, "Percentage of Small Claims Cases Settled", nullptr, &_tableIndexDark);
+    TextToCell(table, CT_OTHER_DIST_COURT, 0, "Other District Court Cases");
+    TextToCell(table, CT_OTHER_DIST_COURT_SETTLED, 0, "Other District Court Cases Settled");
+    TextToCell(table, CT_OTHER_DIST_COURT_PERC, 0, "Percentage of District Court Cases Settled");
+    TextToCell(table, CT_JUVENIILE_COURT, 0, "Juvenile Court Cases", nullptr, &_tableIndexDark);
+    TextToCell(table, CT_JUVENIILE_COURT_SETTLED, 0, "Juvenile Cases Settled", nullptr, &_tableIndexDark);
+    TextToCell(table, CT_JUVENIILE_COURT_PERC, 0, "Percentage of Juvenile Cases Settled", nullptr, &_tableIndexDark);
+    TextToCell(table, CT_SUPERIOR_COURT, 0, "Superior Court Cases");
+    TextToCell(table, CT_SUPERIOR_COURT_SETTLED, 0, "Superior Court Cases Settled");
+    TextToCell(table, CT_SUPERIOR_COURT_PERC, 0, "Percentage of Superior Cases Settled");
+    TextToCell(table, CT_OTHER_CASES, 0, "Other Cases", nullptr, &_tableIndexDark);
+    TextToCell(table, CT_OTHER_CASES_SETTLED, 0, "Other Cases Settled", nullptr, &_tableIndexDark);
+    TextToCell(table, CT_OTHER_CASES_PERC, 0, "Percentage of Other Cases Settled", nullptr, &_tableIndexDark);
+    TextToCell(table, CT_TOTAL_CASES, 0, "Total Cases");
 
     // POPULATE CELLS FROM MATRIX
     for (auto row = 1; row < CasesTableRows; ++row)
@@ -241,7 +241,7 @@ void ResWaReport::BuildCallsSection(QTextCursor& cursor)
 {
     cursor.movePosition(QTextCursor::End);
     cursor.insertBlock();
-    cursor.insertText("\n\n2) CALLS (Information, intake, and referal calls)\n", _headerFormat);
+    cursor.insertText("\n\n2) CALLS (Information, Intake, and Referal Calls)\n", _headerFormat);
 
     cursor.insertBlock();
     cursor.movePosition(QTextCursor::End);

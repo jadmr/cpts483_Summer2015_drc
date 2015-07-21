@@ -215,11 +215,11 @@ void monthlyreport::pdfReport()
             .arg(QString::number(m_childrenDirect), 5);
     pdfString += "\n";
     pdfString += QString("%1:%2")
-            .arg("# of People at the Table", 35)
+            .arg("# of Adults at the Table", 35)
             .arg(m_atTable, 5);
     pdfString += "\n";
     pdfString += QString("%1:%2")
-            .arg("# of People Indirectly Served", 35)
+            .arg("# of Adults Indirectly Served", 35)
             .arg(m_peopleIndirect, 5);
     pdfString += "\n";
 

@@ -124,7 +124,7 @@ private slots:
     void on_notesPushButton_clicked();
 
 
-    //JAS going to see if we can update some records
+    //JAS used to update the Direct/Indirect values for mediation
     void on_numIndirectChildrenSpinBox_editingFinished();
     void on_numDirectChildrenSpinBox_editingFinished();
     void on_numDirectAdultsSpinBox_editingFinished();

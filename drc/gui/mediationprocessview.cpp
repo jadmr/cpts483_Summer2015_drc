@@ -365,14 +365,56 @@ void MediationProcessView::diplaySessions()
 void MediationProcessView::on_addCientPushButton_clicked()
 {
 
-    Party* newParty = new Party();
-    _mediationProcess->AddParty(newParty);
-    PartyForm* pForm = new PartyForm(ui->partyTabWidget, newParty);
-    ui->partyTabWidget->addTab(pForm, newParty->GetPrimary()->FullName() );
-    connect(pForm,SIGNAL(SaveSignaled()),this,SLOT(SaveSignaled()));
-    Mediator::Call(MKEY_GUI_MP_SAVE_PENDING);
-    PopulateView();
-    ui->partyTabWidget->setCurrentIndex(ui->partyTabWidget->count()-1);
+
+
+    //JAS testing noted method needs some thought
+    /*if(_notes_Changed)
+    {
+
+               // Pass null to notes browser to disable it.
+                Mediator::Call(MKEY_DOCK_SET_NOTES, nullptr);
+                //Mediator::Call(MKEY_GUI_ENABLE_MENUS);
+                _notes_Changed = false;
+    }*/
+
+    if(_notes_Changed)
+    {
+        QMessageBox msgBox;
+        msgBox.addButton(QMessageBox::Yes);
+        msgBox.addButton(QMessageBox::No);
+        msgBox.setText("Notes not saved, are you sure you want to continue without saving?");
+
+        int selection = msgBox.exec();
+
+        if(selection == QMessageBox::Yes)
+        {
+            bool* change = new bool(false);
+            Mediator::Call(MKEY_GUI_NOTE_CHANGED,change);
+
+            //JAS do the new tab
+            Party* newParty = new Party();
+            _mediationProcess->AddParty(newParty);
+            PartyForm* pForm = new PartyForm(ui->partyTabWidget, newParty);
+            ui->partyTabWidget->addTab(pForm, newParty->GetPrimary()->FullName() );
+            connect(pForm,SIGNAL(SaveSignaled()),this,SLOT(SaveSignaled()));
+            Mediator::Call(MKEY_GUI_MP_SAVE_PENDING);
+            PopulateView();
+            ui->partyTabWidget->setCurrentIndex(ui->partyTabWidget->count()-1);
+
+        }
+    }
+    else
+    {
+        Party* newParty = new Party();
+        _mediationProcess->AddParty(newParty);
+        PartyForm* pForm = new PartyForm(ui->partyTabWidget, newParty);
+        ui->partyTabWidget->addTab(pForm, newParty->GetPrimary()->FullName() );
+        connect(pForm,SIGNAL(SaveSignaled()),this,SLOT(SaveSignaled()));
+        Mediator::Call(MKEY_GUI_MP_SAVE_PENDING);
+        PopulateView();
+        ui->partyTabWidget->setCurrentIndex(ui->partyTabWidget->count()-1);
+    }
+
 }
 
 void MediationProcessView::on_removeClientPushButton_clicked()
