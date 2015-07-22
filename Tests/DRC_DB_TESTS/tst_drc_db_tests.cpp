@@ -118,6 +118,28 @@ enum ClientSessionColumns
     ATTABLE = 10
 };
 
+enum MediationEvaluationColums
+{
+    FAIRYES = 4,
+    FAIRNO = 5,
+    FAIRSOMEWHAT = 6,
+    IMPROVEYES = 7,
+    IMPROVENO = 8,
+    IMPROVESOMEWHAT = 9,
+    COMMUNICATEYES = 10,
+    COMMUNICATENO = 11,
+    COMMUNICATESOMEWHAT = 12,
+    UNDERSTANDYES = 13,
+    UNDERSTANDNO = 14,
+    UNDERSTANDSOMEWHAT = 15,
+    RECOMMENDYES = 16,
+    RECOMMENDNO = 17,
+    RECOMMENDSOMEWHAT = 18,
+    AGREEMENTYES = 19,
+    AGREEMENTNO = 20,
+    AGREEMENTSOMEWHAT = 21
+};
+
 class DRC_DB_TESTS : public QObject
 {
     Q_OBJECT
@@ -157,6 +179,16 @@ private Q_SLOTS:
     void CheckInsertEmptyNoteObject();
     void CheckInsertFullNoteObject();
 
+    void CheckCreateEvaluationTable();
+    void CheckEvaluationColumn();
+    //TODO: Finish following functions
+    void CheckInsertEmptyEvaluationObject();
+    void CheckInsertFullEvaluationObject();
+
+    //TODO: Check User table
+
+    //TODO: Check sqlite_sequence stuff
+
     void CheckInsertEntireMediationObject();
 
 
@@ -189,6 +221,7 @@ public:
     Party* InitializeClientObject(Person *Primary);
     ClientSessionData* InitializeClientSessionObject(QVector<QString> ClientSessionValues);
     Note* InitializeNoteObject(QVector<QString> NoteStringValues);
+    MediationEvaluation* InitializeEvaluationObject(QVector<QString> values);
 
     MediationProcess* InitializeEntireMediationProcess();
 
@@ -202,6 +235,7 @@ public:
     void AllocateClientColumns();
     void AllocateClientSessionColumns();
     void AllocateNotesColumns();
+    void AllocateEvaluationColumns();
 
     void AllocateEmptyPersonVector();
     void AllocateFullPersonVector();
@@ -221,15 +255,19 @@ public:
     void AllocateEmptyNoteValues();
     void AllocateFullNoteValues();
 
+    void AllocateEmptyEvaluationVector();
+
 private:
     DRCDB _db;
 
+    //These trackers take care of the clean up
     QVector<Person*> PersonObjectsTracker;
     QVector<MediationProcess*> ProcessObjectsTracker;
     QVector<MediationSession*> SessionObjectsTracker;
     QVector<Party*> PartyObjectsTracker;
     QVector<ClientSessionData*> ClientSessionObjectsTracker;
     QVector<Note*> NoteObjectsTracker;
+    QVector<MediationEvaluation*> MediationEvaluationObjectsTracker;
 
 
 
@@ -254,6 +292,7 @@ private:
     QVector<QString> client_table_columns;
     QVector<QString> client_session_table_columns;
     QVector<QString> notes_table_columns;
+    QVector<QString> evaluation_table_columns;
 
     QVector<QString> empty_person_values;
     QVector<QString> full_person_values;
@@ -273,6 +312,9 @@ private:
     QVector<QString> empty_note_values;
     QVector<QString> full_note_values;
 
+    QVector<QString> empty_evaluation_values;
+    QVector<QString> full_evaluation_values;
+
     Person* EmptyPerson;
     Person* FullPerson;
 
@@ -291,6 +333,8 @@ private:
     Note* EmptyNote;
     Note* FullNote;
 
+    MediationEvaluation* EmptyEvaluation;
+    MediationEvaluation* FullEvaluation;
 
 private slots:
     void initTestCase()
@@ -340,6 +384,12 @@ private slots:
             object = nullptr;
         }
 
+        foreach(MediationEvaluation* object, MediationEvaluationObjectsTracker)
+        {
+            delete object;
+            object = nullptr;
+        }
+
         //*******For the sake of this Test Suite, we delete database after every run.*******
         //*******Comment out if undesirable; IE, looking inside file directly.       *******
         //*******Be sure to manually delete if you do comment this line out.         *******
@@ -381,6 +431,8 @@ DRC_DB_TESTS::DRC_DB_TESTS() : DateFormat("yyyy-MM-dd"), DateTimeFormat("yyyy-MM
 
     EmptyNote = InitializeNoteObject(empty_note_values);
     FullNote = InitializeNoteObject(full_note_values);
+
+    EmptyEvaluation = InitializeEvaluationObject(empty_evaluation_values);
 }
 //=======================================================
 
@@ -401,6 +453,7 @@ void DRC_DB_TESTS::AllocateTableColumns()
     AllocateClientColumns();
     AllocateClientSessionColumns();
     AllocateNotesColumns();
+    AllocateEvaluationColumns();
 }
 
 void DRC_DB_TESTS::AllocateVectorValues()
@@ -422,6 +475,8 @@ void DRC_DB_TESTS::AllocateVectorValues()
 
     AllocateEmptyNoteValues();
     AllocateFullNoteValues();
+
+    AllocateEmptyEvaluationVector();
 }
 
 MediationProcess* DRC_DB_TESTS::InitializeEntireMediationProcess()
@@ -450,6 +505,36 @@ Note* DRC_DB_TESTS::InitializeNoteObject(QVector<QString> NoteStringValues)
     object->SetSessionId(                                                      NoteStringValues[NOTE_SESSION_ID].toInt());
     object->SetMessage(                                                        NoteStringValues[NOTE]);
     object->SetCreatedDate(             QDateTime::fromString(                 NoteStringValues[CREATEDATE], DateTimeFormat));
+
+    return object;
+}
+
+//TODO: Finish initialize function. The issue with this function is that the Yes/No/Somewhat values seem to be
+//stored differently in the database than in the mediationEvaluation object
+MediationEvaluation* DRC_DB_TESTS::InitializeEvaluationObject(QVector<QString> values)
+{
+    MediationEvaluation* object = new MediationEvaluation;
+    //This tracker takes care of the clean up
+    MediationEvaluationObjectsTracker.push_back(object);
+
+//    FAIRYES = 4,
+//    FAIRNO = 5,
+//    FAIRSOMEWHAT = 6,
+//    IMPROVEYES = 7,
+//    IMPROVENO = 8,
+//    IMPROVESOMEWHAT = 9,
+//    COMMUNICATEYES = 10,
+//    COMMUNICATENO = 11,
+//    COMMUNICATESOMEWHAT = 12,
+//    UNDERSTANDYES = 13,
+//    UNDERSTANDNO = 14,
+//    UNDERSTANDSOMEWHAT = 15,
+//    RECOMMENDYES = 16,
+//    RECOMMENDNO = 17,
+//    RECOMMENDSOMEWHAT = 18,
+//    AGREEMENTYES = 19,
+//    AGREEMENTNO = 20,
+//    AGREEMENTSOMEWHAT = 21
 
     return object;
 }
@@ -1006,6 +1091,38 @@ void DRC_DB_TESTS::CheckInsertFullNoteObject()
     QCOMPARE(FullResults, full_note_values);
 }
 
+//TODO: Finish function
+void DRC_DB_TESTS::CheckCreateEvaluationTable()
+{
+    QCOMPARE(_db.CreateEvaluationTable(evaluationTableName), true);
+    QCOMPARE(_db.DoesTableExist(evaluationTableName), true);
+}
+
+//TODO: Finish function
+void DRC_DB_TESTS::CheckEvaluationColumn()
+{
+    QVERIFY2(evaluation_table_columns.size() > 0, "Person TestColumn Vector Contains No Columns");
+    QVector<QString> database_columns = _db.GetColumnsList(evaluationTableName);
+
+    QVERIFY2(database_columns.size() > 0, "Person DatabaseColumn Vector Contains No Columns");
+    QCOMPARE(evaluation_table_columns.size(), database_columns.size());
+
+    OutputColumnInfo(database_columns, evaluation_table_columns, "VERIFY_PERSON_COLUMNS_DEBUG.txt");
+    QCOMPARE(evaluation_table_columns, database_columns);
+}
+
+//TODO: Finish function
+void DRC_DB_TESTS::CheckInsertEmptyEvaluationObject()
+{
+
+}
+
+//TODO: Finish function
+void DRC_DB_TESTS::CheckInsertFullEvaluationObject()
+{
+
+}
+
 void DRC_DB_TESTS::AllocateTableNames()
 {
     person_table_name = QString("Person_Table");
@@ -1119,6 +1236,32 @@ void DRC_DB_TESTS::AllocateNotesColumns()
     notes_table_columns.push_back("Session_id");
     notes_table_columns.push_back("Note");
     notes_table_columns.push_back("CreateDate");
+}
+
+void DRC_DB_TESTS::AllocateEvaluationColumns()
+{
+    evaluation_table_columns.push_back("Id");
+    evaluation_table_columns.push_back("startDate");
+    evaluation_table_columns.push_back("endDate");
+    evaluation_table_columns.push_back("CountyId");
+    evaluation_table_columns.push_back("FairYes");
+    evaluation_table_columns.push_back("FairNo");
+    evaluation_table_columns.push_back("FairSomewhat");
+    evaluation_table_columns.push_back("ImproveYes");
+    evaluation_table_columns.push_back("ImproveNo");
+    evaluation_table_columns.push_back("ImproveSomewhat");
+    evaluation_table_columns.push_back("CommunicateYes");
+    evaluation_table_columns.push_back("CommunicateNo");
+    evaluation_table_columns.push_back("CommunicateSomewhat");
+    evaluation_table_columns.push_back("UnderstandYes");
+    evaluation_table_columns.push_back("UnderstandNo");
+    evaluation_table_columns.push_back("UnderstandSomewhat");
+    evaluation_table_columns.push_back("RecommendYes");
+    evaluation_table_columns.push_back("RecommendNo");
+    evaluation_table_columns.push_back("RecommendSomewhat");
+    evaluation_table_columns.push_back("AgreementYes");
+    evaluation_table_columns.push_back("AgreementNo");
+    evaluation_table_columns.push_back("AgreementSomewhat");
 }
 
 void DRC_DB_TESTS::AllocateEmptyPersonVector()
@@ -1340,6 +1483,32 @@ void DRC_DB_TESTS::AllocateFullNoteValues()
     full_note_values.push_back("0");
     full_note_values.push_back("This note is going to be filled with wonderfully meaningful, and useful things.");
     full_note_values.push_back("2700-12-31 23:59:59");
+}
+
+void DRC_DB_TESTS::AllocateEmptyEvaluationVector()
+{
+    empty_evaluation_values.push_back("1");
+    empty_evaluation_values.push_back("2014-07-24 00:00:01");
+    empty_evaluation_values.push_back("2014-07-24 00:00:02");
+    empty_evaluation_values.push_back("1");
+    empty_evaluation_values.push_back("0");
+    empty_evaluation_values.push_back("0");
+    empty_evaluation_values.push_back("0");
+    empty_evaluation_values.push_back("0");
+    empty_evaluation_values.push_back("0");
+    empty_evaluation_values.push_back("0");
+    empty_evaluation_values.push_back("0");
+    empty_evaluation_values.push_back("0");
+    empty_evaluation_values.push_back("0");
+    empty_evaluation_values.push_back("0");
+    empty_evaluation_values.push_back("0");
+    empty_evaluation_values.push_back("0");
+    empty_evaluation_values.push_back("0");
+    empty_evaluation_values.push_back("0");
+    empty_evaluation_values.push_back("0");
+    empty_evaluation_values.push_back("0");
+    empty_evaluation_values.push_back("0");
+    empty_evaluation_values.push_back("0");
 }
 
 QTEST_APPLESS_MAIN(DRC_DB_TESTS)
