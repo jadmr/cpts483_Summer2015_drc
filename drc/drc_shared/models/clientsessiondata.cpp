@@ -92,7 +92,9 @@ bool ClientSessionData::isPaid() const
  */
 bool ClientSessionData::isNoFee() const
 {
-    return (fee.isEmpty() || (fee.toDouble() == 0));
+    //Include 0 as a fee
+    return (fee.isEmpty());
+    //return (fee.isEmpty() || (fee.toDouble() == 0));
 }
 
 void ClientSessionData::print(QTextCursor &cursor)
