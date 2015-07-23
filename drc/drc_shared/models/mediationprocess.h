@@ -191,6 +191,10 @@ public:
 
     int SetDirectAdult(int type){_directAdult = type;}
 
+    //JAS Shorthand Notes
+
+    void SetShortNotes (QString type){_shortNotes = type;}
+    QString GetShortNotes(){return _shortNotes;}
 
 
 
@@ -363,6 +367,9 @@ private:
     int _directChildren;
     int _indirectAdult;
     int _directAdult;
+
+    //JAS Shorthand Notes
+    QString _shortNotes;
 
 
     ///////////////// Report Builder ///////////////////

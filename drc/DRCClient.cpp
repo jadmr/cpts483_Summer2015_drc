@@ -430,10 +430,10 @@ void DRCClient::ShowBrowser(MPBrowserTypes browserType)
                 shouldDisplayTable = false;
             }
             else
-*/            {
+*/            //{
                 _browserDock->show();
                 shouldDisplayTable = false;
-            }
+            //}
         }
     }
 

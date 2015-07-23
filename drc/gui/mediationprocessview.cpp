@@ -96,6 +96,11 @@ void MediationProcessView::setAdultChildrenCounts(MediationProcess* process)
     ui->numDirectAdultsSpinBox->setValue(process->GetDirectAdult());
 
     ui->numIndirectAdultsSpinBox->setValue(process->GetIndirectAdult());
+
+    //JAS Shorthand notes
+
+    ui->ShortNotes->setText(process->GetShortNotes());
+
 }
 void MediationProcessView::PopulateView()
 {
@@ -540,3 +545,9 @@ void MediationProcessView::on_numDirectAdultsSpinBox_editingFinished()
     Mediator::Call(MKEY_GUI_MP_SAVE_PENDING);
 }
 
+//JAS Shorthand Notes
+void MediationProcessView::on_ShortNotes_textEdited()
+{
+    _mediationProcess->SetShortNotes(ui->ShortNotes->text());
+    Mediator::Call(MKEY_GUI_MP_SAVE_PENDING);
+}

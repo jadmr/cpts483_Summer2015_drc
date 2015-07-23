@@ -73,7 +73,7 @@ void MediationProcessStatusForm::Update()
 //    ui->expirationDateTimeEdit->setDateTime(_mediationProcess->GetCourtOrderExpiration());
     sessionTypeDisplay();
     ui->mediationClauseCheckBox->setEnabled(false);
-    ui->lastActivityDisplayLabel->setText(_mediationProcess->GetUpdatedDate().toString("MM/dd/yyyy"));
+    //JAS Change to remove   ui->lastActivityDisplayLabel->setText(_mediationProcess->GetUpdatedDate().toString("MM/dd/yyyy"));
     if(_mediationProcess->GetDisputeType() == DISPUTE_T_PARENTING_PLAN)
     {
         ui->mediationClauseCheckBox->setEnabled(true);
@@ -422,7 +422,7 @@ void MediationProcessStatusForm::on_deleteMediationButton_clicked()
     QMessageBox msgBox;
     msgBox.addButton(QMessageBox::Yes);
     msgBox.addButton(QMessageBox::No);
-    msgBox.setText("Are you sure you want to Delete Intake?");
+    msgBox.setText("Are you sure you want to Delete this Intake?");
 
     int selection = msgBox.exec();
 

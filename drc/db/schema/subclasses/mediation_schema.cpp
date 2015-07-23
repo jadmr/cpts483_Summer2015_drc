@@ -38,6 +38,7 @@ void MediationSchema::initializeHeaders()
     mediationHeaders.append("DirectChildren");
     mediationHeaders.append("IndirectAdult");
     mediationHeaders.append("DirectAdult");
+    mediationHeaders.append("ShorthandNotes");
 
     setHeader(mediationHeaders);
 }

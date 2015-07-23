@@ -387,6 +387,9 @@ bool DRCDB::CreateMediationTable(const QString& mediation_table_name)
     mediation_table_columns.push_back(QString("IndirectAdult integer"));
     mediation_table_columns.push_back(QString("DirectAdult integer"));
 
+    //JAS Shorthand Notes
+    mediation_table_columns.push_back(QString("ShorthandNotes char(128)"));
+
     return CreateTable(mediation_table_name, mediation_table_columns);
 }
 
@@ -1165,6 +1168,10 @@ MediationProcessVector* DRCDB::LoadMediations(QString processIds)
         process->SetIndirectAdult(Mediation_query.value(21).toInt());
         process->SetDirectAdult(Mediation_query.value(22).toInt());
 
+        //JAS Shorthand Notes
+        process->SetShortNotes(Mediation_query.value(23).toString());
+
+        QString testing = process->GetShortNotes();
 
         //Grab sessions based on the mediation id
         QSqlQuery sessionQuery(database);

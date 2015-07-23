@@ -58,7 +58,9 @@ void MediationBrowser::ConfigMediationProcecssViewTable()
         ui->tableWidget->setColumnCount(4);
         ui->tableWidget->setRowCount(_mediationsVector.size());
         QStringList header;
-        header <<"Updated"<<"Opened"<<"Client1"<<"Status";
+        //JAS Shorthand Notes
+        header <<"Tags"<<"Client1"<<"Opened"<<"Status";
+        //header <<"Updated"<<"Opened"<<"Client1"<<"Status";
         ui->tableWidget->setHorizontalHeaderLabels(header);
         ui->tableWidget->verticalHeader()->setVisible(false);
         ui->tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
@@ -83,9 +85,10 @@ void MediationBrowser::PopulateMediationProcessTable()
         MediationProcess *mp = _mediationsVector.at(row);
         if(mp)
         {
-            ui->tableWidget->setItem(row, 0, new QTableWidgetItem(mp->GetUpdatedDate().toString("MM/dd/yyyy")));
-            ui->tableWidget->setItem(row, 1, new QTableWidgetItem(mp->GetCreatedDate().toString("MM/dd/yyyy")));
-            ui->tableWidget->setItem(row, 2, new QTableWidgetItem(mp->GetParties()->size() ? mp->GetPartyAtIndex(0)->GetPrimary()->FullName() : "N/A"));
+            //ui->tableWidget->setItem(row, 0, new QTableWidgetItem(mp->GetUpdatedDate().toString("MM/dd/yyyy")));
+            ui->tableWidget->setItem(row, 0, new QTableWidgetItem(mp->GetShortNotes()));
+            ui->tableWidget->setItem(row, 1, new QTableWidgetItem(mp->GetParties()->size() ? mp->GetPartyAtIndex(0)->GetPrimary()->FullName() : "N/A"));
+            ui->tableWidget->setItem(row, 2, new QTableWidgetItem(mp->GetCreatedDate().toString("MM/dd/yyyy")));
             ui->tableWidget->setItem(row, 3, new QTableWidgetItem(StringForDisputeProcessStates( mp->GetState())));
         }
     }

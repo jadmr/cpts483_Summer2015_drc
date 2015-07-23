@@ -50,6 +50,8 @@ MediationProcess::MediationProcess()
     , _directAdult(0)
     , _directChildren(0)
 
+    //JAS Shorthand Notes
+    , _shortNotes("")
 
 {
     _courtDate = QDate::currentDate();
@@ -267,11 +269,14 @@ QString MediationProcess::ColumnNames()
             .arg(QString("MediationClause"));
 
     //JAS Changing Schema to reflect additional fields
-    column_names += QString("%1, '%2', '%3', '%4'")
+    column_names += QString("%1, '%2', '%3', '%4', '%5'")
             .arg(QString("IndirectChildren"))
             .arg(QString("DirectChildren"))
             .arg(QString("IndirectAdult"))
-            .arg(QString("DirectAdult"));
+            .arg(QString("DirectAdult"))
+
+            //JAS ShorthandNotes
+            .arg(QString("ShorthandNotes"));
 
     QString toReturn = QString("(%1)")
             .arg(column_names);
@@ -309,11 +314,14 @@ QString MediationProcess::Parse()
 
     //JAS adding the new columns for Direct and Indirect Children and Adults
 
-   column_values += QString("%1, '%2', '%3', '%4'")
+   column_values += QString("%1, '%2', '%3', '%4', '%5'")
             .arg(this->GetIndirectChildren())
             .arg(this->GetDirectChildren())
             .arg(this->GetIndirectAdult())
-            .arg(this->GetDirectAdult());
+            .arg(this->GetDirectAdult())
+
+           //JAS Shorthand Notes
+           .arg(this->GetShortNotes());
 
 //    QString toReturn = QString("(%1) VALUES(%2)")
 //        .arg(column_names)
@@ -349,11 +357,14 @@ QString MediationProcess::UpdateParse()
             .arg(QString::number(this->GetSessionType()))
             .arg(this->getMediationClause());
 
-    toUpdate += QString("IndirectChildren = '%1', DirectChildren = '%2', IndirectAdult = '%3', DirectAdult = '%4'")
+    toUpdate += QString("IndirectChildren = '%1', DirectChildren = '%2', IndirectAdult = '%3', DirectAdult = '%4', ShorthandNotes = '%5'")
             .arg(this->GetIndirectChildren())
             .arg(this->GetDirectChildren())
             .arg(this->GetIndirectAdult())
-            .arg(this->GetDirectAdult());
+            .arg(this->GetDirectAdult())
+
+            //JAS Shorthand Notes
+            .arg(this->GetShortNotes().replace("'", "''"));
 
     return toUpdate;
 }
