@@ -334,7 +334,7 @@
            </widget>
           </item>
           <item row="6" column="7">
-           <widget class="QLineEdit" name="ShortNotes">
+           <widget class="QLineEdit" name="tags">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
               <horstretch>0</horstretch>

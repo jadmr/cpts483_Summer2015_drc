@@ -191,10 +191,10 @@ public:
 
     int SetDirectAdult(int type){_directAdult = type;}
 
-    //JAS Shorthand Notes
+    //JAS Tags Notes
 
-    void SetShortNotes (QString type){_shortNotes = type;}
-    QString GetShortNotes(){return _shortNotes;}
+    void SetTags (QString type){_tags = type;}
+    QString GetTags(){return _tags;}
 
 
 
@@ -368,8 +368,8 @@ private:
     int _indirectAdult;
     int _directAdult;
 
-    //JAS Shorthand Notes
-    QString _shortNotes;
+    //JAS Tags Notes
+    QString _tags;
 
 
     ///////////////// Report Builder ///////////////////

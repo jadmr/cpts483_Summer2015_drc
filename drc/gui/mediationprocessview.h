@@ -130,8 +130,8 @@ private slots:
     void on_numDirectAdultsSpinBox_editingFinished();
     void on_numIndirectAdultsSpinBox_editingFinished();
 
-    //JAS Shorthand Notes
-    void on_ShortNotes_textEdited();
+    //JAS Tags Notes
+    void on_tags_textEdited();
 
 
 private:

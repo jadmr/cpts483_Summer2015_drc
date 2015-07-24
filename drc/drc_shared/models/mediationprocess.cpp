@@ -50,8 +50,8 @@ MediationProcess::MediationProcess()
     , _directAdult(0)
     , _directChildren(0)
 
-    //JAS Shorthand Notes
-    , _shortNotes("")
+    //JAS Tags Notes
+    , _tags("")
 
 {
     _courtDate = QDate::currentDate();
@@ -275,8 +275,8 @@ QString MediationProcess::ColumnNames()
             .arg(QString("IndirectAdult"))
             .arg(QString("DirectAdult"))
 
-            //JAS ShorthandNotes
-            .arg(QString("ShorthandNotes"));
+            //JAS Tags
+            .arg(QString("Tags"));
 
     QString toReturn = QString("(%1)")
             .arg(column_names);
@@ -320,8 +320,8 @@ QString MediationProcess::Parse()
             .arg(this->GetIndirectAdult())
             .arg(this->GetDirectAdult())
 
-           //JAS Shorthand Notes
-           .arg(this->GetShortNotes());
+           //JAS Tags Notes
+           .arg(this->GetTags());
 
 //    QString toReturn = QString("(%1) VALUES(%2)")
 //        .arg(column_names)
@@ -357,14 +357,14 @@ QString MediationProcess::UpdateParse()
             .arg(QString::number(this->GetSessionType()))
             .arg(this->getMediationClause());
 
-    toUpdate += QString("IndirectChildren = '%1', DirectChildren = '%2', IndirectAdult = '%3', DirectAdult = '%4', ShorthandNotes = '%5'")
+    toUpdate += QString("IndirectChildren = '%1', DirectChildren = '%2', IndirectAdult = '%3', DirectAdult = '%4', Tags = '%5'")
             .arg(this->GetIndirectChildren())
             .arg(this->GetDirectChildren())
             .arg(this->GetIndirectAdult())
             .arg(this->GetDirectAdult())
 
-            //JAS Shorthand Notes
-            .arg(this->GetShortNotes().replace("'", "''"));
+            //JAS Tags Notes
+            .arg(this->GetTags().replace("'", "''"));
 
     return toUpdate;
 }
