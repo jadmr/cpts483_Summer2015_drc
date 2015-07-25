@@ -347,5 +347,11 @@ bool doMediationsMatch(MediationProcess* a, MediationProcess* b)
     result = result && ( a->GetStateMessage() == b->GetStateMessage() );
     result = result && ( a->GetUpdatedDate() == b->GetUpdatedDate() );
 
+    //Get Tag field.
+    result = result && ( a->GetTags() == b->GetTags() );
+
+    //Other value comparisons can be added on below in the form of
+    //result = result && ( a->getValue() == b->getValue() );
+
     return result;
 }
