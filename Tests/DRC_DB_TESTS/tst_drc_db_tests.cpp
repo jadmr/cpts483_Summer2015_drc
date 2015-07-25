@@ -87,7 +87,8 @@ enum ProcessColumns
     INDIRECTCHILDREN = 19,
     DIRECTCHILDREN = 20,
     INDIRECTADULT = 21,
-    DIRECTADULT = 22
+    DIRECTADULT = 22,
+    PROCESS_TAGS = 23
 };
 
 enum SessionColumns
@@ -611,6 +612,7 @@ MediationProcess* DRC_DB_TESTS::InitializeProcessObject(QVector<QString> Process
     object->SetDirectChildren(           (int)                               ProcessStringValues[DIRECTCHILDREN].toInt() );
     object->SetIndirectAdult(            (int)                               ProcessStringValues[INDIRECTADULT].toInt() );
     object->SetDirectAdult(              (int)                               ProcessStringValues[DIRECTADULT].toInt() );
+    object->SetTags(                     (QString)                           ProcessStringValues[PROCESS_TAGS] );
     return object;
 }
 
@@ -1055,11 +1057,6 @@ void DRC_DB_TESTS::CheckNotesColumn()
 
 void DRC_DB_TESTS::CheckInsertEmptyNoteObject()
 {
-//    EmptyNote.SetMediationId(EmptyProcess->GetId());
-//    EmptyNote.SetSessionId(EmptySession->GetId());
-//    EmptyNote.SetMessage(                                                       empty_note_values[3]);
-//    EmptyNote.SetCreatedDate(           QDateTime::fromString(                  empty_note_values[4], DateTimeFormat));
-
     QCOMPARE(_db.InsertObject(EmptyNote), true);
 
     QVector<QString> EmptyResults = _db.SelectOneFields(notes_table_name, "Note_id", 1);
@@ -1180,6 +1177,7 @@ void DRC_DB_TESTS::AllocateProcessColumns()
     mediation_table_columns.push_back("DirectChildren");
     mediation_table_columns.push_back("IndirectAdult");
     mediation_table_columns.push_back("DirectAdult");
+    mediation_table_columns.push_back("Tags");
 }
 
 void DRC_DB_TESTS::AllocateSessionColumns()
@@ -1346,6 +1344,7 @@ void DRC_DB_TESTS::AllocateEmptyProcessVector()
     empty_process_values.push_back(QString(temp.toString()));                           //DirectChildren
     empty_process_values.push_back(QString(temp.toString()));                           //IndirectAdult
     empty_process_values.push_back(QString(temp.toString()));                           //DirectAdult
+    empty_process_values.push_back(QString(""));                                         //Tags
 }
 
 void DRC_DB_TESTS::AllocateFullProcessVector()
@@ -1373,6 +1372,8 @@ void DRC_DB_TESTS::AllocateFullProcessVector()
     full_process_values.push_back("2");                     //DirectChildren
     full_process_values.push_back("3");                     //IndirectAdult
     full_process_values.push_back("4");                     //DirectAdult
+    full_process_values.push_back("B - xcc");               //Tags
+
 }
 
 void DRC_DB_TESTS::AllocateEmptySessionVector()
