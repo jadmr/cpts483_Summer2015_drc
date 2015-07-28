@@ -186,9 +186,12 @@ private Q_SLOTS:
     void CheckInsertEmptyEvaluationObject();
     void CheckInsertFullEvaluationObject();
 
+    //TODO: Finish following functions
     //TODO: Check User table
-
-    //TODO: Check sqlite_sequence stuff
+    void CheckCreateUserTable();
+    void CheckUserColumn();
+    void CheckInsertEmptyUserObject();
+    void CheckInsertFullUserObject();
 
     void CheckInsertEntireMediationObject();
 
@@ -237,6 +240,7 @@ public:
     void AllocateClientSessionColumns();
     void AllocateNotesColumns();
     void AllocateEvaluationColumns();
+    void AllocateUserColumns();
 
     void AllocateEmptyPersonVector();
     void AllocateFullPersonVector();
@@ -255,6 +259,8 @@ public:
 
     void AllocateEmptyNoteValues();
     void AllocateFullNoteValues();
+
+    void AllocateEmptyUserValues();
 
     void AllocateEmptyEvaluationVector();
 
@@ -294,6 +300,7 @@ private:
     QVector<QString> client_session_table_columns;
     QVector<QString> notes_table_columns;
     QVector<QString> evaluation_table_columns;
+    QVector<QString> user_table_columns;
 
     QVector<QString> empty_person_values;
     QVector<QString> full_person_values;
@@ -312,6 +319,9 @@ private:
 
     QVector<QString> empty_note_values;
     QVector<QString> full_note_values;
+
+    QVector<QString> empty_user_values;
+    QVector<QString> full_user_values;
 
     QVector<QString> empty_evaluation_values;
     QVector<QString> full_evaluation_values;
@@ -333,6 +343,9 @@ private:
 
     Note* EmptyNote;
     Note* FullNote;
+
+    User* EmptyUser;
+    User* FullUser;
 
     MediationEvaluation* EmptyEvaluation;
     MediationEvaluation* FullEvaluation;
@@ -455,6 +468,7 @@ void DRC_DB_TESTS::AllocateTableColumns()
     AllocateClientSessionColumns();
     AllocateNotesColumns();
     AllocateEvaluationColumns();
+    AllocateUserColumns();
 }
 
 void DRC_DB_TESTS::AllocateVectorValues()
@@ -476,6 +490,8 @@ void DRC_DB_TESTS::AllocateVectorValues()
 
     AllocateEmptyNoteValues();
     AllocateFullNoteValues();
+
+    AllocateEmptyUserValues();
 
     AllocateEmptyEvaluationVector();
 }
@@ -1109,13 +1125,44 @@ void DRC_DB_TESTS::CheckEvaluationColumn()
 }
 
 //TODO: Finish function
+//The .InsertObject function doesn't work because DBBaseObject class does not seem to include capability to use a user* datatype
 void DRC_DB_TESTS::CheckInsertEmptyEvaluationObject()
+{
+    //QCOMPARE(_db.InsertObject(EmptyUser), true);
+}
+
+//TODO: Finish function
+void DRC_DB_TESTS::CheckInsertFullEvaluationObject()
+{
+
+}
+
+void DRC_DB_TESTS::CheckCreateUserTable()
+{
+    QCOMPARE(_db.CreateUserTable(user_table_name), true);
+    QCOMPARE(_db.DoesTableExist(user_table_name), true);
+}
+
+void DRC_DB_TESTS::CheckUserColumn()
+{
+    QVERIFY2(user_table_columns.size() > 0, "Person TestColumn Vector Contains No Columns");
+    QVector<QString> database_columns = _db.GetColumnsList(user_table_name);
+
+    QVERIFY2(database_columns.size() > 0, "Person DatabaseColumn Vector Contains No Columns");
+    QCOMPARE(user_table_columns.size(), database_columns.size());
+
+    OutputColumnInfo(database_columns, user_table_columns, "VERIFY_PERSON_COLUMNS_DEBUG.txt");
+    QCOMPARE(user_table_columns, database_columns);
+}
+
+//TODO: Finish function
+void DRC_DB_TESTS::CheckInsertEmptyUserObject()
 {
 
 }
 
 //TODO: Finish function
-void DRC_DB_TESTS::CheckInsertFullEvaluationObject()
+void DRC_DB_TESTS::CheckInsertFullUserObject()
 {
 
 }
@@ -1260,6 +1307,14 @@ void DRC_DB_TESTS::AllocateEvaluationColumns()
     evaluation_table_columns.push_back("AgreementYes");
     evaluation_table_columns.push_back("AgreementNo");
     evaluation_table_columns.push_back("AgreementSomewhat");
+}
+
+void DRC_DB_TESTS::AllocateUserColumns()
+{
+    user_table_columns.push_back("user_id");
+    user_table_columns.push_back("userName");
+    user_table_columns.push_back("password");
+    user_table_columns.push_back("Admin");
 }
 
 void DRC_DB_TESTS::AllocateEmptyPersonVector()
@@ -1475,6 +1530,14 @@ void DRC_DB_TESTS::AllocateEmptyNoteValues()
     empty_note_values.push_back("0");
     empty_note_values.push_back("Empty Note of Justice.");
     empty_note_values.push_back("2014-07-26 17:23:01");
+}
+
+void DRC_DB_TESTS::AllocateEmptyUserValues()
+{
+    empty_user_values.push_back("1");
+    empty_user_values.push_back("");
+    empty_user_values.push_back("");
+    empty_user_values.push_back("");
 }
 
 void DRC_DB_TESTS::AllocateFullNoteValues()
