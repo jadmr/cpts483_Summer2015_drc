@@ -53,7 +53,8 @@ SOURCES += tst_drc_db_tests.cpp \
     unit_tests/evaluation_table_tests/evaluation_table_test.cpp \
     unit_tests/systemic_tests/systemic_test.cpp \
     unit_tests/database_setup_tests/database_setup_test.cpp \
-    test_main.cpp
+    test_main.cpp \
+    unit_tests/user_table_test.cpp
 DEFINES += SRCDIR=\\\"$$PWD/\\\"
 
 HEADERS += \
@@ -94,4 +95,5 @@ HEADERS += \
     unit_tests/evaluation_table_tests/evaluation_table_test.h \
     unit_tests/systemic_tests/systemic_test.h \
     column_enumerations/client_column_enum.h \
-    unit_tests/database_setup_tests/database_setup_test.h
+    unit_tests/database_setup_tests/database_setup_test.h \
+    unit_tests/user_table_tests/user_table_test.h

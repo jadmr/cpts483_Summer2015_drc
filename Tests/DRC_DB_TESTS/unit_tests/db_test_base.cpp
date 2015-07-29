@@ -47,6 +47,8 @@ void DB_TEST_BASE::AllocateTableColumns()
     AllocateClientSessionColumns();
     AllocateNotesColumns();
     AllocateEvaluationColumns();
+    AllocateUserColumns();
+
 }
 
 void DB_TEST_BASE::AllocateVectorValues()
@@ -68,6 +70,8 @@ void DB_TEST_BASE::AllocateVectorValues()
 
     AllocateEmptyNoteValues();
     AllocateFullNoteValues();
+
+    AllocateEmptyUserValues();
 
     AllocateEmptyEvaluationVector();
 }
@@ -205,6 +209,8 @@ MediationProcess* DB_TEST_BASE::InitializeProcessObject(QVector<QString> Process
     object->SetDirectChildren(           (int)                               ProcessStringValues[DIRECTCHILDREN].toInt() );
     object->SetIndirectAdult(            (int)                               ProcessStringValues[INDIRECTADULT].toInt() );
     object->SetDirectAdult(              (int)                               ProcessStringValues[DIRECTADULT].toInt() );
+    object->SetTags(                     (QString)                           ProcessStringValues[PROCESS_TAGS] );
+
     return object;
 }
 
@@ -438,6 +444,7 @@ void DB_TEST_BASE::AllocateProcessColumns()
     mediation_table_columns.push_back("DirectChildren");
     mediation_table_columns.push_back("IndirectAdult");
     mediation_table_columns.push_back("DirectAdult");
+    mediation_table_columns.push_back("Tags");
 }
 
 void DB_TEST_BASE::AllocateSessionColumns()
@@ -519,6 +526,14 @@ void DB_TEST_BASE::AllocateEvaluationColumns()
     evaluation_table_columns.push_back("AgreementYes");
     evaluation_table_columns.push_back("AgreementNo");
     evaluation_table_columns.push_back("AgreementSomewhat");
+}
+
+void DB_TEST_BASE::AllocateUserColumns()
+{
+    user_table_columns.push_back("user_id");
+    user_table_columns.push_back("userName");
+    user_table_columns.push_back("password");
+    user_table_columns.push_back("Admin");
 }
 
 void DB_TEST_BASE::AllocateEmptyPersonVector()
@@ -603,6 +618,8 @@ void DB_TEST_BASE::AllocateEmptyProcessVector()
     empty_process_values.push_back(QString(temp.toString()));                           //DirectChildren
     empty_process_values.push_back(QString(temp.toString()));                           //IndirectAdult
     empty_process_values.push_back(QString(temp.toString()));                           //DirectAdult
+    empty_process_values.push_back(QString(""));                                         //Tags
+
 }
 
 void DB_TEST_BASE::AllocateFullProcessVector()
@@ -630,6 +647,8 @@ void DB_TEST_BASE::AllocateFullProcessVector()
     full_process_values.push_back("2");                     //DirectChildren
     full_process_values.push_back("3");                     //IndirectAdult
     full_process_values.push_back("4");                     //DirectAdult
+    full_process_values.push_back("B - xcc");               //Tags
+
 }
 
 void DB_TEST_BASE::AllocateEmptySessionVector()
@@ -766,4 +785,12 @@ void DB_TEST_BASE::AllocateEmptyEvaluationVector()
     empty_evaluation_values.push_back("0");
     empty_evaluation_values.push_back("0");
     empty_evaluation_values.push_back("0");
+}
+
+void DB_TEST_BASE::AllocateEmptyUserValues()
+{
+    empty_user_values.push_back("1");
+    empty_user_values.push_back("");
+    empty_user_values.push_back("");
+    empty_user_values.push_back("");
 }

@@ -2,6 +2,7 @@
  * THIS FILE IS NOW DEPRACTED. COMMENT OUT--OR REMOVE--THIS ENTIRE FILE
  */
 
+/*
 #include <QString>
 #include <QtTest>
 #include <QTextStream>
@@ -1584,3 +1585,4 @@ QTEST_APPLESS_MAIN(DRC_DB_TESTS)
 #include "tst_drc_db_tests.moc"
 
 
+*/

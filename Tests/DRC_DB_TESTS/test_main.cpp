@@ -9,6 +9,7 @@
 #include "person_table_tests/person_table_test.h"
 #include "session_table_tests/session_table_test.h"
 #include "systemic_tests/systemic_test.h"
+#include "user_table_tests/user_table_test.h"
 
 int main(int argc, char *argv[])
 {
@@ -28,6 +29,7 @@ int main(int argc, char *argv[])
     ASSERT_TEST(new PERSON_TABLE_TEST());
     ASSERT_TEST(new SESSION_TABLE_TEST());
     ASSERT_TEST(new SYSTEMIC_TEST());
+    ASSERT_TEST(new USER_TABLE_TEST());
 
     return status;
 }

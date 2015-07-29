@@ -85,6 +85,7 @@ public:
     void AllocateClientSessionColumns();
     void AllocateNotesColumns();
     void AllocateEvaluationColumns();
+    void AllocateUserColumns();
 
     void AllocateEmptyPersonVector();
     void AllocateFullPersonVector();
@@ -105,6 +106,8 @@ public:
     void AllocateFullNoteValues();
 
     void AllocateEmptyEvaluationVector();
+
+    void AllocateEmptyUserValues();
     #define ALLOCATION_METHODS }
 
 protected:
@@ -145,6 +148,7 @@ protected:
     QVector<QString> client_session_table_columns;
     QVector<QString> notes_table_columns;
     QVector<QString> evaluation_table_columns;
+    QVector<QString> user_table_columns;
 
     QVector<QString> empty_person_values;
     QVector<QString> full_person_values;
@@ -163,6 +167,9 @@ protected:
 
     QVector<QString> empty_note_values;
     QVector<QString> full_note_values;
+
+    QVector<QString> empty_user_values;
+    QVector<QString> full_user_values;
 
     QVector<QString> empty_evaluation_values;
     QVector<QString> full_evaluation_values;
@@ -184,6 +191,9 @@ protected:
 
     Note* EmptyNote;
     Note* FullNote;
+
+    User* EmptyUser;
+    User* FullUser;
 
     MediationEvaluation* EmptyEvaluation;
     MediationEvaluation* FullEvaluation;

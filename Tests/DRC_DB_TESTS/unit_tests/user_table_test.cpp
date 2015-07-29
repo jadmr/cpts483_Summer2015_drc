@@ -1,46 +1,46 @@
-#include "evaluation_table_test.h"
+#include "user_table_tests/user_table_test.h"
 
-EVALUATION_TABLE_TEST::EVALUATION_TABLE_TEST() : DB_TEST_BASE()
+USER_TABLE_TEST::USER_TABLE_TEST() :  DB_TEST_BASE()
 {
 }
 
-void EVALUATION_TABLE_TEST::CheckCreateEvaluationTable()
+void USER_TABLE_TEST::CheckCreateUserTable()
 {
-    QCOMPARE(_db.CreateEvaluationTable(evaluationTableName), true);
-    QCOMPARE(_db.DoesTableExist(evaluationTableName), true);
+    QCOMPARE(_db.CreateUserTable(user_table_name), true);
+    QCOMPARE(_db.DoesTableExist(user_table_name), true);
 }
 
-//TODO: Finish function
-void EVALUATION_TABLE_TEST::CheckEvaluationColumn()
+void USER_TABLE_TEST::CheckUserColumn()
 {
-    QVERIFY2(evaluation_table_columns.size() > 0, "Person TestColumn Vector Contains No Columns");
-    QVector<QString> database_columns = _db.GetColumnsList(evaluationTableName);
+    QVERIFY2(user_table_columns.size() > 0, "Person TestColumn Vector Contains No Columns");
+    QVector<QString> database_columns = _db.GetColumnsList(user_table_name);
 
     QVERIFY2(database_columns.size() > 0, "Person DatabaseColumn Vector Contains No Columns");
-    QCOMPARE(evaluation_table_columns.size(), database_columns.size());
+    QCOMPARE(user_table_columns.size(), database_columns.size());
 
-    OutputColumnInfo(database_columns, evaluation_table_columns, "VERIFY_PERSON_COLUMNS_DEBUG.txt");
-    QCOMPARE(evaluation_table_columns, database_columns);
+    OutputColumnInfo(database_columns, user_table_columns, "VERIFY_PERSON_COLUMNS_DEBUG.txt");
+    QCOMPARE(user_table_columns, database_columns);
 }
 
 //TODO: Finish function
-void EVALUATION_TABLE_TEST::CheckInsertEmptyEvaluationObject()
-{
-    //QCOMPARE(_db.InsertObject(EmptyUser), true);
-}
-
-//TODO: Finish function
-void EVALUATION_TABLE_TEST::CheckInsertFullEvaluationObject()
+void USER_TABLE_TEST::CheckInsertEmptyUserObject()
 {
 
 }
 
-void EVALUATION_TABLE_TEST::initTestCase()
+//TODO: Finish function
+void USER_TABLE_TEST::CheckInsertFullUserObject()
+{
+
+}
+
+
+void USER_TABLE_TEST::initTestCase()
 {
     QFile::remove(database_name);
 }
 
-void EVALUATION_TABLE_TEST::cleanupTestCase()
+void USER_TABLE_TEST::cleanupTestCase()
 {
     //Database should've closed successfully.
     QCOMPARE(_db.CloseDatabase(), true);
