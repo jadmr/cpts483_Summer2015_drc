@@ -22,6 +22,8 @@ INCLUDEPATH += ../../drc/drc_shared/models/ \
     ../../drc/drc_shared/mediator \
     ../../drc/bl/ \
     ../../drc/drc_shared/ \
+    column_enumerations/ \
+    unit_tests/ \
     ../../drc
 
 
@@ -40,7 +42,18 @@ SOURCES += tst_drc_db_tests.cpp \
     ../../drc/drc_shared/models/reswareport.cpp \
     ../../drc/drc_shared/models/mediationevaluation.cpp \
     ../../drc/drc_shared/models/monthlyreport.cpp \
-    ../../drc/drc_shared/models/Note.cpp
+    ../../drc/drc_shared/models/Note.cpp \
+    unit_tests/db_test_base.cpp \
+    unit_tests/person_table_tests/person_table_test.cpp \
+    unit_tests/mediation_table_tests/mediation_table_test.cpp \
+    unit_tests/session_table_tests/session_table_test.cpp \
+    unit_tests/client_table_tests/client_table_test.cpp \
+    unit_tests/client_session_table_tests/client_session_table_test.cpp \
+    unit_tests/notes_table_tests/notes_table_test.cpp \
+    unit_tests/evaluation_table_tests/evaluation_table_test.cpp \
+    unit_tests/systemic_tests/systemic_test.cpp \
+    unit_tests/database_setup_tests/database_setup_test.cpp \
+    test_main.cpp
 DEFINES += SRCDIR=\\\"$$PWD/\\\"
 
 HEADERS += \
@@ -62,4 +75,23 @@ HEADERS += \
     ../../drc/drc_shared/models/reswareport.h \
     ../../drc/drc_shared/models/mediationevaluation.h \
     ../../drc/drc_shared/models/monthlyreport.h \
-    ../../drc/drc_shared/models/Note.h
+    ../../drc/drc_shared/models/Note.h \
+    initialization_methods/initialization_methods.h \
+    allocation_methods/allocation_methods.h \
+    column_enumerations/note_column_enum.h \
+    column_enumerations/person_column_enum.h \
+    column_enumerations/process_column_enum.h \
+    column_enumerations/session_column_enum.h \
+    column_enumerations/client_session_column_enum.h \
+    column_enumerations/mediation_evaluation_column_enum.h \
+    unit_tests/db_test_base.h \
+    unit_tests/person_table_tests/person_table_test.h \
+    unit_tests/mediation_table_tests/mediation_table_test.h \
+    unit_tests/session_table_tests/session_table_test.h \
+    unit_tests/client_table_tests/client_table_test.h \
+    unit_tests/client_session_table_tests/client_session_table_test.h \
+    unit_tests/notes_table_tests/notes_table_test.h \
+    unit_tests/evaluation_table_tests/evaluation_table_test.h \
+    unit_tests/systemic_tests/systemic_test.h \
+    column_enumerations/client_column_enum.h \
+    unit_tests/database_setup_tests/database_setup_test.h

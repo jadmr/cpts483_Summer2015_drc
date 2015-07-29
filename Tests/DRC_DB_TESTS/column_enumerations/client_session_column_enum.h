@@ -1,0 +1,17 @@
+#ifndef CLIENT_SESSION_COLUMN_ENUM_H
+#define CLIENT_SESSION_COLUMN_ENUM_H
+
+enum ClientSessionColumns
+{
+    INCOME = 3,
+    FEESCHARGED = 4,
+    FEESPAID = 5,
+    ATTORNEYEXPECTED = 6,
+    ATTORNEYATTENDED = 7,
+    SUPPORT = 8,
+    CLIENTPHONE = 9,
+    ATTABLE = 10
+};
+
+#endif // CLIENT_SESSION_COLUMN_ENUM_H
+

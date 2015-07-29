@@ -1,429 +1,9 @@
-/*
- * THIS FILE IS NOW DEPRACTED. COMMENT OUT--OR REMOVE--THIS ENTIRE FILE
- */
+#include "db_test_base.h"
 
-#include <QString>
-#include <QtTest>
-#include <QTextStream>
-#include <QFile>
-
-#include "drcdb.h"
-#include "mediationprocess.h"
-#include "Person.h"
-#include "drctypes.h"
-
-#define INSERT_EMPTY_PERSON_DEBUG true
-#define INSERT_FULL_PERSON_DEBUG true
-#define INSERT_EMPTY_PROCESS_DEBUG true
-#define INSERT_FULL_PROCESS_DEBUG true
-#define INSERT_EMPTY_SESSION_DEBUG true
-#define INSERT_FULL_SESSION_DEBUG true
-#define INSERT_EMPTY_CLIENT_SESSION_DEBUG true
-#define INSERT_FULL_CLIENT_SESSION_DEBUG true
-
-#define TITLE_COLUMNS 45
-#define DISTANCE_FROM_COLON -30
-#define SMALLER_DISTANCE_BETWEEN 37
-#define DISTANCE_BETWEEN_COLUMNS 45
-#define FILL_CHARACTER ' '
-
-enum NoteColumns
-{
-    NOTE_ID = 0,
-    NOTE_PROCESS_ID = 1,
-    NOTE_SESSION_ID = 2,
-    NOTE = 3,
-    CREATEDATE = 4
-};
-
-enum PersonColumns
-{
-    PERSON_ID = 0,
-    FIRST_NAME = 1,
-    MIDDLE_NAME = 2,
-    LAST_NAME = 3,
-    STREET_NAME = 4,
-    UNIT_NAME = 5,
-    CITY_NAME = 6,
-    STATE_NAME = 7,
-    ZIP_CODE = 8,
-    COUNTY_NAME = 9,
-    PRIMARY_PHONE = 10,
-    PRIMARY_PHONE_EXT = 11,
-    SECONDARY_PHONE = 12,
-    SECONDARY_PHONE_EXT = 13,
-    EMAIL_ADDRESS = 14
-};
-
-enum ClientColumns
-{
-    NUMBERINHOUSEHOLD = 15,
-    NUMBERCHILDRENINHOUSEHOLD = 16,
-    ATTORNEY = 17,
-    ATTORNEYPHONE = 18,
-    ATTORNEYEMAIL = 19,
-    ASSISTANTNAME = 20,
-    ASSISTANTPHONE = 21,
-    ASSISTANTEMAIL = 22
-};
-
-enum ProcessColumns
-{
-    PROCESS_ID = 0,
-    DISPUTETYPE = 1,
-    CREATIONDATE = 2,
-    UPDATEDDATE = 3,
-    PROCESS_CREATIONDATETIME = 4,
-    PROCESS_UPDATEDDATETIME = 5,
-    DISPUTESTATE = 6,
-    DISPUTEINTERNALSTATE = 7,
-    DISPUTECOUNTY = 8,
-    REFERALSOURCE = 9,
-    INQUIRYTYPE = 10,
-    INFOONLY = 11,
-    ISCOURTCASE = 12,
-    COURTDATE = 13,
-    COURTCASETYPE = 14,
-    COURTORDERTYPE = 15,
-    TRANSLATORREQUIRED = 16,
-    SESSIONTYPE = 17,
-    MEDIATIONCLAUSE = 18,
-    INDIRECTCHILDREN = 19,
-    DIRECTCHILDREN = 20,
-    INDIRECTADULT = 21,
-    DIRECTADULT = 22,
-    PROCESS_TAGS = 23
-};
-
-enum SessionColumns
-{
-    ID = 0,
-    FOREIGN_PROCESS_ID = 1,
-    SESSIONSTATUS = 2,
-    SESSIONOUTCOME = 3,
-    SESSION_CREATEDDATETIME = 4,
-    SESSION_UPDATEDDATETIME = 5,
-    SCHEDULEDTIME = 6,
-    MEDIATOR1 = 7,
-    MEDIATOR2 = 8,
-    OBSERVER1 = 9,
-    OBSERVER2 = 10,
-    SHUTTLE = 11
-};
-
-enum ClientSessionColumns
-{
-    INCOME = 3,
-    FEESCHARGED = 4,
-    FEESPAID = 5,
-    ATTORNEYEXPECTED = 6,
-    ATTORNEYATTENDED = 7,
-    SUPPORT = 8,
-    CLIENTPHONE = 9,
-    ATTABLE = 10
-};
-
-enum MediationEvaluationColums
-{
-    FAIRYES = 4,
-    FAIRNO = 5,
-    FAIRSOMEWHAT = 6,
-    IMPROVEYES = 7,
-    IMPROVENO = 8,
-    IMPROVESOMEWHAT = 9,
-    COMMUNICATEYES = 10,
-    COMMUNICATENO = 11,
-    COMMUNICATESOMEWHAT = 12,
-    UNDERSTANDYES = 13,
-    UNDERSTANDNO = 14,
-    UNDERSTANDSOMEWHAT = 15,
-    RECOMMENDYES = 16,
-    RECOMMENDNO = 17,
-    RECOMMENDSOMEWHAT = 18,
-    AGREEMENTYES = 19,
-    AGREEMENTNO = 20,
-    AGREEMENTSOMEWHAT = 21
-};
-
-class DRC_DB_TESTS : public QObject
-{
-    Q_OBJECT
-
-private Q_SLOTS:
-    void OpenDatabase();
-    void CorrectDatabaseName();
-    void ForeignKeysActive();
-
-    void CheckCreatePersonTable();
-    void CheckPersonColumn();
-    void CheckInsertEmptyPersonObject();
-    void CheckInsertFullPersonObject();
-
-    void CheckCreateMediationTable();
-    void CheckProcessColumn();
-    void CheckInsertEmptyProcessObject();
-    void CheckInsertFullProcessObject();
-
-    void CheckCreateSessionTable();
-    void CheckSessionColumn();
-    void CheckInsertEmptySessionObject();
-    void CheckInsertFullSessionObject();
-
-    void CheckCreateClientTable();
-    void CheckClientColumn();
-    void CheckInsertEmptyClientObject();
-    void CheckInsertFullClientObject();
-
-    void CheckCreateClientSessionTable();
-    void CheckClientSessionColumn();
-    void CheckInsertEmptyClientSessionObject();
-    void CheckInsertFullClientSessionObject();
-
-    void CheckCreateNotesTable();
-    void CheckNotesColumn();
-    void CheckInsertEmptyNoteObject();
-    void CheckInsertFullNoteObject();
-
-    void CheckCreateEvaluationTable();
-    void CheckEvaluationColumn();
-    //TODO: Finish following functions
-    void CheckInsertEmptyEvaluationObject();
-    void CheckInsertFullEvaluationObject();
-
-    //TODO: Finish following functions
-    //TODO: Check User table
-    void CheckCreateUserTable();
-    void CheckUserColumn();
-    void CheckInsertEmptyUserObject();
-    void CheckInsertFullUserObject();
-
-    void CheckInsertEntireMediationObject();
-
-
-//    void CheckNotesColumn();
-
-//    void InsertPersonObject();
-//    void InsertMediationProcess();
-
-//    void CheckErrors();
-//    void FindFirstName();
-
-public:
-    DRC_DB_TESTS();
-    void OutputDebugInfo(QVector<QString> TableColumns, QVector<QString> FromDatabase, QVector<QString> FromFile, QString OutputFileName);
-    void OutputColumnInfo(QVector<QString> DatabaseColumns, QVector<QString> TestColumns, QString OutputFileName);
-
-    void PrintVectorStrings(QVector<QString> PrintThis);
-
-    void PrintObjects();
-
-    void PrintProcessObject(MediationProcess *object);
-    void PrintSessionObject(MediationSession *object);
-    void PrintClientObject(Party *object);
-    void PrintPersonObject(Person *object);
-    void PrintNoteObject(Note *object);
-
-    Person* InitializePersonObject(QVector<QString> PersonStringValues);
-    MediationProcess* InitializeProcessObject(QVector<QString> ProcessStringValues);
-    MediationSession* InitializeSessionObject(QVector<QString> SessionStringValues);
-    Party* InitializeClientObject(Person *Primary);
-    ClientSessionData* InitializeClientSessionObject(QVector<QString> ClientSessionValues);
-    Note* InitializeNoteObject(QVector<QString> NoteStringValues);
-    MediationEvaluation* InitializeEvaluationObject(QVector<QString> values);
-
-    MediationProcess* InitializeEntireMediationProcess();
-
-    void AllocateTableNames();
-    void AllocateVectorValues();
-    void AllocateTableColumns();
-
-    void AllocatePersonColumns();
-    void AllocateProcessColumns();
-    void AllocateSessionColumns();
-    void AllocateClientColumns();
-    void AllocateClientSessionColumns();
-    void AllocateNotesColumns();
-    void AllocateEvaluationColumns();
-    void AllocateUserColumns();
-
-    void AllocateEmptyPersonVector();
-    void AllocateFullPersonVector();
-
-    void AllocateEmptyProcessVector();
-    void AllocateFullProcessVector();
-
-    void AllocateEmptySessionVector();
-    void AllocateFullSessionVector();
-
-    void AllocateEmptyClientVector();
-    void AllocateFullClientVector();
-
-    void AllocateEmptyClientSessionVector();
-    void AllocateFullClientSessionVector();
-
-    void AllocateEmptyNoteValues();
-    void AllocateFullNoteValues();
-
-    void AllocateEmptyUserValues();
-
-    void AllocateEmptyEvaluationVector();
-
-private:
-    DRCDB _db;
-
-    //These trackers take care of the clean up
-    QVector<Person*> PersonObjectsTracker;
-    QVector<MediationProcess*> ProcessObjectsTracker;
-    QVector<MediationSession*> SessionObjectsTracker;
-    QVector<Party*> PartyObjectsTracker;
-    QVector<ClientSessionData*> ClientSessionObjectsTracker;
-    QVector<Note*> NoteObjectsTracker;
-    QVector<MediationEvaluation*> MediationEvaluationObjectsTracker;
-
-
-
-    const QString DateFormat;
-    const QString DateTimeFormat;
-    const QString TimeFormat;
-
-    QString database_name;
-
-    QString person_table_name;
-    QString mediation_table_name;
-    QString session_table_name;
-    QString client_table_name;
-    QString notes_table_name;
-    QString client_session_table_name;
-    QString user_table_name;
-    QString evaluationTableName;
-
-    QVector<QString> person_table_columns;
-    QVector<QString> mediation_table_columns;
-    QVector<QString> session_table_columns;
-    QVector<QString> client_table_columns;
-    QVector<QString> client_session_table_columns;
-    QVector<QString> notes_table_columns;
-    QVector<QString> evaluation_table_columns;
-    QVector<QString> user_table_columns;
-
-    QVector<QString> empty_person_values;
-    QVector<QString> full_person_values;
-
-    QVector<QString> empty_process_values;
-    QVector<QString> full_process_values;
-
-    QVector<QString> empty_session_values;
-    QVector<QString> full_session_values;
-
-    QVector<QString> empty_client_values;
-    QVector<QString> full_client_values;
-
-    QVector<QString> empty_client_session_values;
-    QVector<QString> full_client_session_values;
-
-    QVector<QString> empty_note_values;
-    QVector<QString> full_note_values;
-
-    QVector<QString> empty_user_values;
-    QVector<QString> full_user_values;
-
-    QVector<QString> empty_evaluation_values;
-    QVector<QString> full_evaluation_values;
-
-    Person* EmptyPerson;
-    Person* FullPerson;
-
-    MediationProcess* EmptyProcess;
-    MediationProcess* FullProcess;
-
-    MediationSession* EmptySession;
-    MediationSession* FullSession;
-
-    Party* EmptyParty;
-    Party* FullParty;
-
-    ClientSessionData* EmptyClientSession;
-    ClientSessionData* FullClientSession;
-
-    Note* EmptyNote;
-    Note* FullNote;
-
-    User* EmptyUser;
-    User* FullUser;
-
-    MediationEvaluation* EmptyEvaluation;
-    MediationEvaluation* FullEvaluation;
-
-private slots:
-    void initTestCase()
-    {
-        QFile::remove(database_name);
-    }
-
-    void cleanupTestCase()
-    {
-        //Database should've closed successfully.
-        QCOMPARE(_db.CloseDatabase(), true);
-
-        foreach(Person* object, PersonObjectsTracker)
-        {
-            delete object;
-            object = nullptr;
-        }
-
-        foreach(MediationProcess* object, ProcessObjectsTracker)
-        {
-            delete object;
-            object = nullptr;
-        }
-
-        foreach(MediationSession* object, SessionObjectsTracker)
-        {
-            delete object;
-            object = nullptr;
-        }
-
-        foreach(Party* object, PartyObjectsTracker)
-        {
-            object->SetPrimary(nullptr);
-            delete object;
-            object = nullptr;
-        }
-
-        foreach(ClientSessionData* object, ClientSessionObjectsTracker)
-        {
-            delete object;
-            object = nullptr;
-        }
-
-        foreach(Note* object, NoteObjectsTracker)
-        {
-            delete object;
-            object = nullptr;
-        }
-
-        foreach(MediationEvaluation* object, MediationEvaluationObjectsTracker)
-        {
-            delete object;
-            object = nullptr;
-        }
-
-        //*******For the sake of this Test Suite, we delete database after every run.*******
-        //*******Comment out if undesirable; IE, looking inside file directly.       *******
-        //*******Be sure to manually delete if you do comment this line out.         *******
-
-        //QCOMPARE(QFile::remove(database_name), true);
-    }
-};
-
-
-
-
-//  Change information to accomodate new circumstances.
-//======================================================
-DRC_DB_TESTS::DRC_DB_TESTS() : DateFormat("yyyy-MM-dd"), DateTimeFormat("yyyy-MM-dd hh:mm:ss"), TimeFormat("hh:mm:ss")
+DB_TEST_BASE::DB_TEST_BASE() : DateFormat("yyyy-MM-dd"), DateTimeFormat("yyyy-MM-dd hh:mm:ss"), TimeFormat("hh:mm:ss")
 {
     database_name = QString("drc_db.db3");
+    open_database();
 
     AllocateTableNames();
 
@@ -452,18 +32,13 @@ DRC_DB_TESTS::DRC_DB_TESTS() : DateFormat("yyyy-MM-dd"), DateTimeFormat("yyyy-MM
 
     EmptyEvaluation = InitializeEvaluationObject(empty_evaluation_values);
 }
-//=======================================================
 
-void DRC_DB_TESTS::CheckInsertEntireMediationObject()
+void DB_TEST_BASE::open_database()
 {
-    MediationProcess* Full = InitializeEntireMediationProcess();    
-    MediatorArg arg;
-    arg.SetArg(Full);
-    _db.InsertMediation(arg);
-    QCOMPARE(arg.IsSuccessful(), true);
+    _db.OpenDatabase(database_name);
 }
 
-void DRC_DB_TESTS::AllocateTableColumns()
+void DB_TEST_BASE::AllocateTableColumns()
 {
     AllocatePersonColumns();
     AllocateProcessColumns();
@@ -472,10 +47,9 @@ void DRC_DB_TESTS::AllocateTableColumns()
     AllocateClientSessionColumns();
     AllocateNotesColumns();
     AllocateEvaluationColumns();
-    AllocateUserColumns();
 }
 
-void DRC_DB_TESTS::AllocateVectorValues()
+void DB_TEST_BASE::AllocateVectorValues()
 {
     AllocateEmptyPersonVector();
     AllocateFullPersonVector();
@@ -495,12 +69,10 @@ void DRC_DB_TESTS::AllocateVectorValues()
     AllocateEmptyNoteValues();
     AllocateFullNoteValues();
 
-    AllocateEmptyUserValues();
-
     AllocateEmptyEvaluationVector();
 }
 
-MediationProcess* DRC_DB_TESTS::InitializeEntireMediationProcess()
+MediationProcess* DB_TEST_BASE::InitializeEntireMediationProcess()
 {
     MediationProcess* object = InitializeProcessObject(full_process_values);
     object->AddParty(InitializeClientObject(InitializePersonObject(full_person_values)));
@@ -517,7 +89,7 @@ MediationProcess* DRC_DB_TESTS::InitializeEntireMediationProcess()
     return object;
 }
 
-Note* DRC_DB_TESTS::InitializeNoteObject(QVector<QString> NoteStringValues)
+Note* DB_TEST_BASE::InitializeNoteObject(QVector<QString> NoteStringValues)
 {
     Note* object = new Note;
     NoteObjectsTracker.push_back(object);
@@ -530,10 +102,11 @@ Note* DRC_DB_TESTS::InitializeNoteObject(QVector<QString> NoteStringValues)
     return object;
 }
 
-//TODO: Finish initialize function. The issue with this function is that the Yes/No/Somewhat values seem to be
-//stored differently in the database than in the mediationEvaluation object
-MediationEvaluation* DRC_DB_TESTS::InitializeEvaluationObject(QVector<QString> values)
+MediationEvaluation* DB_TEST_BASE::InitializeEvaluationObject(QVector<QString> values)
 {
+    //TODO: Finish initialize function. The issue with this function is that the Yes/No/Somewhat values seem to be
+    //stored differently in the database than in the mediationEvaluation object
+
     MediationEvaluation* object = new MediationEvaluation;
     //This tracker takes care of the clean up
     MediationEvaluationObjectsTracker.push_back(object);
@@ -560,7 +133,7 @@ MediationEvaluation* DRC_DB_TESTS::InitializeEvaluationObject(QVector<QString> v
     return object;
 }
 
-ClientSessionData* DRC_DB_TESTS::InitializeClientSessionObject(QVector<QString> ClientSessionValues)
+ClientSessionData* DB_TEST_BASE::InitializeClientSessionObject(QVector<QString> ClientSessionValues)
 {
     ClientSessionData* object = new ClientSessionData;
     ClientSessionObjectsTracker.push_back(object);
@@ -577,7 +150,7 @@ ClientSessionData* DRC_DB_TESTS::InitializeClientSessionObject(QVector<QString> 
     return object;
 }
 
-Party* DRC_DB_TESTS::InitializeClientObject(Person* Primary)
+Party* DB_TEST_BASE::InitializeClientObject(Person* Primary)
 {
     Party* object = new Party;
     PartyObjectsTracker.push_back(object);
@@ -587,7 +160,7 @@ Party* DRC_DB_TESTS::InitializeClientObject(Person* Primary)
     return object;
 }
 
-MediationSession* DRC_DB_TESTS::InitializeSessionObject(QVector<QString> SessionStringValues)
+MediationSession* DB_TEST_BASE::InitializeSessionObject(QVector<QString> SessionStringValues)
 {
     MediationSession* object = new MediationSession;
     SessionObjectsTracker.push_back(object);
@@ -607,7 +180,7 @@ MediationSession* DRC_DB_TESTS::InitializeSessionObject(QVector<QString> Session
     return object;
 }
 
-MediationProcess* DRC_DB_TESTS::InitializeProcessObject(QVector<QString> ProcessStringValues)
+MediationProcess* DB_TEST_BASE::InitializeProcessObject(QVector<QString> ProcessStringValues)
 {
     MediationProcess* object = new MediationProcess;
     ProcessObjectsTracker.push_back(object);
@@ -632,11 +205,10 @@ MediationProcess* DRC_DB_TESTS::InitializeProcessObject(QVector<QString> Process
     object->SetDirectChildren(           (int)                               ProcessStringValues[DIRECTCHILDREN].toInt() );
     object->SetIndirectAdult(            (int)                               ProcessStringValues[INDIRECTADULT].toInt() );
     object->SetDirectAdult(              (int)                               ProcessStringValues[DIRECTADULT].toInt() );
-    object->SetTags(                     (QString)                           ProcessStringValues[PROCESS_TAGS] );
     return object;
 }
 
-Person* DRC_DB_TESTS::InitializePersonObject(QVector<QString> PersonStringValues)
+Person* DB_TEST_BASE::InitializePersonObject(QVector<QString> PersonStringValues)
 {
     Person* object = new Person;
     PersonObjectsTracker.push_back(object);
@@ -667,7 +239,7 @@ Person* DRC_DB_TESTS::InitializePersonObject(QVector<QString> PersonStringValues
     return object;
 }
 
-void DRC_DB_TESTS::PrintObjects()
+void DB_TEST_BASE::PrintObjects()
 {
     PrintPersonObject(FullPerson);
     PrintClientObject(FullParty);
@@ -676,7 +248,7 @@ void DRC_DB_TESTS::PrintObjects()
     PrintProcessObject(FullProcess);
 }
 
-void DRC_DB_TESTS::PrintProcessObject(MediationProcess *object)
+void DB_TEST_BASE::PrintProcessObject(MediationProcess *object)
 {
     qDebug() << "Process Object:------------------------";
     qDebug() << object->GetId();
@@ -698,7 +270,7 @@ void DRC_DB_TESTS::PrintProcessObject(MediationProcess *object)
     qDebug() << object->getMediationClause();
 }
 
-void DRC_DB_TESTS::PrintNoteObject(Note *object)
+void DB_TEST_BASE::PrintNoteObject(Note *object)
 {
     qDebug() << "Note Object:---------------------------";
     qDebug() << object->GetId();
@@ -708,7 +280,7 @@ void DRC_DB_TESTS::PrintNoteObject(Note *object)
     qDebug() << object->GetCreatedDate().toString(DateFormat);
 }
 
-void DRC_DB_TESTS::PrintSessionObject(MediationSession *object)
+void DB_TEST_BASE::PrintSessionObject(MediationSession *object)
 {
     qDebug() << "Session Object:------------------------";
     qDebug() << object->GetId();
@@ -725,7 +297,7 @@ void DRC_DB_TESTS::PrintSessionObject(MediationSession *object)
     qDebug() << object->GetIsShuttle();
 }
 
-void DRC_DB_TESTS::PrintClientObject(Party *object)
+void DB_TEST_BASE::PrintClientObject(Party *object)
 {
     qDebug() << "Party Object:---------------------------";
     qDebug() << object->GetId();
@@ -739,7 +311,7 @@ void DRC_DB_TESTS::PrintClientObject(Party *object)
     qDebug() << object->GetPrimary()->getAssistantEmail();
 }
 
-void DRC_DB_TESTS::PrintPersonObject(Person *object)
+void DB_TEST_BASE::PrintPersonObject(Person *object)
 {
     qDebug() << "Person Object:--------------------------";
     qDebug() << object->GetId();
@@ -759,7 +331,7 @@ void DRC_DB_TESTS::PrintPersonObject(Person *object)
     qDebug() << object->getEmail();
 }
 
-void DRC_DB_TESTS::OutputColumnInfo(QVector<QString> DatabaseColumns, QVector<QString> TestColumns, QString OutputFileName)
+void DB_TEST_BASE::OutputColumnInfo(QVector<QString> DatabaseColumns, QVector<QString> TestColumns, QString OutputFileName)
 {
     QFile file(OutputFileName);
     file.open(QIODevice::WriteOnly | QIODevice::Text);
@@ -780,7 +352,7 @@ void DRC_DB_TESTS::OutputColumnInfo(QVector<QString> DatabaseColumns, QVector<QS
     }
 }
 
-void DRC_DB_TESTS::OutputDebugInfo(QVector<QString> TableColumns, QVector<QString> FromDatabase, QVector<QString> FromFile, QString OutputFileName)
+void DB_TEST_BASE::OutputDebugInfo(QVector<QString> TableColumns, QVector<QString> FromDatabase, QVector<QString> FromFile, QString OutputFileName)
 {
     QFile file(OutputFileName);
     file.open(QIODevice::WriteOnly | QIODevice::Text);
@@ -802,7 +374,7 @@ void DRC_DB_TESTS::OutputDebugInfo(QVector<QString> TableColumns, QVector<QStrin
     }
 }
 
-void DRC_DB_TESTS::PrintVectorStrings(QVector<QString> PrintThis)
+void DB_TEST_BASE::PrintVectorStrings(QVector<QString> PrintThis)
 {
     qDebug() << "Printing your damn Vector:";
     foreach (QString line, PrintThis)
@@ -810,368 +382,7 @@ void DRC_DB_TESTS::PrintVectorStrings(QVector<QString> PrintThis)
     qDebug();
 }
 
-void DRC_DB_TESTS::OpenDatabase()
-{
-    _db.OpenDatabase(database_name);
-    QCOMPARE(_db.IsDatabaseOpen(), true);
-}
-
-void DRC_DB_TESTS::CorrectDatabaseName()
-{
-    QCOMPARE(_db.WhatDatabaseName(), database_name);
-}
-
-void DRC_DB_TESTS::ForeignKeysActive()
-{
-    QCOMPARE(_db.WhatOptionsEnabled(), QString("foreign_keys = ON"));
-}
-
-void DRC_DB_TESTS::CheckCreatePersonTable()
-{
-    QCOMPARE(_db.CreatePersonTable(person_table_name), true);
-    QCOMPARE(_db.DoesTableExist(person_table_name), true);
-}
-
-void DRC_DB_TESTS::CheckPersonColumn()
-{
-    QVERIFY2(person_table_columns.size() > 0, "Person TestColumn Vector Contains No Columns");
-    QVector<QString> database_columns = _db.GetColumnsList(person_table_name);
-
-    QVERIFY2(database_columns.size() > 0, "Person DatabaseColumn Vector Contains No Columns");
-    QCOMPARE(person_table_columns.size(), database_columns.size());
-
-    OutputColumnInfo(database_columns, person_table_columns, "VERIFY_PERSON_COLUMNS_DEBUG.txt");
-    QCOMPARE(person_table_columns, database_columns);
-}
-
-void DRC_DB_TESTS::CheckInsertEmptyPersonObject()
-{
-    QCOMPARE(_db.InsertObject(EmptyPerson), true);
-    QVector<QString> EmptyResults = _db.SelectOneFields(person_table_name, "Person_id", 1);
-    QVector<QString> TruncatedEmpty = empty_person_values.mid(0,15);
-    QCOMPARE(TruncatedEmpty.size(), EmptyResults.size());
-
-    if(INSERT_EMPTY_PERSON_DEBUG)
-        OutputDebugInfo(person_table_columns, EmptyResults, TruncatedEmpty, "INSERT_EMPTY_PERSON_DEBUG.txt");
-
-    QCOMPARE(TruncatedEmpty, EmptyResults);
-}
-
-void DRC_DB_TESTS::CheckInsertFullPersonObject()
-{
-    QCOMPARE(_db.InsertObject(FullPerson), true);
-    QVector<QString> FullResults = _db.SelectOneFields(person_table_name, "Person_id", 2);
-
-    QCOMPARE(15, FullResults.size());
-
-    QVector<QString> TruncatedPerson = full_person_values.mid(0,15);
-
-    QCOMPARE(FullResults.size(), TruncatedPerson.size());
-
-    if (INSERT_FULL_PERSON_DEBUG)
-        OutputDebugInfo(person_table_columns, FullResults, TruncatedPerson, "INSERT_FULL_PERSON_DEBUG.txt");
-
-    QCOMPARE(TruncatedPerson, FullResults);
-}
-
-void DRC_DB_TESTS::CheckCreateMediationTable()
-{
-    QCOMPARE(_db.CreateMediationTable(mediation_table_name), true);
-    QCOMPARE(_db.DoesTableExist(mediation_table_name), true);
-}
-
-void DRC_DB_TESTS::CheckProcessColumn()
-{
-    QVERIFY2(mediation_table_columns.size() > 0, "Mediation Column Vector Contains No Columns");
-    QVector<QString> database_columns = _db.GetColumnsList(mediation_table_name);
-
-    QVERIFY2(database_columns.size() > 0, "Mediation DatabaseColumn Vector Contains No Columns");
-    QCOMPARE(mediation_table_columns.size(), database_columns.size());
-
-    OutputColumnInfo(database_columns, mediation_table_columns, "VERIFY_MEDIATION_COLUMNS_DEBUG.txt");
-    QCOMPARE(mediation_table_columns, database_columns);
-}
-
-void DRC_DB_TESTS::CheckInsertEmptyProcessObject()
-{
-    QCOMPARE(_db.InsertObject(EmptyProcess), true);
-
-    QVector<QString> EmptyResults = _db.SelectOneFields(mediation_table_name, "Process_id", 1);
-    QCOMPARE(EmptyResults.size(), empty_process_values.size());
-
-    if(INSERT_EMPTY_PROCESS_DEBUG)
-        OutputDebugInfo(mediation_table_columns, EmptyResults, empty_process_values, "INSERT_EMPTY_PROCESS_DEBUG.txt");
-
-    QCOMPARE(EmptyResults, empty_process_values);
-}
-
-void DRC_DB_TESTS::CheckInsertFullProcessObject()
-{
-    QCOMPARE(_db.InsertObject(FullProcess),true);
-
-    QVector<QString> FullResults = _db.SelectOneFields(mediation_table_name, "Process_id", 2);
-
-    if(INSERT_FULL_PROCESS_DEBUG)
-        OutputDebugInfo(mediation_table_columns, FullResults, full_process_values, "INSERT_FULL_PROCESS_DEBUG.txt");
-
-    QCOMPARE(full_process_values, FullResults);
-}
-
-void DRC_DB_TESTS::CheckCreateSessionTable()
-{
-    QCOMPARE(_db.CreateSessionTable(session_table_name), true);
-    QCOMPARE(_db.DoesTableExist(session_table_name), true);
-}
-
-void DRC_DB_TESTS::CheckSessionColumn()
-{
-    QVERIFY2(session_table_columns.size() > 0, "Session Column Vector Contains No Columns");
-    QVector<QString> database_columns = _db.GetColumnsList(session_table_name);
-
-    QVERIFY2(database_columns.size() > 0, "Session DatabaseColumn Vector Contains No Columns");
-    QCOMPARE(session_table_columns.size(), database_columns.size());
-
-    OutputColumnInfo(database_columns, session_table_columns, "VERIFY_SESSION_COLUMNS_DEBUG.txt");
-    QCOMPARE(session_table_columns, database_columns);
-}
-
-void DRC_DB_TESTS::CheckInsertEmptySessionObject()
-{
-    QCOMPARE(_db.InsertLinkedObject(EmptyProcess->GetId(), EmptySession), true);
-
-    QVector<QString> EmptyResults = _db.SelectOneFields(session_table_name, "Session_id", 1);
-
-    QCOMPARE(EmptyResults.size(), empty_session_values.size());
-
-    if(INSERT_EMPTY_SESSION_DEBUG)
-        OutputDebugInfo(session_table_columns, EmptyResults, empty_session_values, "INSERT_EMPTY_SESSION_DEBUG.txt");
-
-    QCOMPARE(EmptyResults, empty_session_values);
-}
-
-void DRC_DB_TESTS::CheckInsertFullSessionObject()
-{
-    QCOMPARE(_db.InsertLinkedObject(FullProcess->GetId(), FullSession), true);
-
-    QVector<QString> FullResults = _db.SelectOneFields(session_table_name, "Session_id", 2);
-
-    QCOMPARE(FullResults.size(), empty_session_values.size());
-
-    if(INSERT_FULL_SESSION_DEBUG)
-        OutputDebugInfo(session_table_columns, FullResults, full_session_values, "INSERT_FULL_SESSION_DEBUG.txt");
-
-    QCOMPARE(FullResults, full_session_values);
-}
-
-void DRC_DB_TESTS::CheckCreateClientTable()
-{
-    QCOMPARE(_db.CreateClientTable(client_table_name), true);
-    QCOMPARE(_db.DoesTableExist(client_table_name), true);
-}
-
-void DRC_DB_TESTS::CheckClientColumn()
-{
-    QVERIFY2(client_table_columns.size() > 0, "Client Column Vector Contains No Columns");
-    QVector<QString> database_columns = _db.GetColumnsList(client_table_name);
-
-    QVERIFY2(database_columns.size() > 0, "Client DatabaseColumn Vector Contains No Columns");
-    QCOMPARE(client_table_columns.size(), database_columns.size());
-
-    OutputColumnInfo(database_columns, client_table_columns, "VERIFY_CLIENT_COLUMNS_DEBUG.txt");
-    QCOMPARE(client_table_columns, database_columns);
-}
-
-void DRC_DB_TESTS::CheckInsertEmptyClientObject()
-{
-    QCOMPARE(_db.InsertClientObject(EmptyProcess, EmptyParty), true);
-
-    QVector<QString> EmptyResults = _db.SelectOneFields(client_table_name, "Client_id", 1);
-
-    QCOMPARE(EmptyResults.size(), empty_client_values.size());
-
-    if(INSERT_FULL_SESSION_DEBUG)
-        OutputDebugInfo(client_table_columns, EmptyResults, empty_client_values, "INSERT_EMPTY_CLIENT_DEBUG.txt");
-
-    QCOMPARE(EmptyResults, empty_client_values);
-}
-
-void DRC_DB_TESTS::CheckInsertFullClientObject()
-{
-    QCOMPARE(_db.InsertClientObject(FullProcess, FullParty), true);
-
-    QVector<QString> FullResults = _db.SelectOneFields(client_table_name, "Client_id", 2);
-
-    QCOMPARE(FullResults.size(), full_client_values.size());
-
-    if(INSERT_FULL_SESSION_DEBUG)
-        OutputDebugInfo(client_table_columns, FullResults, full_client_values, "INSERT_FULL_CLIENT_DEBUG.txt");
-
-    QCOMPARE(FullResults, full_client_values);
-}
-
-void DRC_DB_TESTS::CheckCreateClientSessionTable()
-{
-    QCOMPARE(_db.CreateClientSessionTable(client_session_table_name), true);
-    QCOMPARE(_db.DoesTableExist(client_session_table_name), true);
-}
-
-void DRC_DB_TESTS::CheckClientSessionColumn()
-{
-    QVERIFY2(client_session_table_columns.size() > 0, "ClientSession Column Vector Contains No Columns");
-    QVector<QString> database_columns = _db.GetColumnsList(client_session_table_name);
-
-    QVERIFY2(database_columns.size() > 0, "ClientSession DatabaseColumn Vector Contains No Columns");
-    QCOMPARE(client_session_table_columns.size(), database_columns.size());
-
-    OutputColumnInfo(database_columns, client_session_table_columns, "VERIFY_CLIENTSESSION_COLUMNS_DEBUG.txt");
-    QCOMPARE(client_session_table_columns, database_columns);
-}
-
-void DRC_DB_TESTS::CheckInsertEmptyClientSessionObject()
-{
-    QCOMPARE(_db.InsertClientSessionData(EmptyClientSession, EmptySession->GetId(), EmptyParty->GetId()), true);
-
-    QVector<QString> EmptyResults = _db.SelectOneFields(client_session_table_name, "Data_id", 1);
-
-    //PrintVectorStrings(EmptyResults);
-
-    QCOMPARE(EmptyResults.size(), empty_client_session_values.size());
-
-    if(INSERT_EMPTY_CLIENT_SESSION_DEBUG)
-        OutputDebugInfo(client_session_table_columns, EmptyResults, empty_client_session_values, "INSERT_EMPTY_CLIENTSESSION_DEBUG.txt");
-
-    QCOMPARE(EmptyResults, empty_client_session_values);
-}
-
-void DRC_DB_TESTS::CheckInsertFullClientSessionObject()
-{
-    QCOMPARE(_db.InsertClientSessionData(FullClientSession, FullSession->GetId(), FullParty->GetId()), true);
-
-    QVector<QString> FullResults = _db.SelectOneFields(client_session_table_name, "Data_id", 2);
-
-    QCOMPARE(FullResults.size(), full_client_session_values.size());
-
-    if(INSERT_FULL_CLIENT_SESSION_DEBUG)
-        OutputDebugInfo(client_session_table_columns, FullResults, full_client_session_values, "INSERT_FULL_CLIENTSESSION_DEBUG.txt");
-
-    QCOMPARE(FullResults, full_client_session_values);
-}
-
-void DRC_DB_TESTS::CheckCreateNotesTable()
-{
-    QCOMPARE(_db.CreateNotesTable(notes_table_name), true);
-    QCOMPARE(_db.DoesTableExist(notes_table_name), true);
-}
-
-void DRC_DB_TESTS::CheckNotesColumn()
-{
-    QVERIFY2(notes_table_columns.size() > 0, "Notes Column Vector Contains No Columns");
-    QVector<QString> database_columns = _db.GetColumnsList(notes_table_name);
-
-    QVERIFY2(database_columns.size() > 0, "Notes DatabaseColumn Vector Contains No Columns");
-    QCOMPARE(notes_table_columns.size(), database_columns.size());
-
-    OutputColumnInfo(database_columns, notes_table_columns, "VERIFY_NOTES_COLUMNS_DEBUG.txt");
-    QCOMPARE(notes_table_columns, database_columns);
-}
-
-void DRC_DB_TESTS::CheckInsertEmptyNoteObject()
-{
-    QCOMPARE(_db.InsertObject(EmptyNote), true);
-
-    QVector<QString> EmptyResults = _db.SelectOneFields(notes_table_name, "Note_id", 1);
-
-    QCOMPARE(EmptyResults.size(), empty_note_values.size());
-
-    if(INSERT_EMPTY_CLIENT_SESSION_DEBUG)
-        OutputDebugInfo(notes_table_columns, EmptyResults, empty_note_values, "INSERT_EMPTY_NOTE_DEBUG.txt");
-
-     QCOMPARE(EmptyResults, empty_note_values);
-}
-
-void DRC_DB_TESTS::CheckInsertFullNoteObject()
-{
-//    FullNote.SetMediationId(FullProcess->GetId());
-//    FullNote.SetSessionId(FullSession->GetId());
-//    FullNote.SetMessage(                                                        full_note_values[3]);
-//    FullNote.SetCreatedDate(             QDateTime::fromString(                 full_note_values[4], DateTimeFormat));
-
-    QCOMPARE(_db.InsertObject(FullNote), true);
-
-    QVector<QString> FullResults = _db.SelectOneFields(notes_table_name, "Note_id", 2);
-
-    QCOMPARE(FullResults.size(), full_note_values.size());
-
-    if(INSERT_EMPTY_CLIENT_SESSION_DEBUG)
-        OutputDebugInfo(notes_table_columns, FullResults, full_note_values, "INSERT_FULL_NOTE_DEBUG.txt");
-
-    QCOMPARE(FullResults, full_note_values);
-}
-
-//TODO: Finish function
-void DRC_DB_TESTS::CheckCreateEvaluationTable()
-{
-    QCOMPARE(_db.CreateEvaluationTable(evaluationTableName), true);
-    QCOMPARE(_db.DoesTableExist(evaluationTableName), true);
-}
-
-//TODO: Finish function
-void DRC_DB_TESTS::CheckEvaluationColumn()
-{
-    QVERIFY2(evaluation_table_columns.size() > 0, "Person TestColumn Vector Contains No Columns");
-    QVector<QString> database_columns = _db.GetColumnsList(evaluationTableName);
-
-    QVERIFY2(database_columns.size() > 0, "Person DatabaseColumn Vector Contains No Columns");
-    QCOMPARE(evaluation_table_columns.size(), database_columns.size());
-
-    OutputColumnInfo(database_columns, evaluation_table_columns, "VERIFY_PERSON_COLUMNS_DEBUG.txt");
-    QCOMPARE(evaluation_table_columns, database_columns);
-}
-
-//TODO: Finish function
-//The .InsertObject function doesn't work because DBBaseObject class does not seem to include capability to use a user* datatype
-void DRC_DB_TESTS::CheckInsertEmptyEvaluationObject()
-{
-    //QCOMPARE(_db.InsertObject(EmptyUser), true);
-}
-
-//TODO: Finish function
-void DRC_DB_TESTS::CheckInsertFullEvaluationObject()
-{
-
-}
-
-void DRC_DB_TESTS::CheckCreateUserTable()
-{
-    QCOMPARE(_db.CreateUserTable(user_table_name), true);
-    QCOMPARE(_db.DoesTableExist(user_table_name), true);
-}
-
-void DRC_DB_TESTS::CheckUserColumn()
-{
-    QVERIFY2(user_table_columns.size() > 0, "Person TestColumn Vector Contains No Columns");
-    QVector<QString> database_columns = _db.GetColumnsList(user_table_name);
-
-    QVERIFY2(database_columns.size() > 0, "Person DatabaseColumn Vector Contains No Columns");
-    QCOMPARE(user_table_columns.size(), database_columns.size());
-
-    OutputColumnInfo(database_columns, user_table_columns, "VERIFY_PERSON_COLUMNS_DEBUG.txt");
-    QCOMPARE(user_table_columns, database_columns);
-}
-
-//TODO: Finish function
-void DRC_DB_TESTS::CheckInsertEmptyUserObject()
-{
-
-}
-
-//TODO: Finish function
-void DRC_DB_TESTS::CheckInsertFullUserObject()
-{
-
-}
-
-void DRC_DB_TESTS::AllocateTableNames()
+void DB_TEST_BASE::AllocateTableNames()
 {
     person_table_name = QString("Person_Table");
     mediation_table_name = QString("Mediation_Table");
@@ -1183,8 +394,7 @@ void DRC_DB_TESTS::AllocateTableNames()
     evaluationTableName = QString("Evaluation_Table");
 }
 
-
-void DRC_DB_TESTS::AllocatePersonColumns()
+void DB_TEST_BASE::AllocatePersonColumns()
 {
     person_table_columns.push_back("Person_id");
     person_table_columns.push_back("first_name");
@@ -1203,7 +413,7 @@ void DRC_DB_TESTS::AllocatePersonColumns()
     person_table_columns.push_back("email_address");
 }
 
-void DRC_DB_TESTS::AllocateProcessColumns()
+void DB_TEST_BASE::AllocateProcessColumns()
 {
     mediation_table_columns.push_back("Process_id");
     mediation_table_columns.push_back("DisputeType");
@@ -1228,10 +438,9 @@ void DRC_DB_TESTS::AllocateProcessColumns()
     mediation_table_columns.push_back("DirectChildren");
     mediation_table_columns.push_back("IndirectAdult");
     mediation_table_columns.push_back("DirectAdult");
-    mediation_table_columns.push_back("Tags");
 }
 
-void DRC_DB_TESTS::AllocateSessionColumns()
+void DB_TEST_BASE::AllocateSessionColumns()
 {
     session_table_columns.push_back("Session_id");
     session_table_columns.push_back("Process_id");
@@ -1247,8 +456,7 @@ void DRC_DB_TESTS::AllocateSessionColumns()
     session_table_columns.push_back("Shuttle");
 }
 
-
-void DRC_DB_TESTS::AllocateClientColumns()
+void DB_TEST_BASE::AllocateClientColumns()
 {
     client_table_columns.push_back("Client_id");
     client_table_columns.push_back("Process_id");
@@ -1263,7 +471,7 @@ void DRC_DB_TESTS::AllocateClientColumns()
     client_table_columns.push_back("AssistantEmail");
 }
 
-void DRC_DB_TESTS::AllocateClientSessionColumns()
+void DB_TEST_BASE::AllocateClientSessionColumns()
 {
     client_session_table_columns.push_back("Data_id");
     client_session_table_columns.push_back("Client_id");
@@ -1278,7 +486,7 @@ void DRC_DB_TESTS::AllocateClientSessionColumns()
     client_session_table_columns.push_back("AtTable");
 }
 
-void DRC_DB_TESTS::AllocateNotesColumns()
+void DB_TEST_BASE::AllocateNotesColumns()
 {
     notes_table_columns.push_back("Note_id");
     notes_table_columns.push_back("Process_id");
@@ -1287,7 +495,7 @@ void DRC_DB_TESTS::AllocateNotesColumns()
     notes_table_columns.push_back("CreateDate");
 }
 
-void DRC_DB_TESTS::AllocateEvaluationColumns()
+void DB_TEST_BASE::AllocateEvaluationColumns()
 {
     evaluation_table_columns.push_back("Id");
     evaluation_table_columns.push_back("startDate");
@@ -1313,15 +521,7 @@ void DRC_DB_TESTS::AllocateEvaluationColumns()
     evaluation_table_columns.push_back("AgreementSomewhat");
 }
 
-void DRC_DB_TESTS::AllocateUserColumns()
-{
-    user_table_columns.push_back("user_id");
-    user_table_columns.push_back("userName");
-    user_table_columns.push_back("password");
-    user_table_columns.push_back("Admin");
-}
-
-void DRC_DB_TESTS::AllocateEmptyPersonVector()
+void DB_TEST_BASE::AllocateEmptyPersonVector()
 {
     empty_person_values.push_back(QString("1"));
     empty_person_values.push_back(QString(""));
@@ -1348,7 +548,7 @@ void DRC_DB_TESTS::AllocateEmptyPersonVector()
     empty_person_values.push_back(QString(""));
 }
 
-void DRC_DB_TESTS::AllocateFullPersonVector()
+void DB_TEST_BASE::AllocateFullPersonVector()
 {
     full_person_values.push_back(QString("2"));
     full_person_values.push_back(QString("Bruce"));
@@ -1375,7 +575,7 @@ void DRC_DB_TESTS::AllocateFullPersonVector()
     full_person_values.push_back(QString("MaskNotMe@Attorney.law"));
 }
 
-void DRC_DB_TESTS::AllocateEmptyProcessVector()
+void DB_TEST_BASE::AllocateEmptyProcessVector()
 {
     empty_process_values.push_back(QString("1"));                           //PROCESS_ID
     empty_process_values.push_back(QString("0"));                           //DISPUTETYPE
@@ -1403,10 +603,9 @@ void DRC_DB_TESTS::AllocateEmptyProcessVector()
     empty_process_values.push_back(QString(temp.toString()));                           //DirectChildren
     empty_process_values.push_back(QString(temp.toString()));                           //IndirectAdult
     empty_process_values.push_back(QString(temp.toString()));                           //DirectAdult
-    empty_process_values.push_back(QString(""));                                         //Tags
 }
 
-void DRC_DB_TESTS::AllocateFullProcessVector()
+void DB_TEST_BASE::AllocateFullProcessVector()
 {
     full_process_values.push_back("2");                     //Process ID
     full_process_values.push_back("8");                     //DisputeTypes - DISPUTE_T_WORKPLACE
@@ -1431,11 +630,9 @@ void DRC_DB_TESTS::AllocateFullProcessVector()
     full_process_values.push_back("2");                     //DirectChildren
     full_process_values.push_back("3");                     //IndirectAdult
     full_process_values.push_back("4");                     //DirectAdult
-    full_process_values.push_back("B - xcc");               //Tags
-
 }
 
-void DRC_DB_TESTS::AllocateEmptySessionVector()
+void DB_TEST_BASE::AllocateEmptySessionVector()
 {
     empty_session_values.push_back("1");                        //SESSION_ID
     empty_session_values.push_back("1");                        //PROCESS_ID
@@ -1451,7 +648,7 @@ void DRC_DB_TESTS::AllocateEmptySessionVector()
     empty_session_values.push_back("0");
 }
 
-void DRC_DB_TESTS::AllocateFullSessionVector()
+void DB_TEST_BASE::AllocateFullSessionVector()
 {
     full_session_values.push_back("2");
     full_session_values.push_back("2");
@@ -1467,8 +664,8 @@ void DRC_DB_TESTS::AllocateFullSessionVector()
     full_session_values.push_back("1");
 }
 
-void DRC_DB_TESTS::AllocateEmptyClientVector()
-{    
+void DB_TEST_BASE::AllocateEmptyClientVector()
+{
     empty_client_values.push_back("1");     //Client ID
     empty_client_values.push_back("1");     //Process ID
     empty_client_values.push_back("1");     //Person ID
@@ -1482,7 +679,7 @@ void DRC_DB_TESTS::AllocateEmptyClientVector()
     empty_client_values.push_back("");      //Assistant Email
 }
 
-void DRC_DB_TESTS::AllocateFullClientVector()
+void DB_TEST_BASE::AllocateFullClientVector()
 {
     full_client_values.push_back("2");     //Client ID
     full_client_values.push_back("2");     //Process ID
@@ -1497,7 +694,7 @@ void DRC_DB_TESTS::AllocateFullClientVector()
     full_client_values.push_back("MaskNotMe@Attorney.law");      //Assistant Email
 }
 
-void DRC_DB_TESTS::AllocateEmptyClientSessionVector()
+void DB_TEST_BASE::AllocateEmptyClientSessionVector()
 {
     empty_client_session_values.push_back("1");
     empty_client_session_values.push_back("1");
@@ -1512,7 +709,7 @@ void DRC_DB_TESTS::AllocateEmptyClientSessionVector()
     empty_client_session_values.push_back("0");
 }
 
-void DRC_DB_TESTS::AllocateFullClientSessionVector()
+void DB_TEST_BASE::AllocateFullClientSessionVector()
 {
     full_client_session_values.push_back("2");                      //Data_id
     full_client_session_values.push_back("2");                      //Client_id
@@ -1527,7 +724,7 @@ void DRC_DB_TESTS::AllocateFullClientSessionVector()
     full_client_session_values.push_back("1");                      //AtTable - TRUE
 }
 
-void DRC_DB_TESTS::AllocateEmptyNoteValues()
+void DB_TEST_BASE::AllocateEmptyNoteValues()
 {
     empty_note_values.push_back("1");
     empty_note_values.push_back("0");
@@ -1536,15 +733,7 @@ void DRC_DB_TESTS::AllocateEmptyNoteValues()
     empty_note_values.push_back("2014-07-26 17:23:01");
 }
 
-void DRC_DB_TESTS::AllocateEmptyUserValues()
-{
-    empty_user_values.push_back("1");
-    empty_user_values.push_back("");
-    empty_user_values.push_back("");
-    empty_user_values.push_back("");
-}
-
-void DRC_DB_TESTS::AllocateFullNoteValues()
+void DB_TEST_BASE::AllocateFullNoteValues()
 {
     full_note_values.push_back("2");
     full_note_values.push_back("0");
@@ -1553,7 +742,7 @@ void DRC_DB_TESTS::AllocateFullNoteValues()
     full_note_values.push_back("2700-12-31 23:59:59");
 }
 
-void DRC_DB_TESTS::AllocateEmptyEvaluationVector()
+void DB_TEST_BASE::AllocateEmptyEvaluationVector()
 {
     empty_evaluation_values.push_back("1");
     empty_evaluation_values.push_back("2014-07-24 00:00:01");
@@ -1578,9 +767,3 @@ void DRC_DB_TESTS::AllocateEmptyEvaluationVector()
     empty_evaluation_values.push_back("0");
     empty_evaluation_values.push_back("0");
 }
-
-QTEST_APPLESS_MAIN(DRC_DB_TESTS)
-
-#include "tst_drc_db_tests.moc"
-
-
